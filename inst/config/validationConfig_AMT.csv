@@ -27,8 +27,10 @@ Absolute technical/geological limits;;;;;;;;;;;;;;;;
 growthrate;yes;New Cap|Electricity|Solar|PV;GW/yr;;;;2020-2050;;;50%;100%;;;;;Survey
 ;;;;;;;;;;;;;;;;
 Scenario specific;;;;;;;;;;;;;;;;
-absolute;yes;Temperature|Global Mean;K;;SSP2EU-EU21-PkBudg500-AMT, SSP2EU-PkBudg500-AMT;;2100;;;1.5;1.6;;;;;corresponds to C1 category
-absolute;yes;Temperature|Global Mean;K;;SDP_MC-PkBudg650-AMT, SSP1-PkBudg650-AMT, SSP2EU-EU21-PkBudg650-AMT, SSP2EU-PkBudg650-AMT, SSP5-PkBudg650;;2100;;;;1.8;;;;;C2
+absolute;yes;Temperature|Global Mean;K;;SSP2EU-EU21-PkBudg500-AMT, SSP2EU-PkBudg500-AMT;;2100;;;;1.5;;;;;corresponds to C1 category
+absolute;yes;Temperature|Global Mean;K;;SDP_MC-PkBudg650-AMT, SSP1-PkBudg650-AMT, SSP2-PkBudg650-AMT, SSP2EU-EU21-PkBudg650-AMT, SSP2EU-PkBudg650-AMT, SSP5-PkBudg650;;2100;;;;1.5;;;;;C2
+absolute;yes;Temperature|Global Mean;K;;SSP2EU-EU21-PkBudg500-AMT, SSP2EU-PkBudg500-AMT;;2030-2099;;;;1.6;;;;;corresponds to C1 category
+absolute;yes;Temperature|Global Mean;K;;SDP_MC-PkBudg650-AMT, SSP1-PkBudg650-AMT, SSP2-PkBudg650-AMT, SSP2EU-EU21-PkBudg650-AMT, SSP2EU-PkBudg650-AMT, SSP5-PkBudg650;;2030-2099;;;;1.8;;;;;C2
 ;;;;;;;;;;;;;;;;
 from fullThresholds;;;;;;;;;;;;;;;;
 absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;World;2020;41.292;43.586;48.174;50.468;;;;;IEA CCUS
