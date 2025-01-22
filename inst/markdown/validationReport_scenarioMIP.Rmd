@@ -18,6 +18,7 @@ params:
 
 ```{r, setup, include=FALSE}
 library(piamValidation)
+devtools::load_all(".")
 library(knitr)
 library(dplyr)
 library(ggplot2)
@@ -25,6 +26,7 @@ library(ggthemes)
 library(plotly)
 library(madrat)
 library(piamInterfaces)
+library(quitte)
 
 knitr::opts_chunk$set(
   echo = FALSE,
@@ -46,14 +48,24 @@ cat(params$cfg, "\n")
 ```{r, message = FALSE, warning = TRUE}
 # getwd()
 
-hist <- quitte::read.snapshot("./data/historical_R10_scenarioMIP_2024-11-05.mif")
-dR10 <- readRDS("./data/scenarios_scenariomip_2024-11-21_processed.rds") %>%
-  filter(region %in% unique(hist$region))
-df <- bind_rows(hist, dR10)
+#hist <- quitte::read.snapshot("data/historical_R10_2025-01-14.mif")
+#df.historical <- piamInterfaces::convertHistoricalData(mif = hist, project = "ScenarioMIP")
+# Save file in rds format for future use
+#saveRDS(df.historical, "data/historical_R10_scenarioMIP_2025-01-14.rds")
+hist <- readRDS("data/historical_R10_scenarioMIP_2025-01-14.rds")
+
+hist[hist$variable == "Capacity|Electricity|Wind" & hist$model == "Ember", "variable"] <- 
+  "Capacity|Electricity|Wind|Onshore"
+    
+#dR10 <- quitte::read.snapshot("./data/scenarios_scenariomip_2024-12-28.csv")
+dR10 <- readRDS("data/scenarios_scenariomip_processed_2024-12-28.rds")
+dR10 <- dR10 %>% filter(region %in% unique(hist$region))
+
+
 
 files <- c(
-  "./data/historical_R10_scenarioMIP_2024-11-05.mif",
-  "scenarios_scenariomip_2024-11-21_processed"
+  "./data/historical_R10_scenarioMIP_2025-01-14.rds",
+  "./data/scenarios_scenariomip_processed_2024-12-28.rds"
 )
 
 # Data Preparation
@@ -97,6 +109,14 @@ plot.model.colors <- c(
   "WITCH" = "#fb6a4a"
 )
 
+validationHeatmap.colors <- 
+  c(green     = "#008450",
+    yellow    = "#EFB700",
+    red       = "#B81D13",
+    cyan      = "#66ccee",
+    blue      = "#4477aa",
+    grey      = "#808080")
+
 plot.model.letters <- c(
   "AIM" = "A",
   "COFFEE" = "C",
@@ -120,39 +140,50 @@ plot.SSP.linetype <- c(
 
 ## Validation
 
+This validation document uses the R-package [piamValidation](https://github.com/pik-piam/piamValidation)
+to perform a series of different checks on a snapshot of the Scenario MIP modeling results.
+
+These checks are based on the [vetting criteria google doc](https://docs.google.com/document/d/11oLs7xfe5aJsgchip6JwzYc3v2hcGCFvRrHHK72ApZs/edit?tab=t.0)
+and reformulated to be machine-readable bounds, listed in a [validationConfig](https://docs.google.com/spreadsheets/d/1qYqdC13377HHgCcO_eMq4TJemdLZjsYCM9gzYqD-r8o/edit?gid=596205375#gid=596205375) file. For further information on the validation tool, consult the [online documentation](https://pik-piam.r-universe.dev/articles/piamValidation/validateScenarios.html).
+
+Scenario Snapshot: ``scenarios_scenariomip_2024-12-28.csv``
+
+Historical data: ``historicalR10_2025-14-07.mif``
+
+### Visualization
+
+Interactive line plots and heat maps demonstrate how models stay within the 
+defined boundaries. Hovering over data points offers additional data via tool tips 
+(e.g. what is the exact reference value). Two levels of "strictness" are used:
+
+![Thresholds](C:/Users/pascalwe/Code/scenarioMIP/piamValidation/inst/figures/thresholds_extracolors.png){#id .class width=70% height=70%}
+
 ### Data sources
 
 #### 2020 vetting
 
-Deviation to IEA data.
-For 2020, the tolerance range includes both the 2020 value and the 2018-2022 average.
+- **Final Energy, Primary Energy**: Deviation to IEA data.
+- **Emissions|CO2|EIP**: Deviations to CEDS (April 2024).
+
+*Note*: For 2020, the tolerance range includes both the 2020 value and the 2018-2022 average
+to allow for models to include or exclude a "COVID dip".
 
 #### Near-term emissions
 
 Deviation to "Medium" Scenario of the respective SSP in 2030.
 
-
 #### Near-term capacities
 
-Tested against thresholds based on IEA HSMR and IAEA PRIS project pipelines:
+Tested against thresholds based on 
 
-<https://github.com/pik-piam/mrremind/discussions/540>
+- **Hydro**: [IEA HSMR project pipelines](https://github.com/pik-piam/mrremind/discussions/540)
+- **Nuclear**: [IAEA PRIS project pipelines](https://github.com/pik-piam/mrremind/discussions/541)
+- **Solar**: [BloombergNEF projections](https://github.com/pik-piam/mrremind/discussions/542) (only some regions available)
+- **Wind**: [GWEC Global Wind Report](https://github.com/pik-piam/mrremind/discussions/543) (only some regions available)
 
-<https://github.com/pik-piam/mrremind/discussions/541>
+#### Near-term Carbon Capture
 
-### Summary
-
-```{r}
-# find "critical == yes" data points of each color
-summary <- dplyr::count(df, model, check) %>%
-  mutate(model = substr(model, 1, 5))
-  #revalue.levels(model = plot.model.letters)
-
-ggplot(summary, aes(x = model, y = n, fill = check)) +
-  geom_bar(stat = "identity") +
-  scale_fill_manual(values = validationHeatmap.colors) +
-  theme(axis.text.x = element_text(angle = 0, vjust = 0, hjust=0.5))
-```
+Tested against thresholds based on [IEA CCUS project pipelines](https://github.com/pik-piam/mrremind/discussions/544).
 
 <!-- ## Historical vetting by model -->
 ```{r, fig.width=10, fig.height=6}
@@ -161,16 +192,16 @@ interactiveLinplots_model <- function(modelArg = "AIM") {
   valiData <- df %>%
     #revalue.levels(emi.scen = plot.emi.scen.letter) %>%
     filter(model == modelArg,
-           metric == "relative",
-           ref_scenario == "historical")
+           period %in% c(2010, 2015, 2020, 2030))
+           #variable != "Emissions|CO2|Energy and Industrial Processes")
   
   vars <- unique(valiData$variable)
   
   local_hist <- hist %>%
       filter(variable %in% vars,
              region == "World",
-             model %in% valiData$ref_model,
-             period %in% seq(2005, 2030)) %>%
+             model %in% c(valiData$ref_model, "Ember", "IEA CCUS"),
+             period %in% seq(2005, 2022)) %>%
       mutate(ref_model = model)
   
   local_scen <- dR10 %>%
@@ -188,7 +219,7 @@ interactiveLinplots_model <- function(modelArg = "AIM") {
     # this plots only the periods which are being validated 
     # (change in validationConfig)
     p <- linePlotThresholds(valiData, var, reg = "World", refData = T)
-    
+
     # add historical data
     h <- local_hist %>% filter(variable == var)
     p <- p +
@@ -209,10 +240,6 @@ interactiveLinplots_model <- function(modelArg = "AIM") {
 }
 
 ```
-<!-- ### AIM -->
-<!-- ```{r, fig.width=10, fig.height=6} -->
-<!-- interactiveLinplots_model("REMIND-MAgPIE") -->
-<!-- ``` -->
 
 
 ## Historical vetting by scenario narrative
@@ -222,15 +249,15 @@ interactiveLinplots_emiScen <- function(emiScen = "VL") {
   valiData <- df %>%
     revalue.levels(emi.scen = plot.emi.scen.letter) %>%
     filter(emi.scen == emiScen,
-           metric == "relative",
-           ref_scenario == "historical")
+           period %in% c(2010, 2015, 2020, 2030))
+           #variable != "Emissions|CO2|Energy and Industrial Processes")
   
   vars <- unique(valiData$variable)
   
   local_hist <- hist %>%
       filter(variable %in% vars,
              region == "World",
-             model %in% valiData$ref_model,
+             model %in% c(valiData$ref_model, "Ember", "IEA CCUS"),
              period %in% seq(2005, 2030)) %>%
       mutate(ref_model = model)
   
@@ -301,87 +328,6 @@ interactiveLinplots_emiScen("M")
 interactiveLinplots_emiScen("H")
 ```
 
-
-<!-- ## Historical vetting by SSP -->
-
-<!-- ```{r, fig.width=10, fig.height=6} -->
-
-<!-- interactiveLinplots <- function(sspArg = "SSP1") { -->
-<!--   valiData <- df %>% -->
-<!--     filter(ssp == sspArg, -->
-<!--            metric == "relative", -->
-<!--            ref_scenario == "historical") -->
-
-<!--   vars <- unique(valiData$variable) -->
-
-<!--   local_hist <- hist %>% -->
-<!--       filter(variable %in% vars, -->
-<!--              region == "World", -->
-<!--              model %in% valiData$ref_model, -->
-<!--              period %in% seq(2005, 2030)) %>% -->
-<!--       mutate(ref_model = model) -->
-
-<!--   local_scen <- dR10 %>% -->
-<!--       filter(variable %in% vars, -->
-<!--              region == "World", -->
-<!--              ssp == sspArg, -->
-<!--              period %in% seq(2005, 2030)) %>% -->
-<!--       revalue.levels(emi.scen = plot.emi.scen.letter) %>% -->
-<!--       mutate(scenario = paste0(" ", emi.scen, gsub("Default|Variant","",def.var))) -->
-
-
-<!--   plot_list <- htmltools::tagList() -->
-<!--   for (i in 1:length(vars)) { -->
-<!--     var <- as.character(vars[i]) -->
-
-<!--     # this plots only the periods which are being validated  -->
-<!--     # (change in validationConfig) -->
-<!--     p <- linePlotThresholds(valiData, var, reg = "World", refData = T) -->
-
-<!--     # add historical data -->
-<!--     h <- local_hist %>% filter(variable == var) -->
-<!--     p <- p + -->
-<!--       geom_point(data = h, aes(x = period, y = value), #, shape = ref_model), -->
-<!--                  size = 1, color = "black") -->
-
-<!--     # add scenario data -->
-<!--     d <- local_scen %>% filter(variable == var) -->
-<!--     p <- p + -->
-<!--       geom_line(data = d, aes(x = period, y = value, color = model, linetype = scenario)) -->
-
-<!--     plot_list[[i]] <- plotly::ggplotly(p) -->
-<!--   } -->
-<!--   return(plot_list) -->
-<!-- } -->
-
-<!-- ``` -->
-
-<!-- ### SSP1 -->
-<!-- ```{r, fig.width=10, fig.height=6} -->
-<!-- interactiveLinplots("SSP1") -->
-<!-- ``` -->
-
-
-<!-- ### SSP2 -->
-<!-- ```{r, fig.width=10, fig.height=6} -->
-<!-- interactiveLinplots("SSP2") -->
-<!-- ``` -->
-
-<!-- ### SSP3 -->
-<!-- ```{r, fig.width=10, fig.height=6} -->
-<!-- interactiveLinplots("SSP3") -->
-<!-- ``` -->
-
-<!-- ### SSP4 -->
-<!-- ```{r, fig.width=10, fig.height=6} -->
-<!-- interactiveLinplots("SSP4") -->
-<!-- ``` -->
-
-<!-- ### SSP5 -->
-<!-- ```{r, fig.width=10, fig.height=6} -->
-<!-- interactiveLinplots("SSP5") -->
-<!-- ``` -->
-
 <!-- ## 2020 overview (non-interactive) -->
 
 ```{r, fig.width=10, fig.height=10}
@@ -394,66 +340,13 @@ df_heatmap <- df %>%
 # issue: if a strict rule is overwritten by a lax rule, we may get unwanted color warnings
 df_heatmap <- df_heatmap %>%
   mutate(checkRank = check) %>%
-  revalue.levels(checkRank = validationHeatmap.colorRanks) %>%
+  #revalue.levels(checkRank = validationHeatmap.colorRanks) %>%
   group_by(region,variable,unit,period, model, scenario, value, ssp,emi.scen,def.var) %>%
   filter(checkRank == max(checkRank)) %>%
   select(-checkRank)
 
-# testing example:
-# ddd <- df_heatmap %>%
-#   filter(model == "IMAGE", region == "India+ (R10)", variable == "Final Energy", emi.scen == "Very Low Emissions", ssp == "SSP1", period == 2020) %>%
-#   mutate(checkRank = check) %>%
-#   revalue.levels(checkRank = validationHeatmap.colorRanks) %>%
-#   group_by(region,variable,unit,period, model, scenario, value, ssp,emi.scen,def.var) %>%
-#   filter(checkRank == max(checkRank))
-
 ```
 
-<!-- Deviation to IEA data (with 2020 smoothing) -->
-
-<!-- ```{r, fig.width=10, fig.height=10} -->
-<!-- d <- df_heatmap %>% -->
-<!--   filter(metric == "relative", ref_scenario == "historical" | is.na(ref_scenario)) -->
-<!-- interact <- F -->
-
-<!-- if (interact) { -->
-<!--   # interactive plots can only be printed from outside of loops, use tagList -->
-<!--   # to store html objects in List -->
-<!--   if (nrow(d) > 0) { -->
-<!--     vars <- unique(d$variable) -->
-<!--     plot_list <- htmltools::tagList() -->
-<!--       for (i in 1:length(vars)) { -->
-<!--         plot_list[[i]] <- validationHeatmap(filter(d, variable == vars[i]), -->
-<!--                                             y_plot = "period", -->
-<!--                                             x_plot = "region", -->
-<!--                                             y_facet = "scenario", -->
-<!--                                             x_facet = "model", -->
-<!--                                             interactive = interact) %>%  -->
-<!--           # avoid overlap of title and facet labels (plotly issue) -->
-<!--           layout(title = list(y = .95, xref = "plot"), -->
-<!--                  margin = list(l = 75, t = 150)) -->
-<!--       } -->
-<!--       plot_list -->
-<!--   } -->
-<!-- } else { -->
-<!--   # non-interactive plots can simply be printed -->
-<!--   vars <- unique(d$variable) -->
-<!--   for (i in 1:length(vars)) { -->
-<!--       p <- validationHeatmap(filter(d, variable == vars[i]), -->
-<!--                               y_plot = "period", -->
-<!--                               x_plot = "region", -->
-<!--                               y_facet = "scenario", -->
-<!--                               x_facet = "model", -->
-<!--                               interactive = interact) -->
-<!--       print(p) -->
-<!--       } -->
-<!-- } -->
-<!-- ``` -->
-
-<!-- ## 2020 by model (interactive) -->
-
-<!-- Deviation to IEA data. -->
-<!-- For 2020, the tolerance range includes both the 2020 value and the 2018-2022 average. -->
 
 ```{r, modelHeatmap, fig.width=10, fig.height=10}
 modelHeatmap <- function(d) {
@@ -481,22 +374,6 @@ modelHeatmap <- function(d) {
 }
 ```
 
-```{r}
-#modelHeatmap(df_heatmap)
-```
-
-
-<!-- ## Definitions -->
-
-<!-- ### 2020 vetting -->
-
-<!-- Deviation to IEA data. -->
-<!-- For 2020, the tolerance range includes both the 2020 value and the 2018-2022 average. -->
-
-
-<!-- ### Near-term emissions -->
-
-<!-- Deviation to "Medium" Scenario of the respective SSP in 2030. -->
 
 ```{r, modelEmissions, fig.width=10, fig.height=10}
 modelEmissions <- function(d) {
@@ -514,7 +391,7 @@ modelEmissions <- function(d) {
         filter(model == models[i]) %>%
         validationHeatmap(main_dim = "model",
                           interactive = interact,
-                          titleSuffix = "near-term emissions") %>% 
+                          titleSuffix = "near-term emissions relative to 'M' scenario") %>% 
         # avoid overlap of title and facet labels (plotly issue)
         layout(title = list(y = .95, xref = "plot"),
                margin = list(l = 0, t = 150, r = 150))
@@ -632,11 +509,8 @@ modelCC <- function(d, title = TRUE) {
 }
 ```
 
-```{r}
-#modelCC(df_heatmap)
-```
 
-<!-- ## Results by model -->
+## Results by model
 
 ```{r}
 # this chunk prints Rmd lines that we copy paste below for the HTML rendering
@@ -660,7 +534,7 @@ interactiveLinplots_model(modelLoop)")
 ```
 
 
-## Model AIM
+### Model AIM
 ```{r}
 modelLoop='AIM'
 d <- df_heatmap %>% filter(model==modelLoop)
@@ -681,7 +555,7 @@ modelBiomass(d)
 ```{r}
 modelCC(d)
 ```
-## Model COFFEE
+### Model COFFEE
 ```{r}
 modelLoop='COFFEE'
 d <- df_heatmap %>% filter(model==modelLoop)
@@ -702,7 +576,7 @@ modelBiomass(d)
 ```{r}
 modelCC(d)
 ```
-## Model GCAM
+### Model GCAM
 ```{r}
 modelLoop='GCAM'
 d <- df_heatmap %>% filter(model==modelLoop)
@@ -723,7 +597,7 @@ modelBiomass(d)
 ```{r}
 modelCC(d)
 ```
-## Model IMAGE
+### Model IMAGE
 ```{r}
 modelLoop='IMAGE'
 d <- df_heatmap %>% filter(model==modelLoop)
@@ -744,7 +618,7 @@ modelBiomass(d)
 ```{r}
 modelCC(d)
 ```
-## Model MESSAGEix-GLOBIOM
+### Model MESSAGEix-GLOBIOM
 ```{r}
 modelLoop='MESSAGEix-GLOBIOM'
 d <- df_heatmap %>% filter(model==modelLoop)
@@ -765,7 +639,7 @@ modelBiomass(d)
 ```{r}
 modelCC(d)
 ```
-## Model REMIND-MAgPIE
+### Model REMIND-MAgPIE
 ```{r}
 modelLoop='REMIND-MAgPIE'
 d <- df_heatmap %>% filter(model==modelLoop)
@@ -786,7 +660,7 @@ modelBiomass(d)
 ```{r}
 modelCC(d)
 ```
-## Model WITCH
+### Model WITCH
 ```{r}
 modelLoop='WITCH'
 d <- df_heatmap %>% filter(model==modelLoop)
@@ -806,4 +680,114 @@ modelBiomass(d)
 ```
 ```{r}
 modelCC(d)
+```
+
+## Summary
+
+### World
+
+Counting all checks per model can give teams rough hints towards overall vetting progress.
+Take a look at individual heat maps above to see where exactly bound violations happen.
+Priority should be given to eliminating ``red`` and ``blue`` data points.
+
+```{r}
+df_summary <- filter(df, period >= 2020)
+# find "critical == yes" data points of each color
+summary <- filter(df_summary, region == "World") %>%
+  dplyr::count(model, check) %>%
+  mutate(model = substr(model, 1, 5)) %>%
+  group_by(model) %>%
+  mutate(percent = n / sum(n) * 100)
+
+# change order of colors
+summary$check <- factor(
+  summary$check, 
+  levels = rev(c("green", "yellow", "cyan", "red", "blue", "grey"))
+  )
+
+# stacking order and midpoints
+summary <- summary %>%
+  arrange(model, desc(check)) %>%
+  group_by(model) %>%
+  mutate(
+    cumulative = cumsum(n),
+    midpoint = cumulative - (n / 2)
+  )
+
+
+# stacked bar plot in absolute numbers of checks
+p1 <- ggplot(summary, aes(x = model, y = n, fill = check)) +
+  geom_bar(stat = "identity") + # Absolute stacked bars
+  scale_fill_manual(values = validationHeatmap.colors) + # Custom colors
+  theme(axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) +
+  geom_text(aes(label = n, y = midpoint), color = "white", size = 3.5) +
+  labs(y = "Count", x = "Model")
+
+# normalized
+p2 <- ggplot(summary, aes(x = model, y = n, fill = check)) +
+  geom_bar(position = "fill", stat = "identity") +
+  scale_fill_manual(values = validationHeatmap.colors) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 0, hjust=0.5)) +
+  geom_text(aes(label = paste0(round(percent, 1), "%"),
+                group = check),
+            position = position_fill(vjust = 0.5),
+            color = "white",
+            size = 3.5) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(y = "Percentage", x = "Model")
+
+p1
+p2
+```
+
+### Regions
+
+
+```{r}
+# find "critical == yes" data points of each color
+summary <- filter(df_summary, region != "World") %>%
+  dplyr::count(model, check) %>%
+  mutate(model = substr(model, 1, 5)) %>%
+  group_by(model) %>%
+  mutate(percent = n / sum(n) * 100)
+
+# change order of colors
+summary$check <- factor(
+  summary$check, 
+  levels = rev(c("green", "yellow", "cyan", "red", "blue", "grey"))
+  )
+
+# stacking order and midpoints
+summary <- summary %>%
+  arrange(model, desc(check)) %>%
+  group_by(model) %>%
+  mutate(
+    cumulative = cumsum(n),
+    midpoint = cumulative - (n / 2)
+  )
+
+
+# stacked bar plot in absolute numbers of checks
+p1 <- ggplot(summary, aes(x = model, y = n, fill = check)) +
+  geom_bar(stat = "identity") + # Absolute stacked bars
+  scale_fill_manual(values = validationHeatmap.colors) + # Custom colors
+  theme(axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) +
+  geom_text(aes(label = n, y = midpoint), color = "white", size = 3.5) +
+  labs(y = "Count", x = "Model")
+
+# normalized
+p2 <- ggplot(summary, aes(x = model, y = n, fill = check)) +
+  geom_bar(position = "fill", stat = "identity") +
+  scale_fill_manual(values = validationHeatmap.colors) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 0, hjust=0.5)) +
+  geom_text(aes(label = paste0(round(percent, 1), "%"),
+                group = check),
+            position = position_fill(vjust = 0.5),
+            color = "white",
+            size = 3.5) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(y = "Percentage", x = "Model")
+
+p1
+p2
 ```
