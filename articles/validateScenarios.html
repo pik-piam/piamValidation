@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">piamValidation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -188,9 +188,9 @@ different use cases.</div>
 <li>one set of thresholds per row is allowed</li>
 <li>empty rows and rows without “variable” are ignored and can be used
 to structure the config</li>
-<li>later rows overwrite earlier rows if there is a data overlap</li>
-<li>only one reference period/model/scenario per data-slice (e.g. don’t
-compare the same data against ref_model1 and ref_model2)</li>
+<li>later rows overwrite earlier rows if there is a data overlap (within
+one metric)</li>
+<li>only choose one of the <code>ref_</code> columns per row.</li>
 </ul>
 <div class="section level4">
 <h4 id="columns">Columns<a class="anchor" aria-label="anchor" href="#columns"></a>
@@ -236,10 +236,31 @@ compare model data to observational data provided by one or multiple
 external sources.</p>
 <p>It is recommended to choose a historical reference source explicitly
 in the “ref_model” column for historical comparisons. Otherwise, all
-available historical sources will be averaged and the tooltip of a heat
-map will show <code>ref_model = "multiple"</code>.</p>
+available historical sources will be used.</p>
 <p><strong>ref_period</strong>: compare data between different periods,
-set the reference period here</p>
+set the reference period here.</p>
+</div>
+<div class="section level4">
+<h4 id="using-multiple-references">Using multiple references<a class="anchor" aria-label="anchor" href="#using-multiple-references"></a>
+</h4>
+<p>Scenario data can not only be compared to a single reference value
+but alternatively to a range of references. When performing checks
+against historical or scenario reference data (metrics
+<code>relative</code> and <code>difference</code>) it is possible to
+specify <code>range(ref1, ref2, ..., refx)</code> in the
+<code>ref_model</code>, <code>ref_scenario</code> or
+<code>ref_period</code> column. This results in the upper thresholds
+being evaluated against the maximum of the respective references, while
+the lower thresholds are compared to the minimum.</p>
+<p>Internally, this means splitting up the ref_value column into
+ref_value_min and ref_value_max, similarly check_value.</p>
+<p>The default behavior when specifying multiple references in the
+validation config without specifying a mode, is the calculation of the
+arithmetic mean of all references. This can be specified explicitly via
+<code>mean(ref1, ...)</code>. In this case the min/max columns will
+contain equal values.</p>
+<p>Examples are available as part of the testing routine in
+<code>tests/testthat/test-referenceRange.R</code>.</p>
 </div>
 <div class="section level4">
 <h4 id="units">Units<a class="anchor" aria-label="anchor" href="#units"></a>
