@@ -3,7 +3,7 @@ pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   validateScenarios: validateScenarios.html
-last_built: 2025-03-27T08:07Z
+last_built: 2025-04-09T12:09Z
 urls:
   reference: https://pik-piam.github.io/piamValidation/reference
   article: https://pik-piam.github.io/piamValidation/articles
