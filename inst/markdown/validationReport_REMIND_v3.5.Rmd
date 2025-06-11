@@ -37,16 +37,17 @@ config <- "AMT"
 
 # Data
 
-Loading data from: `/p/projects/remind/runs/REMIND_2025_06_03/remind`
+Loading data from: `/p/projects/remind/runs/REMIND_2025_06_10/remind`
 
-Using config: `r config`
+Using config: `r config` [Link](https://pik-piam.github.io/piamValidation/articles/configs/validationConfig_REMIND.html)
 
 ```{r, message = FALSE, warning = FALSE}
 # Data Preparation
 # r351 <- quitte::as.quitte(
-#   c("user/Data/validation_3.5.1/REMIND_generic_SSP2-NPi2025.mif",
-#     "user/Data/validation_3.5.1/REMIND_generic_SSP2-PkBudg1000.mif",
-#     "user/Data/validation_3.5.1/REMIND_generic_SSP2-PkBudg650.mif"))
+#   c("user/Data/validation_3.5.1/2025-06-10/REMIND_generic_SSP2-NPi2025.mif",
+#     "user/Data/validation_3.5.1/2025-06-10/REMIND_generic_SSP2-PkBudg1000.mif",
+#     "user/Data/validation_3.5.1/2025-06-10/REMIND_generic_SSP2-PkBudg650.mif",
+#     "user/Data/validation_3.5.1/2025-06-10/REMIND_generic_SSP1-PkBudg650.mif"))
 # 
 # r35 <- quitte::as.quitte(
 #   c("user/Data/validation_3.5/v3/REMIND_generic_SSP2-NPi2025.mif",
@@ -60,7 +61,7 @@ Using config: `r config`
 #  filter(period %in% seq(2018, 2022)) %>%
 #  magclass::as.magpie(spatial = "region")
 # hist_m[, 2020, ] <- magclass::dimSums(hist_m, dim = 2)/5
-# hist_smoothed <- quitte::as.quitte(hist_m[, , ]) %>% 
+# hist_smoothed <- quitte::as.quitte(hist_m[, , ]) %>%
 #   filter(period == 2020) %>%
 #   mutate(model = paste0(model, "_smoothed"))
 # 

@@ -1,0 +1,29 @@
+---
+title: "validationConfig_ScenarioMIP_MESSAGE"
+output: html_document
+---
+
+Configuration file for ScenarioMIP energy validation with model-native regions.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(readr)
+library(DT)
+
+# Load the CSV from inst/config
+df <- piamValidation::getConfig("scenarioMIP_MESSAGEix-GLOBIOM-GAINS21-R12_2025-06-06")
+
+font.size <- "9pt"
+
+df %>%
+   DT::datatable(
+     options = list(
+       pageLength = 100,
+       initComplete = htmlwidgets::JS(
+          "function(settings, json) {",
+          paste0("$(this.api().table().container()).css({'font-size': '", font.size, "'});"),
+          "}"),
+      filter = 'top'  # This enables the column filters
+      )
+    )
+
+```
