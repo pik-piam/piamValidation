@@ -11,7 +11,7 @@ articles:
   configs/validationConfig_ScenarioMIP_MESSAGE: configs/validationConfig_ScenarioMIP_MESSAGE.html
   configs/validationConfig_ScenarioMIP_REMIND: configs/validationConfig_ScenarioMIP_REMIND.html
   configs/validationConfig_ScenarioMIP_WITCH: configs/validationConfig_ScenarioMIP_WITCH.html
-last_built: 2025-06-11T15:00Z
+last_built: 2025-07-24T08:04Z
 urls:
   reference: https://pik-piam.github.io/piamValidation/reference
   article: https://pik-piam.github.io/piamValidation/articles
