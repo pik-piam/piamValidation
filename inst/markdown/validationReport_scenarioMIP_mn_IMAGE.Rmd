@@ -41,8 +41,8 @@ knitr::opts_chunk$set(
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
 # data revision
-snapshot_date <- "2025-05-27"
-historical_date <- "2025-05-09"
+snapshot_date <- "2025-06-20"
+historical_date <- "2025-06-25"
 config_date <- "2025-06-06"
 ```
 
@@ -488,7 +488,7 @@ validationHeatmap(valiData[valiData$variable == var & valiData$period == 2020, ]
 
 #### Line Plots
 ```{r, fig.width=9, fig.height=5}
-model_lineplots(var, hist_models = c("Ember", "Ember_smoothed"))
+model_lineplots(var, hist_models = c("Ember", "Ember_smoothed", "IRENA", "IRENA_smoothed"))
 ```
 
 ### Wind {.tabset}
@@ -506,7 +506,7 @@ validationHeatmap(valiData[valiData$variable == var & valiData$period == 2020, ]
 
 #### Line Plots
 ```{r, fig.width=9, fig.height=5}
-model_lineplots(var, hist_models = c("Ember", "Ember_smoothed"))
+model_lineplots(var, hist_models = c("Ember", "Ember_smoothed", "IRENA", "IRENA_smoothed"))
 ```
 
 ### Hydro {.tabset}
@@ -524,7 +524,7 @@ validationHeatmap(valiData[valiData$variable == var & valiData$period == 2020, ]
 
 #### Line Plots
 ```{r, fig.width=9, fig.height=5}
-model_lineplots(var, hist_models = c("Ember", "Ember_smoothed"))
+model_lineplots(var, hist_models = c("Ember", "Ember_smoothed", "IRENA", "IRENA_smoothed"))
 ```
 
 ### Nuclear {.tabset}

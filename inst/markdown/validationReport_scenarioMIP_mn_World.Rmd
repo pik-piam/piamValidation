@@ -42,8 +42,8 @@ knitr::opts_chunk$set(
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
 # versions
-snapshot_date <- "2025-05-27"
-historical_date <- "2025-05-09"
+snapshot_date <- "2025-06-20"
+historical_date <- "2025-06-25"
 thresholds_date <- "2025-04-30"
 config_date <- "2025-06-06"
 
@@ -400,7 +400,7 @@ validationHeatmap(valiData %>% filter(variable == var))
 #### Line Plots by Scenario Narrative
 
 ```{r, fig.width=10, fig.height=6}
-emiscen_lineplots(var, hist_models = c("Ember", "Ember_smoothed"))
+emiscen_lineplots(var, hist_models = c("Ember", "Ember_smoothed", "IRENA", "IRENA_smoothed"))
 ```
 
 ### Cap|Solar {.tabset}
@@ -415,7 +415,7 @@ validationHeatmap(valiData %>% filter(variable == var))
 #### Line Plots by Scenario Narrative
 
 ```{r, fig.width=10, fig.height=6}
-emiscen_lineplots(var, hist_models = c("Ember", "Ember_smoothed"))
+emiscen_lineplots(var, hist_models = c("Ember", "Ember_smoothed", "IRENA", "IRENA_smoothed"))
 ```
 
 ### Cap|Wind|Onshore {.tabset}
