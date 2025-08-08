@@ -1,24 +1,24 @@
 metric;critical;variable;unit;model;scenario;region;period;min_red;min_yel;max_yel;max_red;ref_model;ref_scenario;ref_period;source/link to discussion
 Deviation to historical data;;;;;;;;;;;;;;;
-relative;yes;Emi|CO2|w/o Bunkers|Energy|Demand|Transport;Mt CO2/yr;;;;2005-2020;-40%;-20%;20%;40%;range(CEDS, EDGARghg, CEDS_smoothed, EDGARghg_smoothed);historical;;
-relative;yes;Emi|CO2|Energy|Demand|Buildings;Mt CO2/yr;;;;2005-2020;-40%;-20%;20%;40%;range(CEDS, EDGARghg, CEDS_smoothed, EDGARghg_smoothed);historical;;
-relative;yes;Emi|CO2|Energy and Industrial Processes;Mt CO2/yr;;;;2005-2020;-40%;-20%;20%;40%;range(CEDS, EDGARghg, CEDS_smoothed, EDGARghg_smoothed);historical;;
-relative;yes;Emi|CO2|Energy|Supply;Mt CO2/yr;;;;2005-2020;-40%;-20%;20%;40%;range(CEDS, EDGARghg, CEDS_smoothed, EDGARghg_smoothed);historical;;
-relative;yes;PE|Coal;EJ/yr;;;;2005-2020;-30%;-15%;15%;30%;range(IEA-EB-directSum, BP, IEA-EB-directSum_smoothed, BP_smoothed);historical;;
-relative;yes;PE|Oil;EJ/yr;;;;2005-2020;-30%;-15%;15%;30%;range(IEA-EB-directSum, BP, IEA-EB-directSum_smoothed, BP_smoothed);historical;;
-relative;yes;PE|Gas;EJ/yr;;;;2005-2020;-30%;-15%;15%;30%;range(IEA-EB-directSum, BP, IEA-EB-directSum_smoothed, BP_smoothed);historical;;
-relative;yes;SE|Electricity;EJ/yr;;;;2005-2020;-30%;-15%;15%;30%;range(Ember, BP, Ember_smoothed, BP_smoothed);historical;;
-relative;yes;FE;EJ/yr;;;;2005-2020;-40%;-20%;20%;40%;range(IEA-EB-directSum, IEA-EB-directSum_smoothed);historical;;
-relative;yes;Cap|Electricity|Coal;GW;;;;2005-2020;-40%;-20%;20%;40%;range(Ember, Ember_smoothed);historical;;
-relative;yes;Cap|Electricity|Gas;GW;;;;2005-2020;-40%;-20%;20%;40%;range(Ember, Ember_smoothed);historical;;
-relative;yes;Cap|Electricity|Solar;GW;;;;2005-2020;-40%;-20%;20%;40%;range(Ember, Ember_smoothed, IRENA, IRENA_smoothed);historical;;
-relative;yes;Cap|Electricity|Wind;GW;;;;2005-2020;-40%;-20%;20%;40%;range(Ember, Ember_smoothed, IRENA, IRENA_smoothed);historical;;
-relative;yes;Cap|Electricity|Hydro;GW;;;;2005-2020;-40%;-20%;20%;40%;range(Ember, Ember_smoothed, IRENA, IRENA_smoothed);historical;;
-relative;yes;Cap|Electricity|Nuclear;GW;;;;2005-2015;-40%;-20%;20%;40%;range(Ember, Ember_smoothed);historical;;
+relative;yes;Emi|CO2|w/o Bunkers|Energy|Demand|Transport;Mt CO2/yr;;;;2005-2020;-40%;-20%;20%;40%;range(CEDS, EDGARghg);historical;;
+relative;yes;Emi|CO2|Energy|Demand|Buildings;Mt CO2/yr;;;;2005-2020;-40%;-20%;20%;40%;range(CEDS, EDGARghg);historical;;
+relative;yes;Emi|CO2|w/o Bunkers|Energy and Industrial Processes;Mt CO2/yr;;;;2005-2020;-40%;-20%;20%;40%;range(CEDS, EDGARghg);historical;;
+relative;yes;Emi|CO2|Energy|Supply;Mt CO2/yr;;;;2005-2020;-40%;-20%;20%;40%;range(CEDS, EDGARghg);historical;;
+relative;yes;PE|Coal;EJ/yr;;;;2005-2020;-30%;-15%;15%;30%;range(IEA-EB-directSum, BP);historical;;
+relative;yes;PE|Oil;EJ/yr;;;;2005-2020;-30%;-15%;15%;30%;range(IEA-EB-directSum, BP);historical;;
+relative;yes;PE|Gas;EJ/yr;;;;2005-2020;-30%;-15%;15%;30%;range(IEA-EB-directSum, BP);historical;;
+relative;yes;SE|Electricity;EJ/yr;;;;2005-2020;-30%;-15%;15%;30%;range(Ember, BP);historical;;
+relative;yes;FE;EJ/yr;;;;2005-2020;-40%;-20%;20%;40%;range(IEA-EB-directSum);historical;;
+relative;yes;Cap|Electricity|Coal;GW;;;;2005-2020;-40%;-20%;20%;40%;Ember;historical;;
+relative;yes;Cap|Electricity|Gas;GW;;;;2005-2020;-40%;-20%;20%;40%;Ember;historical;;
+relative;yes;Cap|Electricity|Solar;GW;;;;2005-2020;-40%;-20%;20%;40%;range(Ember, IRENA);historical;;
+relative;yes;Cap|Electricity|Wind;GW;;;;2005-2020;-40%;-20%;20%;40%;range(Ember, IRENA);historical;;
+relative;yes;Cap|Electricity|Hydro;GW;;;;2005-2020;-40%;-20%;20%;40%;range(Ember, IRENA);historical;;
+relative;yes;Cap|Electricity|Nuclear;GW;;;;2005-2015;-40%;-20%;20%;40%;Ember;historical;;
 ;;;;;;;;;;;;;;;
 Near-term realism;;;;;;;;;;;;;;;
 from fullThresholds;;;;;;;;;;;;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;World;2020;41.292;43.586;48.174;50.468;;;;IEA CCUS
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;World;2020;40.752;43.016;47.544;49.808;;;;IEA CCUS
 absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;LAM;2020;6.36;8.48;12.72;14.84;;;;https://github.com/pik-piam/mrremind/discussions/544
 absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;OAS;2020;;;;0;;;;
 absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;SSA;2020;;;;0;;;;
@@ -26,37 +26,37 @@ absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;EUR;2020;0.606;0.808;1.212;1.
 absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;NEU;2020;0.51;0.68;1.02;1.19;;;;
 absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;MEA;2020;2.22;2.96;4.44;5.18;;;;
 absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;REF;2020;;;;0;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;CAZ;2020;5.52;7.36;11.04;12.88;;;;
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;CAZ;2020;4.467;5.956;8.934;10.423;;;;
 absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;CHA;2020;0.42;0.56;0.84;0.98;;;;
 absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;IND;2020;;;;0;;;;
 absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;JPN;2020;;;;0;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;USA;2020;11.892;15.856;23.784;27.748;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;World;2025;39.6207;49.49215;83.5611;152.4457;;;;
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;USA;2020;12.585;16.78;25.17;29.365;;;;
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;World;2025;39.7431;50.62835;74.1363;79.4266;;;;
 absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;LAM;2025;;5.724;17.64;;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;OAS;2025;;0;7.602;;;;;
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;OAS;2025;;0;4.62;;;;;
 absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;SSA;2025;;0;0.0014;;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;EUR;2025;;0.5454;3.864;;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;NEU;2025;;0.4614;2.2988;;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;MEA;2025;;1.998;13.5226;;;;;
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;EUR;2025;;0.5454;2.464;;;;;
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;NEU;2025;;0.4644;2.296;;;;;
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;MEA;2025;;1.998;11.2;;;;;
 absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;REF;2025;;;0;;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;CAZ;2025;;4.968;47.124;;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;CHA;2025;;1.809;7.35;;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;IND;2025;;0;0.98;;;;;
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;CAZ;2025;;4.9386;22.603;;;;;
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;CHA;2025;;1.944;7;;;;;
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;IND;2025;;;0;;;;;
 absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;JPN;2025;;;0;;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;USA;2025;;10.908;93.639;;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;World;2030;44.0226;60.01815;152.4663;457.8915;;;;
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;USA;2025;;10.881;33.264;;;;;
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;World;2030;44.1585;70.73415;182.03745;514.1994;;;;
 absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;LAM;2030;;6.36;28.84;;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;OAS;2030;;0;20.9076;;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;SSA;2030;;0;0.0014;;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;EUR;2030;;0.606;88.074;;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;NEU;2030;;0.5124;22.526;;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;MEA;2030;;2.22;32.5626;;;;;
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;OAS;2030;;0;20.9426;;;;;
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;SSA;2030;;0;1.4014;;;;;
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;EUR;2030;;0.606;105.28;;;;;
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;NEU;2030;;0.516;18.5388;;;;;
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;MEA;2030;;2.22;30.1;;;;;
 absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;REF;2030;;;0;;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;CAZ;2030;;5.52;89.698;;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;CHA;2030;;2.01;12.95;;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;IND;2030;;0;0.98;;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;JPN;2030;;0;2.3884;;;;;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;USA;2030;;12.12;283.843;;;;;
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;CAZ;2030;;5.487;115.556;;;;;
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;CHA;2030;;2.16;21.7;;;;;
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;IND;2030;;;0;;;;;
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;JPN;2030;;0;2.3716;;;;;
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;USA;2030;;12.09;309.7066;;;;;
 ;;;;;;;;;;;;;;;
 absolute;yes;Cap|Electricity|Hydro;GW;;;World;2030;1051.2;1265.78;1727.775;2278.98;;;;IEA HSMR
 absolute;yes;Cap|Electricity|Hydro;GW;;;LAM;2030;;110.94;376.292;;;;;https://github.com/pik-piam/mrremind/discussions/541
@@ -72,36 +72,57 @@ absolute;yes;Cap|Electricity|Hydro;GW;;;IND;2030;;27.06;149.562;;;;;
 absolute;yes;Cap|Electricity|Hydro;GW;;;JPN;2030;;13.44;80.682;;;;;
 absolute;yes;Cap|Electricity|Hydro;GW;;;USA;2030;;48.84;187.67;;;;;
 ;;;;;;;;;;;;;;;
-absolute;yes;Cap|Electricity|Nuclear;GW;;;World;2020;299.7232;337.1886;442.64;482.88;;;;IEA PRIS
+absolute;yes;Cap|Electricity|Nuclear;GW;;;World;2020;301;338.625;439.164;479.088;;;;IAEA PRIS
 absolute;yes;Cap|Electricity|Nuclear;GW;;;LAM;2020;3.042;4.056;6.42;7.49;;;;https://github.com/pik-piam/mrremind/discussions/540
-absolute;yes;Cap|Electricity|Nuclear;GW;;;OAS;2020;15.0696;20.0928;34.896;40.712;;;;
+absolute;yes;Cap|Electricity|Nuclear;GW;;;OAS;2020;15.0696;20.0928;34.644;40.418;;;;
 absolute;yes;Cap|Electricity|Nuclear;GW;;;SSA;2020;1.11;1.48;2.3256;2.7132;;;;
-absolute;yes;Cap|Electricity|Nuclear;GW;;;EUR;2020;61.35;81.8;138.1104;161.1288;;;;
+absolute;yes;Cap|Electricity|Nuclear;GW;;;EUR;2020;62.106;82.808;137.3376;160.2272;;;;
 absolute;yes;Cap|Electricity|Nuclear;GW;;;NEU;2020;1.782;2.376;3.8184;4.4548;;;;
-absolute;yes;Cap|Electricity|Nuclear;GW;;;MEA;2020;1.2792;1.7056;7.488;8.736;;;;
-absolute;yes;Cap|Electricity|Nuclear;GW;;;REF;2020;25.53;34.04;53.1936;62.0592;;;;
-absolute;yes;Cap|Electricity|Nuclear;GW;;;CAZ;2020;8.004;10.672;16.44;19.18;;;;
-absolute;yes;Cap|Electricity|Nuclear;GW;;;CHA;2020;32.5308;43.3744;67.2288;78.4336;;;;
-absolute;yes;Cap|Electricity|Nuclear;GW;;;IND;2020;4.068;5.424;8.304;9.688;;;;
-absolute;yes;Cap|Electricity|Nuclear;GW;;;JPN;2020;6.63;8.84;40.8864;47.7008;;;;
+absolute;yes;Cap|Electricity|Nuclear;GW;;;MEA;2020;1.2792;1.7056;7.524;8.778;;;;
+absolute;yes;Cap|Electricity|Nuclear;GW;;;REF;2020;25.53;34.04;51.2304;59.7688;;;;
+absolute;yes;Cap|Electricity|Nuclear;GW;;;CAZ;2020;7.5936;10.1248;15.252;17.794;;;;
+absolute;yes;Cap|Electricity|Nuclear;GW;;;CHA;2020;32.4132;43.2176;66.384;77.448;;;;
+absolute;yes;Cap|Electricity|Nuclear;GW;;;IND;2020;4.068;5.424;9.06;10.57;;;;
+absolute;yes;Cap|Electricity|Nuclear;GW;;;JPN;2020;7.578;10.104;40.8864;47.7008;;;;
 absolute;yes;Cap|Electricity|Nuclear;GW;;;USA;2020;58.1112;77.4816;116.34;135.73;;;;
-absolute;yes;Cap|Electricity|Nuclear;GW;;;World;2030;269.7507;320.32955;463.58865;507.1;;;;
+absolute;yes;Cap|Electricity|Nuclear;GW;;;World;2030;270.9;321.69375;464.2617;507.1;;;;
 absolute;yes;Cap|Electricity|Nuclear;GW;;;LAM;2030;;2.4336;9.009;;;;;
-absolute;yes;Cap|Electricity|Nuclear;GW;;;OAS;2030;;13.9584;47.488;;;;;
+absolute;yes;Cap|Electricity|Nuclear;GW;;;OAS;2030;;13.8576;48.762;;;;;
 absolute;yes;Cap|Electricity|Nuclear;GW;;;SSA;2030;;0.888;2.59;;;;;
-absolute;yes;Cap|Electricity|Nuclear;GW;;;EUR;2030;;49.08;150.612;;;;;
+absolute;yes;Cap|Electricity|Nuclear;GW;;;EUR;2030;;49.6848;150.094;;;;;
 absolute;yes;Cap|Electricity|Nuclear;GW;;;NEU;2030;;1.4256;10.402;;;;;
-absolute;yes;Cap|Electricity|Nuclear;GW;;;MEA;2030;;2.9952;16.254;;;;;
+absolute;yes;Cap|Electricity|Nuclear;GW;;;MEA;2030;;3.0096;16.296;;;;;
 absolute;yes;Cap|Electricity|Nuclear;GW;;;REF;2030;;20.424;67.858;;;;;
-absolute;yes;Cap|Electricity|Nuclear;GW;;;CAZ;2030;;6.576;19.18;;;;;
-absolute;yes;Cap|Electricity|Nuclear;GW;;;CHA;2030;;26.8914;115.2536;;;;;
-absolute;yes;Cap|Electricity|Nuclear;GW;;;IND;2030;;3.3216;17.248;;;;;
-absolute;yes;Cap|Electricity|Nuclear;GW;;;JPN;2030;;5.304;48.0662;;;;;
+absolute;yes;Cap|Electricity|Nuclear;GW;;;CAZ;2030;;6.1008;17.794;;;;;
+absolute;yes;Cap|Electricity|Nuclear;GW;;;CHA;2030;;26.5536;120.638;;;;;
+absolute;yes;Cap|Electricity|Nuclear;GW;;;IND;2030;;3.624;17.248;;;;;
+absolute;yes;Cap|Electricity|Nuclear;GW;;;JPN;2030;;6.0624;45.36;;;;;
 absolute;yes;Cap|Electricity|Nuclear;GW;;;USA;2030;;46.536;135.73;;;;;
 ;;;;;;;;;;;;;;;
+incomplete regions;;;;;;;;;;;;;;;
+absolute;yes;Cap|Electricity|Solar;GW;;;World;2025;1866.65076;2167.71608;2832.17172;3271.73704;;;;BNEF Solar Outlook
+absolute;yes;Cap|Electricity|Solar;GW;;;CHA;2025;;615.5034;2189.1996;;;;;https://github.com/pik-piam/mrremind/discussions/542
+absolute;yes;Cap|Electricity|Solar;GW;;;EUR;2025;;208.90128;644.41132;;;;;
+absolute;yes;Cap|Electricity|Solar;GW;;;IND;2025;;65.29578;220.60682;;;;;
+absolute;yes;Cap|Electricity|Solar;GW;;;World;2030;2940.57576;4434.89108;7843.82172;10272.13704;;;;
+absolute;yes;Cap|Electricity|Solar;GW;;;CHA;2030;;1033.5534;7391.5996;;;;;
+absolute;yes;Cap|Electricity|Solar;GW;;;EUR;2030;;295.30128;1719.61132;;;;;
+absolute;yes;Cap|Electricity|Solar;GW;;;IND;2030;;113.44578;819.80682;;;;;
+;;;;;;;;;;;;;;;
+absolute;yes;Capacity|Electricity|Wind;GW;;;World;2025;1066.024935;1174.47303;1406.913795;1549.90539;;;;GWEC
+absolute;yes;Capacity|Electricity|Wind;GW;;;EUR;2025;;163.08348;431.03312;;;;;https://github.com/pik-piam/mrremind/discussions/543
+absolute;yes;Capacity|Electricity|Wind;GW;;;CHA;2025;;335.12808;984.53152;;;;;
+absolute;yes;Capacity|Electricity|Wind;GW;;;IND;2025;;30.00042;81.14848;;;;;
+absolute;yes;Capacity|Electricity|Wind;GW;;;USA;2025;;93.23412;234.15378;;;;;
+absolute;yes;Capacity|Electricity|Wind;GW;;;World;2030;1350.924885;1775.92848;2736.446895;3407.03099;;;;
+absolute;yes;Capacity|Electricity|Wind;GW;;;EUR;2030;;201.08598;903.95312;;;;;
+absolute;yes;Capacity|Electricity|Wind;GW;;;CHA;2030;;436.32408;2243.85952;;;;;
+absolute;yes;Capacity|Electricity|Wind;GW;;;IND;2030;;38.05542;181.38848;;;;;
+absolute;yes;Capacity|Electricity|Wind;GW;;;USA;2030;;106.93662;404.67378;;;;;
+;;;;;;;;;;;;;;;
 post 2030;;;;;;;;;;;;;;;
-absolute;yes;Cap|Electricity|Nuclear;GW;;;World;2050;;;;991;;;IAEA high case;
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;World;2035;;;;1300;;;Kazlou et al. (https://www.nature.com/articles/s41558-024-02104-0);
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;World;2040;;;;4300;;;Kazlou et al. (https://www.nature.com/articles/s41558-024-02104-0);
-absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;World;2050;;;;8600;;;Grant et al.;
-absolute;yes;PE|Biomass;EJ/yr;;;World;2030-2100;;;100;300;;;Creutzig et al. 2015: https://onlinelibrary.wiley.com/doi/10.1111/gcbb.12205;
+absolute;yes;Cap|Electricity|Nuclear;GW;;;World;2050;;;;991;;;;IAEA high case
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;World;2035;;;;1300;;;;Kazlou et al. (https://www.nature.com/articles/s41558-024-02104-0)
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;World;2040;;;;4300;;;;Kazlou et al. (https://www.nature.com/articles/s41558-024-02104-0)
+absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;World;2050;;;;8600;;;;Grant et al.
+absolute;yes;PE|Biomass;EJ/yr;;;World;2030-2100;;;100;300;;;;Creutzig et al. 2015: https://onlinelibrary.wiley.com/doi/10.1111/gcbb.12205
