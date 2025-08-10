@@ -1,11 +1,20 @@
 metric;critical;variable;unit;model;scenario;region;period;min_red;min_yel;max_yel;max_red;ref_model;ref_scenario;ref_period;source/link to discussion
-relative;yes;Emissions|*;;REMIND-MAgPIE 3.3-4.7;;;;-0.99;-0.98;50;100;GCAM 6.0 NGFS;;;
-relative;yes;Emissions|*;;REMIND-MAgPIE 3.3-4.7;;World;;-0.98;-0.97;30;50;GCAM 6.0 NGFS;;;
-relative;yes;Final Energy|*|Chemicals|*;;REMIND-MAgPIE 3.3-4.7;;;;-0.99;-0.98;50;100;GCAM 6.0 NGFS;;;
-relative;yes;Final Energy|*;;REMIND-MAgPIE 3.3-4.7;;World;;-0.98;-0.97;30;50;GCAM 6.0 NGFS;;;
-relative;yes;Secondary Energy|*;;REMIND-MAgPIE 3.3-4.7;;;;-0.99;-0.98;50;100;GCAM 6.0 NGFS;;;
-relative;yes;Secondary Energy|*;;REMIND-MAgPIE 3.3-4.7;;World;;-0.98;-0.97;30;50;GCAM 6.0 NGFS;;;
-relative;yes;Primary Energy|*;;REMIND-MAgPIE 3.3-4.7;;;;-0.99;-0.98;50;100;GCAM 6.0 NGFS;;;
-relative;yes;Primary Energy|*;;REMIND-MAgPIE 3.3-4.7;;World;;-0.98;-0.97;30;50;GCAM 6.0 NGFS;;;
-relative;yes;Carbon Sequestration|*;;REMIND-MAgPIE 3.3-4.7;;;;-0.99;-0.98;50;100;GCAM 6.0 NGFS;;;
-relative;yes;Carbon Sequestration|*;;REMIND-MAgPIE 3.3-4.7;;World;;-0.98;-0.97;30;50;GCAM 6.0 NGFS;;;
+relative;yes;Capacity|Electricity|Nuclear;GW;;;World;2020;-0.2;-0.1;0.1;0.2;range(Ember, Ember_smoothed);historical;;
+relative;yes;Capacity|Electricity|Hydro;GW;;;World;2020;-0.2;-0.1;0.1;0.2;range(IRENA, Ember, IRENA_smoothed, Ember_smoothed);historical;;
+relative;yes;Capacity|Electricity|Solar;GW;;;World;2020;-0.2;-0.1;0.1;0.2;range(IRENA, Ember, IRENA_smoothed, Ember_smoothed);historical;;
+relative;yes;Capacity|Electricity|Wind;GW;;;World;2020;-0.2;-0.1;0.1;0.2;range(IRENA, Ember, IRENA_smoothed, Ember_smoothed);historical;;
+;;;;;;;;;;;;;;;
+absolute;yes;Capacity|Electricity|Hydro;GW;;;World;2030;1051.2;1265.78;1727.775;2278.98;;;;IEA HSMR: https://github.com/pik-piam/mrremind/discussions/541
+absolute;yes;Capacity|Electricity|Nuclear;GW;;;World;2030;270.9;321.69375;464.2617;507.1;;;;IAEA PRIS: https://github.com/pik-piam/mrremind/discussions/540
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;World;2020;40.752;43.016;47.544;49.808;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;World;2025;39.7431;50.62835;74.1363;79.4266;;;;IEA CCUS
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;World;2030;44.1585;70.73415;182.03745;514.1994;;;;https://github.com/pik-piam/mrremind/discussions/544
+absolute;yes;Capacity|Electricity|Solar;GW;;;World;2025;1866.65076;2167.71608;2832.17172;3271.73704;;;;BNEF Solar Outlook
+absolute;yes;Capacity|Electricity|Solar;GW;;;World;2030;2940.57576;4434.89108;7843.82172;10272.13704;;;;https://github.com/pik-piam/mrremind/discussions/542
+absolute;yes;Capacity|Electricity|Wind;GW;;;World;2025;1066.024935;1174.47303;1406.913795;1549.90539;;;;GWEC
+absolute;yes;Capacity|Electricity|Wind;GW;;;World;2030;1350.924885;1775.92848;2736.446895;3407.03099;;;;https://github.com/pik-piam/mrremind/discussions/543
+;;;;;;;;;;;;;;;
+absolute;yes;Capacity|Electricity|Nuclear;GW;;;World;2050;;;;991;;;;Kazlou et al. (https://www.nature.com/articles/s41558-024-02104-0)
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;World;2035;;;;1300;;;;Kazlou et al. (https://www.nature.com/articles/s41558-024-02104-0)
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;World;2040;;;;4300;;;;Grant et al.
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;World;2050;;;;8600;;;;Creutzig et al. 2015: https://onlinelibrary.wiley.com/doi/10.1111/gcbb.12205

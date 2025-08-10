@@ -22,6 +22,8 @@ navbar:
       menu:
         - text: "REMIND"
           href: articles/configs/validationConfig_REMIND.html
+        - text: "NGFS"
+          href: articles/configs/validationConfig_NGFS.html
         - text: "ScenarioMIP AIM"
           href: articles/configs/validationConfig_ScenarioMIP_AIM.html
         - text: "ScenarioMIP COFFEE"
