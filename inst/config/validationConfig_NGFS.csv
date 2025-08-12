@@ -18,3 +18,9 @@ absolute;yes;Capacity|Electricity|Nuclear;GW;;;World;2050;;;;991;;;;Kazlou et al
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;World;2035;;;;1300;;;;Kazlou et al. (https://www.nature.com/articles/s41558-024-02104-0)
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;World;2040;;;;4300;;;;Grant et al.
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;World;2050;;;;8600;;;;Creutzig et al. 2015: https://onlinelibrary.wiley.com/doi/10.1111/gcbb.12205
+;;;;;;;;;;;;;;;
+relative;yes;Emissions|CO2;Mt CO2/yr;REMIND, GCAM;;World;;-0.4;-0.2;0.2;0.4;MESSAGE;;;
+difference;yes;Emissions|CO2;Mt CO2/yr;REMIND, GCAM;;World;;-10000;-5000;5000;10000;MESSAGE;;;
+relative;yes;Emissions|CO2;Mt CO2/yr;;Delayed transition, Fragmented World, Current Policies, NDCs, Net Zero 2050, Low demand;World;;-0.4;-0.2;0.2;0.4;;Below 2C;;
+difference;yes;Emissions|CO2;Mt CO2/yr;;Delayed transition, Fragmented World, Current Policies, NDCs, Net Zero 2050, Low demand;World;;-10000;-5000;5000;10000;;Below 2C;;
+relative;yes;Emissions|CO2;Mt CO2/yr;;;World;2020-2030;-0.4;-0.2;0;0.1;;;2020;

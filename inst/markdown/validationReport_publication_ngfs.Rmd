@@ -1,0 +1,334 @@
+---
+title: "Validation for NGFS Task 3.1"
+date: "`r format(Sys.Date())`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+    toc_depth: 4
+params:
+  mif: ""
+  cfg: ""
+  extraColors: true
+  warning: false
+  message: false
+  figWidth: 8
+---
+
+```{r include=FALSE}
+#library(piamValidation)
+devtools::load_all(".")
+library(knitr)
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+library(plotly)
+library(madrat)
+library(piamInterfaces)
+library(quitte)
+library(stringr)
+library(tidyr)
+library(ggpubr)
+
+
+knitr::opts_chunk$set(
+  echo = FALSE,
+  error = TRUE,
+  message = params$message,
+  warning = params$warning
+)
+# ensure that the working directory is the project root
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+
+models <- c("GCAM",
+            "MESSAGEix-GLOBIOM",
+            "REMIND-MAgPIE")
+```
+
+## Data
+
+NGFS v5.0: https://doi.org/10.5281/zenodo.13989530
+
+ScenarioMIP: internal Snapshot from 2025-08-07
+
+## Validation World
+
+```{r}
+# Import data
+# ngfs <- readxl::read_xlsx("data/IAM_data.xlsx") %>%
+#   filter(Region == "World", Model != "REMIND-MAgPIE 3.3-4.8 IntegratedPhysicalDamages (median)") %>%
+#   as.quitte()
+# saveRDS(ngfs, "data/ngfs.rds")
+ngfs <- readRDS("data/ngfs.rds")
+
+# scen <- readRDS("data/scenarios_scenariomip_rr_2025-08-07.rds") %>%
+#   filter(region == "World", ssp == "SSP2", model %in% models, def.var == "Default") %>%
+#   select(-emi.scen, -ssp, -marker, -def.var)
+# saveRDS(scen, "data/scen.rds")
+scen <- readRDS("data/scen.rds")
+
+
+# following ScenarioMIP
+# hist <- as.quitte("data/historical_H12_ScenarioMIP_2025-08-08.mif") %>%
+#   filter(region == "World", model %in% c("IRENA", "Ember", "BP", "IEA-EB-directSum", "CEDS"))
+# saveRDS(hist, "data/hist.rds")
+hist <- readRDS("data/hist.rds")
+
+
+# Harmonization ####
+# model
+model_matching <- c(
+  "GCAM 6.0 NGFS" = "GCAM",
+  "MESSAGEix-GLOBIOM 2.0-M-R12-NGFS" = "MESSAGEix-GLOBIOM",
+  "REMIND-MAgPIE 3.3-4.8" = "REMIND-MAgPIE"
+)
+ngfs <- quitte::revalue.levels(ngfs, model = model_matching)
+
+# variables
+vars_matching <- c(
+  "Carbon Sequestration|CCS" = "Carbon Capture|Geological Storage")
+ngfs <- quitte::revalue.levels(ngfs, variable = vars_matching)
+
+# scenarios
+scen_matching <- c(
+  "Nationally Determined Contributions (NDCs)" = "NDCs")
+ngfs <- quitte::revalue.levels(ngfs, scenario = scen_matching)
+
+
+# average 2020 values over 5 year period to even out Covid shock
+hist_m <- hist %>%
+ filter(period %in% seq(2018, 2022)) %>%
+ magclass::as.magpie(spatial = "region")
+hist_m[, 2020, ] <- dimSums(hist_m, dim = 2)/5
+hist_smoothed <- quitte::as.quitte(hist_m[, , ]) %>% 
+  filter(period == 2020) %>%
+  mutate(model = paste0(model, "_smoothed"))
+hist <- rbind(hist, hist_smoothed)
+
+# combine data
+scen_data_all <- rbind(ngfs, scen)
+data <- rbind(scen_data_all, hist)
+
+valiData <- validateScenarios(data, "NGFS")
+valiData <- appendTooltips(valiData)
+```
+
+
+```{r}
+# copy-pasted from REMIND multi-model analysis scripts
+scens_ngfs <- c(
+  "Delayed transition",
+  "Fragmented World",
+  "Current Policies",
+  "NDCs",
+  "Net Zero 2050",
+  "Below 2°C",
+  "Low demand"
+)
+
+scens_smip <- c(
+  "H - SSP2",
+  "L - SSP2",
+  "VLHO - SSP2",
+  "M - SSP2",
+  "ML - SSP2",
+  "VLLO - SSP2"
+)
+
+scen.colors <- c(
+  "Delayed transition"= "#4D5CAD",
+  "Fragmented World"= "#4D5CAD",
+  "Current Policies"= "#4D5CAD",
+  "NDCs"= "#4D5CAD",
+  "Net Zero 2050"= "#4D5CAD",
+  "Below 2°C"= "#4D5CAD",
+  "Low demand" = "#4D5CAD",
+  
+  "H - SSP2"= "#892F71",
+  "L - SSP2"= "#892F71",
+  "VLHO - SSP2"= "#892F71",
+  "M - SSP2"= "#892F71",
+  "ML - SSP2"= "#892F71",
+  "VLLO - SSP2"= "#892F71"
+)
+
+plot.model.colors <- c(
+  # scenario models
+  "AIM" = "#4D5CAD",
+  "COFFEE" = "#69BA7F",
+  "GCAM" = "#759EA8",
+  "IMAGE" = "#868367",
+  "MESSAGEix-GLOBIOM" = "#892F71",
+  "REMIND-MAgPIE" = "#facb1e",
+  "WITCH" = "#fb6a4a"
+)
+
+validationHeatmap.colors <- 
+  c(green     = "#008450",
+    yellow    = "#EFB700",
+    red       = "#B81D13",
+    cyan      = "#66ccee",
+    blue      = "#4477aa",
+    grey      = "#808080")
+
+model.linetype <- c(
+  "MESSAGEix-GLOBIOM" = "dashed",
+  "GCAM" = "solid",
+  "REMIND-MAgPIE" = "dotted"
+)
+
+vars.short <- c(
+  "Capacity|Electricity|Nuclear" = "Cap|Nuclear",
+  "Capacity|Electricity|Hydro" = "Cap|Hydro",
+  "Capacity|Electricity|Solar" = "Cap|Solar",
+  "Capacity|Electricity|Wind" = "Cap|Wind",
+  "Carbon Capture|Geological Storage" = "CCS"
+)
+```
+
+
+```{r}
+# Before Plotting
+
+# three data objects are used in the following sections:
+# - valiData: contains validated data as returned by validateScenarios, 
+#             needed for heat maps and line plots 
+# - data: contains all relevant scenario data and meta data also outside of 
+#         validation scope, needed for line plots
+# - hist: contains all historical reference data, also outside of 
+#         validation scope, needed for line plots
+
+# shorten variable names
+valiData <- quitte::revalue.levels(valiData, variable = vars.short)
+hist <- quitte::revalue.levels(hist, variable = vars.short)
+scen_data_all <- quitte::revalue.levels(scen_data_all, variable = vars.short)
+
+
+# reorder scenario names alphabetically
+valiData$scenario <- factor(valiData$scenario, 
+                            levels = sort(unique(valiData$scenario)))
+```
+
+```{r, fig.width=10, fig.height=6}
+ngfs_lineplots <- function(var, 
+                           reg = "World",
+                           vD = valiData,
+                           refData = hist,
+                           scenData = scen_data_all, 
+                           xlim = c(2015, 2035),
+                           interactive = F) {
+  
+p <- linePlotThresholds(valiData %>% filter(variable == var), scenData = NULL, refData = NULL, interactive = F)
+
+
+  # add scenario data as lines
+  if (!is.null(scenData)) {
+    d <- scenData %>%
+      filter(variable == var, region == reg,
+             period >= min(xlim) & period <= max(xlim))
+    p <- p +
+      geom_line(data = d,
+                aes(x = period, y = value, color = scenario, linetype = model)) +
+        scale_linetype_manual(values = model.linetype) +
+        scale_color_manual(values = scen.colors)
+  }
+
+  # add reference data as points
+  if (!is.null(refData)) {
+    h <- refData %>%
+      filter(variable == var, region == reg,
+             period >= min(xlim) & period <= max(xlim))
+    p <- p +
+      geom_point(data = h, aes(x = period, y = value, shape = model),
+                 size = 1, color = "black")
+  }
+
+  if (interactive) {
+    plotly::ggplotly(p) #%>%
+      #layout(legend = list(title=list(text='Model, Scenario')))
+  } else {
+    p
+  }
+}
+
+```
+
+### Overview
+
+```{r, fig.width=7, fig.height=5}
+validationHeatmap(valiData %>% filter(period <= 2035, scenario %in% scens_ngfs), 
+                  main_dim = "region",
+                  interactive = T,
+                  x_plot = "period",
+                  y_plot = "scenario",
+                  x_facet = "variable",
+                  y_facet = "model")
+validationHeatmap(valiData %>% filter(period <= 2035, scenario %in% scens_smip), 
+                  main_dim = "region",
+                  interactive = T,
+                  x_plot = "period",
+                  y_plot = "scenario",
+                  x_facet = "variable",
+                  y_facet = "model")
+```
+
+
+
+
+
+
+### Cap|Solar
+
+```{r, fig.width=8, fig.height=6}
+var <- "Cap|Solar"
+validationHeatmap(valiData %>% filter(variable == var), interactive = T)
+ngfs_lineplots(var, 
+               scenData = NULL, 
+               refData = hist %>% filter(model == "IRENA"),
+               xlim = c("2015", "2035")) +
+  scale_y_continuous(limits = c(0, 11000)) +
+  scale_x_continuous(limits = c(2015, 2030))
+
+ngfs_lineplots(var, 
+               scenData = scen_data_all  %>% filter(scenario %in% scens_ngfs), 
+               refData = hist %>% filter(model == "IRENA"),
+               xlim = c("2015", "2035")) +
+  scale_y_continuous(limits = c(0, 11000)) +
+  scale_x_continuous(limits = c(2015, 2030))
+
+ngfs_lineplots(var, 
+               scenData = scen_data_all  %>% filter(scenario %in% scens_smip), 
+               refData = hist %>% filter(model == "IRENA"),
+               xlim = c("2015", "2035")) +
+  scale_y_continuous(limits = c(0, 11000)) +
+  scale_x_continuous(limits = c(2015, 2030))
+
+ngfs_lineplots(var, 
+               refData = hist %>% filter(model == "IRENA"),
+               xlim = c("2015", "2035")) +
+  scale_y_continuous(limits = c(0, 11000)) +
+  scale_x_continuous(limits = c(2015, 2030))
+```
+
+### Cap|Wind
+
+```{r, fig.width=8, fig.height=6}
+var <- "Cap|Wind"
+validationHeatmap(valiData %>% filter(variable == var), interactive = T)
+ngfs_lineplots(var, refData = hist %>% filter(model == "IRENA"),
+               xlim = c("2015", "2035")) +
+  scale_y_continuous(limits = c(0, 4000)) +
+  scale_x_continuous(limits = c(2015, 2030))
+```
+
+
+### CCS
+
+```{r, fig.width=8, fig.height=6}
+var <- "CCS"
+validationHeatmap(valiData %>% filter(variable == var), interactive = T)
+ngfs_lineplots(var, xlim = c("2020", "2035")) +
+  scale_y_continuous(limits = c(0, 2400)) +
+  scale_x_continuous(limits = c(2020, 2030))
+```
