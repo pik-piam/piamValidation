@@ -53,10 +53,10 @@ cat("validationConfig_publication.csv\n")
 
 ## Validation
 
-```{r, message = FALSE, warning = TRUE}
-hist <- readRDS("./data/reference_data_publication.rds")
-scen <- readRDS("./data/scenario_data_publication.rds")
-data <- rbind(hist, scen)
+```{r, message = FALSE, warning = FALSE}
+data <- quitte::as.quitte(params$mif)
+hist <- filter(data, scenario == "historical")
+scen <- filter(data, scenario != "historical")
 
 df <- validateScenarios(data, "publication", extraColors = FALSE)
 df <- appendTooltips(df)
