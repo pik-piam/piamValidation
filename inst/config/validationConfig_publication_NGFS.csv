@@ -1,0 +1,18 @@
+metric;critical;variable;unit;model;scenario;region;period;min_red;min_yel;max_yel;max_red;ref_model;ref_scenario;ref_period;source/link to discussion
+relative;yes;Capacity|Electricity|Hydro;GW;;;World;2020;-0.2;-0.1;0.1;0.2;range(IRENA, Ember, IRENA_smoothed, Ember_smoothed);historical;;
+relative;yes;Capacity|Electricity|Solar;GW;;;World;2020;-0.2;-0.1;0.1;0.2;range(IRENA, Ember, IRENA_smoothed, Ember_smoothed);historical;;
+relative;yes;Capacity|Electricity|Wind;GW;;;World;2020;-0.2;-0.1;0.1;0.2;range(IRENA, Ember, IRENA_smoothed, Ember_smoothed);historical;;
+;;;;;;;;;;;;;;;
+absolute;yes;Capacity|Electricity|Hydro;GW;;;World;2030;1051.2;1265.78;1727.775;2278.98;;;;IEA HSMR: https://github.com/pik-piam/mrremind/discussions/541
+absolute;yes;Capacity|Electricity|Solar;GW;;;World;2025;1866.65076;2167.71608;2832.17172;3271.73704;;;;BNEF Solar Outlook
+absolute;yes;Capacity|Electricity|Solar;GW;;;World;2030;2940.57576;4434.89108;7843.82172;10272.13704;;;;https://github.com/pik-piam/mrremind/discussions/542
+absolute;yes;Capacity|Electricity|Wind;GW;;;World;2025;1066.024935;1174.47303;1406.913795;1549.90539;;;;GWEC
+absolute;yes;Capacity|Electricity|Wind;GW;;;World;2030;1350.924885;1775.92848;2736.446895;3407.03099;;;;https://github.com/pik-piam/mrremind/discussions/543
+;;;;;;;;;;;;;;;
+relative;yes;Emissions|CO2;Mt CO2/yr;REMIND, GCAM;;World;;-0.4;-0.2;0.2;0.4;MESSAGE;;;
+difference;yes;Emissions|CO2;Mt CO2/yr;REMIND, GCAM;;World;;-10000;-5000;5000;10000;MESSAGE;;;
+relative;yes;Emissions|CO2;Mt CO2/yr;;Delayed transition, Fragmented World, Current Policies, NDCs, Net Zero 2050, Low demand;World;;-0.4;-0.2;0.2;0.4;;Below 2C;;
+difference;yes;Emissions|CO2;Mt CO2/yr;;Delayed transition, Fragmented World, Current Policies, NDCs, Net Zero 2050, Low demand;World;;-10000;-5000;5000;10000;;Below 2C;;
+relative;yes;Emissions|CO2;Mt CO2/yr;;;World;2025;-0.3;-0.15;0;0.1;;;2020;
+relative;yes;Emissions|CO2;Mt CO2/yr;;;World;2030;-0.4;-0.2;0;0.1;;;2020;
+relative;yes;Emissions|CO2;Mt CO2/yr;;;World;2035;-0.6;-0.3;0;0.1;;;2020;
