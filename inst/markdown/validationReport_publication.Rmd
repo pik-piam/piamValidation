@@ -1,5 +1,5 @@
 ---
-title: 'piamValidation: plots for publication'
+title: 'piamValidation publication: REMIND plots'
 date: "`r format(Sys.Date())`"
 output:
   html_document:
@@ -34,9 +34,11 @@ knitr::opts_chunk$set(
 )
 ```
 
+# REMIND Near-Term Realism
+
 ## Import and Prepare Data
 
-Loading data from:
+Using scenario data from:
 
 ```{r}
 cat("REMIND_generic_SSP2EU-NPi_2023-04-22.mif\n")
@@ -51,14 +53,19 @@ Using config:
 cat("validationConfig_publication.csv\n")
 ```
 
-## Validation
 
 ```{r, message = FALSE, warning = FALSE}
-data <- quitte::as.quitte(params$mif)
-hist <- filter(data, scenario == "historical")
-scen <- filter(data, scenario != "historical")
+# Validation
 
-df <- validateScenarios(data, "publication", extraColors = FALSE)
+#data <- quitte::as.quitte(params$mif)
+#hist <- filter(data, scenario == "historical")
+#scen <- filter(data, scenario != "historical")
+
+scen <- readRDS("data/REMIND_scenario_data_publication.rds")
+hist <- readRDS("data/REMIND_reference_data_publication.rds")
+data <- rbind(scen, hist)
+
+df <- validateScenarios(data, "publication", extraColors = TRUE)
 df <- appendTooltips(df)
 ```
 
@@ -68,72 +75,94 @@ df <- appendTooltips(df)
 ### EV Stocks and Sales
 
 ```{r, fig.width=7, fig.height=5}
-ia <- FALSE
+# visualizations of EV Stock variable
+d <- df   %>% filter(variable == "Stock|Transport|Pass|Road|BEV")
+h <- hist %>% filter(model == "IEA GEVO Historical")
 
-# Stock
-d <- filter(df, variable == "Stock|Transport|Pass|Road|BEV")
-h <- filter(hist, model %in% c("IEA GEVO Historical", "IEA GEVO Historical_smoothed"))
-
-linePlotThresholds(filter(d, region == "World"), 
-                   scenData = filter(data, scenario != "historical"), 
-                   refData = h)
-validationHeatmap(d, 
-                  interactive = ia,
-                  x_plot = "region",
-                  x_facet = "scenario",
-                  y_plot = "period",
-                  y_facet = "model")
-# Sales
-d <- filter(df, variable == "Sales|Transport|Pass|Road|BEV")
-h <- filter(hist, model %in% c("IEA GEVO Historical", "IEA GEVO Historical_smoothed"))
-
-linePlotThresholds(filter(d, region == "World"), 
-                   scenData = filter(data, scenario != "historical"), 
-                   refData = h)
-validationHeatmap(d, 
-                  interactive = ia,
+# validation heat map as used in publication
+validationHeatmap(d,
+                  interactive = FALSE,
                   x_plot = "region",
                   x_facet = "scenario",
                   y_plot = "period",
                   y_facet = "model")
 
+# line plot for "World" region
+linePlotThresholds(filter(d, region == "World"), 
+                   scenData = scen, 
+                   refData = h, 
+                   interactive = FALSE) +
+    scale_shape_manual(values = 1)
+
+
+# visualizations of EV Sales variable
+d <- df   %>% filter(variable == "Sales|Transport|Pass|Road|BEV")
+h <- hist %>% filter(model == "IEA GEVO Historical")
+
+# validation heat map as used in publication
+validationHeatmap(d, 
+                  interactive = FALSE,
+                  x_plot = "region",
+                  x_facet = "scenario",
+                  y_plot = "period",
+                  y_facet = "model")
+
+# line plot for "World" region
+linePlotThresholds(filter(d, region == "World"), 
+                   scenData = filter(data, scenario != "historical"), 
+                   refData = h, 
+                   interactive = FALSE) +
+  scale_shape_manual(values = 1)
 ```
 
 
-### Wind 
+### Offshore Wind
 
 ```{r}
-d <- filter(df, variable == "Cap|Electricity|Wind|Offshore")
-h <- filter(hist, model %in% c("IRENA", "IRENA_smoothed"))
+# visualizations of Offshore Wind capacity variable
+d <- df   %>% filter(variable == "Cap|Electricity|Wind|Offshore")
+h <- hist %>% filter(model == "IRENA")
 
-linePlotThresholds(filter(d, region == "EUR"), 
-                   scenData = filter(data, scenario != "historical"), 
-                   refData = h)
-validationHeatmap(d, 
-                  interactive = ia,
+# validation heat map as used in publication
+validationHeatmap(d,
+                  interactive = FALSE,
                   x_plot = "region",
                   x_facet = "scenario",
                   y_plot = "period",
                   y_facet = "model")
+
+# line plot for "EUR" region
+linePlotThresholds(filter(d, region == "EUR"), 
+                   scenData = scen, 
+                   refData = h, 
+                   interactive = FALSE) +
+  scale_shape_manual(values = 2)
 ```
 
 
 ### CCS
 
 ```{r, fig.width=7, fig.height=5}
-d <- filter(df, 
-            variable == "CO2|Transport and Storage")
-h <- filter(hist, 
-            model %in% c("IEA CCUS", "IEA CCUS_smoothed"), 
-            region == "World", period < 2025)
+# visualizations of CCS variable
+d <- df   %>% filter(variable == "CO2|Transport and Storage")
+h <- hist %>% filter(model == "IEA CCUS")
 
-linePlotThresholds(filter(d, region == "World"), 
-                   scenData = filter(data, scenario != "historical"), 
-                   refData = h)
-validationHeatmap(d, 
-                  interactive = ia,
+# validation heat map as used in publication
+validationHeatmap(d,
+                  interactive = FALSE,
                   x_plot = "region",
                   x_facet = "scenario",
                   y_plot = "period",
                   y_facet = "model")
+
+# line plot for "World" region
+linePlotThresholds(filter(d, region == "World"), 
+                   scenData = scen, 
+                   refData = h, 
+                   interactive = FALSE) +
+  scale_shape_manual(values = 15)
 ```
+
+
+
+
