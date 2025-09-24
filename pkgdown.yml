@@ -2,8 +2,11 @@ pandoc: 3.1.11
 pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
+  publication: publication.html
   validateScenarios: validateScenarios.html
   configs/validationConfig_NGFS: configs/validationConfig_NGFS.html
+  configs/validationConfig_publication_NGFS: configs/validationConfig_publication_NGFS.html
+  configs/validationConfig_publication: configs/validationConfig_publication.html
   configs/validationConfig_REMIND: configs/validationConfig_REMIND.html
   configs/validationConfig_ScenarioMIP_AIM: configs/validationConfig_ScenarioMIP_AIM.html
   configs/validationConfig_ScenarioMIP_COFFEE: configs/validationConfig_ScenarioMIP_COFFEE.html
@@ -12,7 +15,7 @@ articles:
   configs/validationConfig_ScenarioMIP_MESSAGE: configs/validationConfig_ScenarioMIP_MESSAGE.html
   configs/validationConfig_ScenarioMIP_REMIND: configs/validationConfig_ScenarioMIP_REMIND.html
   configs/validationConfig_ScenarioMIP_WITCH: configs/validationConfig_ScenarioMIP_WITCH.html
-last_built: 2025-09-23T15:35Z
+last_built: 2025-09-24T13:13Z
 urls:
   reference: https://pik-piam.github.io/piamValidation/reference
   article: https://pik-piam.github.io/piamValidation/articles
