@@ -1,6 +1,6 @@
 # Validation Tools for PIK-PIAM
 
-R package **piamValidation**, version **0.11.1**
+R package **piamValidation**, version **0.11.2**
 
 [![CRAN status](https://www.r-pkg.org/badges/version/piamValidation)](https://cran.r-project.org/package=piamValidation) [![R build status](https://github.com/pik-piam/piamValidation/workflows/check/badge.svg)](https://github.com/pik-piam/piamValidation/actions) [![codecov](https://codecov.io/gh/pik-piam/piamValidation/branch/master/graph/badge.svg)](https://app.codecov.io/gh/pik-piam/piamValidation) [![r-universe](https://pik-piam.r-universe.dev/badges/piamValidation)](https://pik-piam.r-universe.dev/builds)
 
@@ -47,7 +47,7 @@ In case of questions / problems please contact Pascal Weigmann <pascal.weigmann@
 
 To cite package **piamValidation** in publications use:
 
-Weigmann P, Richters O, Lécuyer F (2025). "piamValidation: Validation Tools for PIK-PIAM." Version: 0.11.1, <https://pik-piam.github.io/piamValidation%20https://github.com/pik-piam/piamValidation>.
+Weigmann P, Richters O, Lécuyer F (2025). "piamValidation: Validation Tools for PIK-PIAM." Version: 0.11.2, <https://pik-piam.github.io/piamValidation%20https://github.com/pik-piam/piamValidation>.
 
 A BibTeX entry for LaTeX users is
 
@@ -58,6 +58,6 @@ A BibTeX entry for LaTeX users is
   date = {2025-09-24},
   year = {2025},
   url = {https://pik-piam.github.io/piamValidation https://github.com/pik-piam/piamValidation},
-  note = {Version: 0.11.1},
+  note = {Version: 0.11.2},
 }
 ```
