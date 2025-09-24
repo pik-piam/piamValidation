@@ -19,7 +19,7 @@ params:
 ---
 
 ```{r include=FALSE}
-devtools::load_all(".")
+library(piamValidation)
 library(knitr)
 library(dplyr)
 library(ggplot2)
@@ -56,16 +56,11 @@ cat("validationConfig_publication.csv\n")
 
 ```{r, message = FALSE, warning = FALSE}
 # Validation
+data <- quitte::as.quitte(params$mif)
+hist <- filter(data, scenario == "historical")
+scen <- filter(data, scenario != "historical")
 
-#data <- quitte::as.quitte(params$mif)
-#hist <- filter(data, scenario == "historical")
-#scen <- filter(data, scenario != "historical")
-
-scen <- readRDS("data/REMIND_scenario_data_publication.rds")
-hist <- readRDS("data/REMIND_reference_data_publication.rds")
-data <- rbind(scen, hist)
-
-df <- validateScenarios(data, "publication", extraColors = TRUE)
+df <- validateScenarios(data, params$cfg, extraColors = params$extraColors)
 df <- appendTooltips(df)
 ```
 
