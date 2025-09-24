@@ -17,8 +17,7 @@ params:
 ---
 
 ```{r include=FALSE}
-#library(piamValidation)
-devtools::load_all(".")
+library(piamValidation)
 library(knitr)
 library(dplyr)
 library(ggplot2)
@@ -50,7 +49,7 @@ models <- c("GCAM",
 
 NGFS v5.0: https://doi.org/10.5281/zenodo.13989530
 
-ScenarioMIP: internal Snapshot from 2025-08-07
+ScenarioMIP: internal Snapshot from 2025-08-10
 
 ## Validation World
 
@@ -62,7 +61,7 @@ ScenarioMIP: internal Snapshot from 2025-08-07
 # saveRDS(ngfs, "data/ngfs.rds")
 ngfs <- readRDS("data/ngfs.rds")
 
-# scen <- readRDS("data/scenarios_scenariomip_rr_2025-08-07.rds") %>%
+# scen <- readRDS("data/scenarios_scenariomip_rr_2025-08-10.rds") %>%
 #   filter(region == "World", ssp == "SSP2", model %in% models, def.var == "Default") %>%
 #   select(-emi.scen, -ssp, -marker, -def.var)
 # saveRDS(scen, "data/scen.rds")
@@ -73,7 +72,7 @@ scen <- readRDS("data/scen.rds")
 # hist <- as.quitte("data/historical_H12_ScenarioMIP_2025-08-08.mif") %>%
 #   filter(region == "World", model %in% c("IRENA", "Ember", "BP", "IEA-EB-directSum", "CEDS"))
 # saveRDS(hist, "data/hist.rds")
-hist <- readRDS("data/hist.rds")
+hist <- readRDS("data/hist_ngfs.rds")
 
 
 # Harmonization ####

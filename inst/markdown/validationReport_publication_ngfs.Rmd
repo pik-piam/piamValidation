@@ -19,7 +19,7 @@ params:
 ---
 
 ```{r include=FALSE}
-devtools::load_all(".")
+library(piamValidation)
 library(knitr)
 library(dplyr)
 library(ggplot2)
@@ -56,8 +56,9 @@ cat("validationConfig_publication_NGFS.csv\n")
 
 ```{r}
 # NGFS Data and Validation
-ngfs <- readRDS("data/NGFS_scenario_data_publication.rds")  # scenario data
-hist_ngfs <- readRDS("data/NGFS_reference_data_publication.rds")  # reference data
+data <- quitte::as.quitte(params$mif)
+hist_ngfs <- filter(data, scenario == "historical")
+ngfs <- filter(data, scenario != "historical")
 
 # model harmonization 
 model_matching <- c(
@@ -79,7 +80,9 @@ scen_matching <- c(
 ngfs <- quitte::revalue.levels(ngfs, scenario = scen_matching)
 
 # perform validation
-df_ngfs <- validateScenarios(rbind(ngfs, hist_ngfs), config = "publication_NGFS")
+df_ngfs <- validateScenarios(rbind(ngfs, hist_ngfs), 
+                             config = params$cfg, 
+                             extraColors = params$extraColors)
 df_ngfs <- appendTooltips(df_ngfs)
 ```
 

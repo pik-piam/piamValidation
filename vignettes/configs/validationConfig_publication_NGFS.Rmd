@@ -1,0 +1,31 @@
+---
+title: "validationConfig_publication_NGFS"
+output: html_document
+---
+
+Validation of NGFS scenarios as used in
+
+> Weigmann, P., Mandaroux, R., Lécuyer, F., Merfort, A., Dorndorf, T., Hoppe, J., Müßel, J., Pietzcker, R., Richters, O., Baumstark, L., Kriegler, E., Bauer, N., Benke, F., Gong, C. C., and Luderer, G.: Validation of climate mitigation pathways, EGUsphere [preprint], https://doi.org/10.5194/egusphere-2025-2284, 2025. 
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(readr)
+library(DT)
+
+# Load the CSV from inst/config
+df <- piamValidation::getConfig("publication_NGFS")
+
+font.size <- "9pt"
+
+df %>%
+   DT::datatable(
+     options = list(
+       pageLength = 100,
+       initComplete = htmlwidgets::JS(
+          "function(settings, json) {",
+          paste0("$(this.api().table().container()).css({'font-size': '", font.size, "'});"),
+          "}"),
+      filter = 'top'  # This enables the column filters
+      )
+    )
+
+```

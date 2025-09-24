@@ -16,8 +16,7 @@ params:
 ---
 
 ```{r include=FALSE}
-#library(piamValidation)
-devtools::load_all()
+library(piamValidation)
 library(knitr)
 library(dplyr)
 library(ggplot2)
