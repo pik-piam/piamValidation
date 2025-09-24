@@ -14,11 +14,11 @@ navbar:
       - publication
   components:
     articles:
-        text: "Articles"
-        menu:
-          - text: "validateScenarios"
-            href: articles/validateScenarios.html
-   configs:
+      text: "Articles"
+      menu:
+        - text: "validateScenarios"
+          href: articles/validateScenarios.html
+    configs:
       text: "Config Tables"
       menu:
         - text: "REMIND"
@@ -39,12 +39,12 @@ navbar:
           href: articles/configs/validationConfig_ScenarioMIP_REMIND.html
         - text: "ScenarioMIP WITCH"
           href: articles/configs/validationConfig_ScenarioMIP_WITCH.html
- publication:
-        text: "Publication"
-        menu:
-          - text: "Reproduce Plots"
-            href: articles/publication.html
-          - text: "Config REMIND validation"
-            href: articles/configs/validationConfig_publication.html
-          - text: "Config NGFS validation"
-            href: articles/configs/validationConfig_publication_NGFS.html
+    publication:
+      text: "Publication"
+      menu:
+        - text: "Reproduce Plots"
+          href: articles/publication.html
+        - text: "Config REMIND validation"
+          href: articles/configs/validationConfig_publication.html
+        - text: "Config NGFS validation"
+          href: articles/configs/validationConfig_publication_NGFS.html
