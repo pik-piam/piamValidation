@@ -2,8 +2,8 @@ cff-version: 1.2.0
 message: If you use this software, please cite it using the metadata from this file.
 type: software
 title: 'piamValidation: Validation Tools for PIK-PIAM'
-version: 0.11.3
-date-released: '2025-09-24'
+version: 0.11.4
+date-released: '2025-09-25'
 abstract: The piamValidation package provides validation tools for the Potsdam Integrated
   Assessment Modelling environment.
 authors:
