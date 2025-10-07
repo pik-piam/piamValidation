@@ -20,24 +20,35 @@ linePlotThresholds <- function(valiData,
                                xlim = c(2010, 2030),
                                interactive = TRUE) {
 
+  if (nrow(valiData) == 0) stop("Empty data frame given to plot function.")
+
   if (length(unique(valiData$variable)) > 1) {
-    stop("Multiple variables are present in validation data, filter data to
-         contain only one before plotting.")
+    stop(paste("Multiple variables are present in validation data,
+               filter data to contain only one before plotting.\n",
+               paste(unique(valiData$variable), collapse = "\n")
+               )
+         )
   } else {
     var <- as.character(unique(valiData$variable))
     unit <- as.character(unique(valiData$unit))
   }
 
   if (length(unique(valiData$region)) > 1) {
-    stop("Multiple regions are present in validation data, filter data to
-         contain only one before plotting.")
+    stop(paste("Multiple regions are present in validation data,
+               filter data to contain only one before plotting.\n",
+               paste(unique(valiData$region), collapse = "\n")
+               )
+    )
   } else {
     reg <- as.character(unique(valiData$region))
   }
 
   # it is possible to combine data from relative and absolute checks
   # care is advised when using data from multiple metrics to avoid overlaps
-  # TODO: warn if overlap between metrics
+  if (nrow(unique(df[,c("metric", "ref_scenario")])) > 1) {
+    warning("Multiple validation metrics detected, please be aware of potential
+            data overlap.")
+  }
 
   # convert relative to absolute thresholds
   d_background_rel <- valiData %>%
