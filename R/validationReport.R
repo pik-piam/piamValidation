@@ -41,7 +41,15 @@ validationReport <- function(dataPath, config, report = "default",
     reportPath <- piamutils::getSystemFile(
       paste0("markdown/validationReport_", report, ".Rmd"),
       package = "piamValidation")
-    reportName <- report
+    if (file.exists(reportPath)) {
+      reportName <- report
+    } else {
+      available <- list.files(system.file("markdown", package = "piamValidation"))
+      stop(paste("Report .Rmd not found! \n
+                 Available markdown files:\n",
+                 available))
+    }
+
   }
 
   # put rendered reports in output folder in working directory
@@ -50,8 +58,8 @@ validationReport <- function(dataPath, config, report = "default",
 
   # include chosen config and report name in output file except if it is default
   infix <- ""
-  if (configName != "default") infix <- paste0(infix, "_cfg", configName)
-  if (reportName != "default") infix <- paste0(infix, "_rep", reportName)
+  if (configName != "default") infix <- paste0(infix, "_cfg-", configName)
+  if (reportName != "default") infix <- paste0(infix, "_rep-", reportName)
 
   # create specified report for given data and config
   yamlParams <- list(mif = dataPath, cfg = config, extraColors = extraColors)

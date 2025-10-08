@@ -23,6 +23,8 @@ validationHeatmap <- function(valiData,
                               x_facet = NULL, y_facet = NULL,
                               interactive = TRUE) {
 
+  if (nrow(valiData) == 0) stop("Empty data frame given to plot function.")
+
   # setup ####
   df <- valiData
   plot_title <- paste0(df[1, main_dim])
@@ -47,13 +49,12 @@ validationHeatmap <- function(valiData,
   }
 
   # check if data.frame has at least one dimension of only one element
-  # TODO: doesnt work because factor
-  # if (length(unique(df[, main_dim])) > 1) {
-  #   cat("Data dimensions: \n")
-  #   print(lengths(lapply(df[, standard_dims], unique)))
-  #   stop(main_dim, " (main_dim) can only contain one unique element,
-  # Please filter data before plotting or select a different main_dim.\n")
-  # }
+  if (length(unique(df[, main_dim])) > 1) {
+    cat("Data dimensions: \n")
+    print(lengths(lapply(df[, standard_dims], unique)))
+    stop(main_dim, " (main_dim) can only contain one unique element,
+  Please filter data before plotting or select a different main_dim.\n")
+  }
 
   # check validation categories, only one per plot allowed
   # TODO: ref_scenario is not checked, but important as "historical" signals a
