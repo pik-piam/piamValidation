@@ -3,6 +3,7 @@
 export(appendTooltips)
 export(getConfig)
 export(linePlotThresholds)
+export(listConfigs)
 export(validateScenarios)
 export(validationHeatmap)
 export(validationPass)
