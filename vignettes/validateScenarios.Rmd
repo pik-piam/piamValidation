@@ -233,6 +233,14 @@ If the ``unit`` column is left empty, no consistency check will be performed.
 This is the recommended approach when selecting multiple variables in one go via
 ``**``, which don't all share the same unit.
 
+
+### Available Configs
+
+The package comes with a number of configuration files which can be found in
+the ``inst/config`` folder. The utility function ``listConfigs()`` can be used
+to get a quick overview over the names of the config files and ``getConfig()``
+will show their content if one of those names is handed over as an argument.
+
 ## Use Cases
 
 To give some examples how to define various validation checks, see the 6 use
