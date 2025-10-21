@@ -25,6 +25,12 @@ navbar:
           href: articles/configs/validationConfig_REMIND.html
         - text: "NGFS"
           href: articles/configs/validationConfig_NGFS.html
+        - text: "NGFS GCAM"
+          href: articles/configs/validationConfig_NGFS_GCAM.html
+        - text: "NGFS MESSAGE"
+          href: articles/configs/validationConfig_NGFS_MESSAGE.html
+        - text: "NGFS REMIND"
+          href: articles/configs/validationConfig_NGFS_REMIND.html
         - text: "ScenarioMIP AIM"
           href: articles/configs/validationConfig_ScenarioMIP_AIM.html
         - text: "ScenarioMIP COFFEE"

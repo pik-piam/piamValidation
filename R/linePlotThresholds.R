@@ -45,7 +45,7 @@ linePlotThresholds <- function(valiData,
 
   # it is possible to combine data from relative and absolute checks
   # care is advised when using data from multiple metrics to avoid overlaps
-  if (nrow(unique(df[,c("metric", "ref_scenario")])) > 1) {
+  if (nrow(unique(valiData[,c("metric", "ref_scenario")])) > 1) {
     warning("Multiple validation metrics detected, please be aware of potential
             data overlap.")
   }
