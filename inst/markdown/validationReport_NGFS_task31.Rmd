@@ -17,7 +17,8 @@ params:
 ---
 
 ```{r include=FALSE}
-library(piamValidation)
+#library(piamValidation)
+devtools::load_all(".")
 library(knitr)
 library(dplyr)
 library(ggplot2)
@@ -49,40 +50,195 @@ models <- c("GCAM",
 
 NGFS v5.0: https://doi.org/10.5281/zenodo.13989530
 
-ScenarioMIP: internal Snapshot from 2025-08-10
+ScenarioMIP: internal Snapshot from 2025-10-08
 
-## Validation World
+Validation configuration files:
+
+[GCAM](https://pik-piam.github.io/piamValidation/articles/configs/validationConfig_NGFS_GCAM.html)
+
+[MESSAGE](https://pik-piam.github.io/piamValidation/articles/configs/validationConfig_NGFS_MESSAGE.html)
+
+[REMIND](https://pik-piam.github.io/piamValidation/articles/configs/validationConfig_NGFS_REMIND.html)
+
+### Data sources
+
+#### 2020 vetting
+
+- **Primary Energy**: Deviation to IEA and BP data.
+- **Final Energy**: Deviation to IEA data.
+- **Capacities**: Deviation to Ember (2025).
+- **Emissions|CO2|EIP**: Deviations to CEDS (2025) 
+  -> only for World due to bunkers data availability
+
+*Note*: For 2020, the tolerance range includes both the 2020 value and the 2018-2022 average
+to allow for models to include or exclude a "COVID dip". In the configuration file
+this is specified by comparing to the `range` of a model and its `_smoothed` copy.
+
+#### Near-term capacities
+
+Tested against thresholds based on 
+
+- **Hydro**: [IEA HSMR project pipelines](https://github.com/pik-piam/mrremind/discussions/540)
+- **Nuclear**: [IAEA PRIS project pipelines](https://github.com/pik-piam/mrremind/discussions/541)
+- **Solar**: [BloombergNEF projections](https://github.com/pik-piam/mrremind/discussions/542) (only World available)
+- **Wind**: [GWEC Global Wind Report](https://github.com/pik-piam/mrremind/discussions/543) (only World available)
+
+#### Near-term Carbon Capture
+
+Tested against thresholds based on [IEA CCUS project pipelines](https://github.com/pik-piam/mrremind/discussions/544).
+
+```{r}
+scens_smip_shorten <- c(
+  "SSP1 - Low Emissions" = "L - SSP1",
+  "SSP2 - High Emissions" = "H - SSP2",
+  "SSP2 - Medium Emissions" = "M - SSP2",
+  "SSP2 - Medium-Low Emissions" = "ML - SSP2",
+  "SSP2 - Low Emissions" = "L - SSP2",
+  "SSP2 - Low Overshoot" = "VLHO - SSP2",
+  "SSP2 - Very Low Emissions" = "VLLO - SSP2"
+)
+
+regs.short_G <- c(
+  "Africa_Eastern" = "EastAfrica",
+  "Africa_Northern" = "NorthAfrica",
+  "Africa_Southern" = "SouthAfrica",
+  "Africa_Western" = "WestAfrica",
+  "Argentina" = "Argentina",
+  "Australia_NZ" = "AustraliaNZ",
+  "Australia_and New Zealand" = "AustraliaNZ", # !SMIP
+  "Brazil" = "Brazil",
+  "Canada" = "Canada",
+  "Central America and Caribbean" = "CentrAmCarib",
+  "Central Asia" = "CentralAsia",
+  "China" = "China",
+  "Colombia" = "Colombia",
+  "EU-12" = "EU12",
+  "EU-15" = "EU15",
+  "Europe_Eastern" = "EastEurope",
+  "Europe_Non_EU" = "NonEUEurope",
+  "European Free Trade Association" = "EFTA",
+  "India" = "India",
+  "Indonesia" = "Indonesia",
+  "Japan" = "Japan",
+  "Mexico" = "Mexico",
+  "Middle East" = "MiddleEast",
+  "Pakistan" = "Pakistan",
+  "Russia" = "Russia",
+  "South Africa" = "SouthAfrica",
+  "South America_Northern" = "NouthAmerica",
+  "South America_Southern" = "SouthAmericS",
+  "South Asia" = "SouthAsia",
+  "South Korea" = "SouthKorea",
+  "Southeast Asia" = "SEAsia",
+  "Taiwan" = "Taiwan",
+  "USA" = "USA",
+  "World" = "World"
+)
+
+regs.short_M <- c(
+  "China" = "China",
+  "Eastern Europe" = "EastEurope",
+  "Former Soviet Union" = "FmrSovUnion",
+  "Latin America and the Caribbean" = "LatAmCarib",
+  "Middle East and North Africa" = "MidEastNAfr",
+  "North America" = "NorthAmeric",
+  "Other Pacific Asia" = "OtherPacAsi",
+  "Pacific OECD" = "PacOECD",
+  "Rest of Centrally Planned Asia" = "RestCPAsia",
+  "Rest Centrally Planned Asia" = "RestCPAsia",
+  "South Asia" = "SouthAsia",
+  "Sub-Saharan Africa" = "SubSahAfric",
+  "Sub-saharan Africa" = "SubSahAfric",
+  "Western Europe" = "WestEurope",
+  "World" = "World"
+)
+
+regs.short_R <- c(
+  "Canada Australia New Zealand" = "CanAusNZ",
+  "Canada, NZ, Australia" = "CanAusNZ",
+  "China and Taiwan" = "China",
+  "China" = "China",
+  "EU 28" = "EU28",
+  "India" = "India",
+  "Japan" = "Japan",
+  "Latin America and the Caribbean" = "LatAmCarib",
+  "Middle East and North Africa" = "MidEastNAfr",
+  "Middle East, North Africa, Central Asia" = "MidEastNAfr",
+  "Non-EU28 Europe" = "NonEUEurope",
+  "Other Asia" = "OtherAsia",
+  "Russia and Reforming Economies" = "RussRefEcon",
+  "Countries from the Reforming Economies of the Former Soviet Union" = "RussRefEcon",
+  "Sub-Saharan Africa" = "SubSahAfric",
+  "Sub-saharan Africa" = "SubSahAfric",
+  "United States of America" = "USA",
+  "World" = "World"
+)
+```
+
+
+### Scenarios
+
+```{r plot.emi.scen.letter}
+cat("ScenarioMIP scenario abbreviations\n")
+scens_smip_shorten
+```
+
+### Regional Abbreviations
+
+Note that models slightly changed some region names between NGFS and ScenarioMIP.
+```{r}
+cat("GCAM\n")
+regs.short_G
+cat("MESSAGE\n")
+regs.short_M
+cat("REMIND\n")
+regs.short_R
+```
+
+
+## Validation
+
 
 ```{r}
 # Import data
-# ngfs <- readxl::read_xlsx("data/IAM_data.xlsx") %>%
-#   filter(Region == "World", Model != "REMIND-MAgPIE 3.3-4.8 IntegratedPhysicalDamages (median)") %>%
+# ngfs <- readxl::read_xlsx("user/Data/NGFS/phase5/1729832902777-V5.0-NGFS-Phase-5/IAM_data.xlsx") %>%
+#   filter(Model != "REMIND-MAgPIE 3.3-4.8 IntegratedPhysicalDamages (median)",
+#          !grepl("(R5)", Region)) %>%
 #   as.quitte()
+# ngfs$region <- gsub("^.*?\\|", "", ngfs$region)  # remove model name from regions
 # saveRDS(ngfs, "data/ngfs.rds")
 ngfs <- readRDS("data/ngfs.rds")
 
-# scen <- readRDS("data/scenarios_scenariomip_rr_2025-08-10.rds") %>%
-#   filter(region == "World", ssp == "SSP2", model %in% models, def.var == "Default") %>%
-#   select(-emi.scen, -ssp, -marker, -def.var)
+# scenarioMIP data after processing in "validationReport_scenarioMIP_modelNative.Rmd" 
+# scen <- readRDS("data/scenario_all_2025-10-08.rds") %>%
+#   filter(model %in% c("GCAM 7.1 scenarioMIP",
+#                       "MESSAGEix-GLOBIOM-GAINS 2.1-M-R12",
+#                       "REMIND-MAgPIE 3.5-4.11"),
+#          period >= 2020)
 # saveRDS(scen, "data/scen.rds")
 scen <- readRDS("data/scen.rds")
 
 
 # following ScenarioMIP
-# hist <- as.quitte("data/historical_H12_ScenarioMIP_2025-08-08.mif") %>%
-#   filter(region == "World", model %in% c("IRENA", "Ember", "BP", "IEA-EB-directSum", "CEDS"))
-# saveRDS(hist, "data/hist.rds")
-hist <- readRDS("data/hist_ngfs.rds")
+# TODO: still has duplicates, why?
+hist <- as.quitte("data/historical_all_2025-10-14.rds") %>%
+  filter(model %in% c("IRENA", "Ember", "BP", "IEA-EB-directSum", "CEDS"))
+saveRDS(hist, "data/hist.rds")
+hist <- readRDS("data/hist.rds")
 
 
 # Harmonization ####
 # model
-model_matching <- c(
+model_matching_ngfs <- c(
   "GCAM 6.0 NGFS" = "GCAM",
-  "MESSAGEix-GLOBIOM 2.0-M-R12-NGFS" = "MESSAGEix-GLOBIOM",
-  "REMIND-MAgPIE 3.3-4.8" = "REMIND-MAgPIE"
-)
-ngfs <- quitte::revalue.levels(ngfs, model = model_matching)
+  "MESSAGEix-GLOBIOM 2.0-M-R12-NGFS" = "MESSAGE",
+  "REMIND-MAgPIE 3.3-4.8" = "REMIND")
+model_matching_smip <- c(
+  "GCAM 7.1 scenarioMIP" = "GCAM",
+  "MESSAGEix-GLOBIOM-GAINS 2.1-M-R12" = "MESSAGE",
+  "REMIND-MAgPIE 3.5-4.11" = "REMIND")
+ngfs <- quitte::revalue.levels(ngfs, model = model_matching_ngfs)
+scen <- quitte::revalue.levels(scen, model = model_matching_smip)
 
 # variables
 vars_matching <- c(
@@ -90,9 +246,28 @@ vars_matching <- c(
 ngfs <- quitte::revalue.levels(ngfs, variable = vars_matching)
 
 # scenarios
-scen_matching <- c(
+scens_ngfs_shorten <- c(
   "Nationally Determined Contributions (NDCs)" = "NDCs")
-ngfs <- quitte::revalue.levels(ngfs, scenario = scen_matching)
+
+ngfs <- quitte::revalue.levels(ngfs, scenario = scens_ngfs_shorten)
+scen <- quitte::revalue.levels(scen, scenario = scens_smip_shorten)
+
+# regions
+# rename ngfs regions that have different name in scenarioMIP
+ngfs_to_smip_regions <- c(
+  "Australia_and New Zealand" = "Australia_NZ",
+  "Rest Centrally Planned Asia" = "Rest of Centrally Planned Asia",
+  "Sub-saharan Africa" ="Sub-Saharan Africa",
+  "Canada, NZ, Australia" = "Canada Australia New Zealand",
+  "Countries from the Reforming Economies of the Former Soviet Union" =  
+    "Russia and Reforming Economies",
+  #"China and Taiwan" = "China",  
+  #"China" = "China",
+  "Middle East, North Africa, Central Asia" = "Middle East and North Africa"
+) 
+ngfs <- quitte::revalue.levels(ngfs, region = ngfs_to_smip_regions)
+# rename China only for REMIND as it is the correct name for other models
+ngfs[(ngfs$model == "REMIND" & ngfs$region == "China"), "region"] <- "China and Taiwan"
 
 
 # average 2020 values over 5 year period to even out Covid shock
@@ -105,12 +280,38 @@ hist_smoothed <- quitte::as.quitte(hist_m[, , ]) %>%
   mutate(model = paste0(model, "_smoothed"))
 hist <- rbind(hist, hist_smoothed)
 
+
+# separate historical data so model names can be removed from regions without 
+# creating duplicates
+hist_G <- hist %>% 
+  filter(grepl("GCAM|World", region)) %>%
+  mutate(region = gsub("^.*?\\|", "", region))
+hist_M <- hist %>% 
+  filter(grepl("MESSAGE|World", region)) %>%
+  mutate(region = gsub("^.*?\\|", "", region))
+hist_R <- hist %>% 
+  filter(grepl("REMIND|World", region)) %>%
+  mutate(region = gsub("^.*?\\|", "", region))
+
 # combine data
 scen_data_all <- rbind(ngfs, scen)
-data <- rbind(scen_data_all, hist)
+data_G <- rbind(scen_data_all, hist_G)
+data_M <- rbind(scen_data_all, hist_M)
+data_R <- rbind(scen_data_all, hist_R)
 
-valiData <- validateScenarios(data, "NGFS")
-valiData <- appendTooltips(valiData)
+valiData_G <- validateScenarios(data_G, "NGFS_GCAM71_2025-10-14") %>%
+  filter(model == "GCAM") %>%
+  appendTooltips()
+
+valiData_M <- validateScenarios(data_M, "NGFS_MESSAGEix-GLOBIOM-GAINS21-R12_2025-10-14") %>%  
+  filter(model == "MESSAGE") %>%
+  appendTooltips()
+
+valiData_R <- validateScenarios(data_R, "NGFS_REMIND-MAgPIE35-410_2025-10-14") %>%
+  filter(model == "REMIND") %>%
+  appendTooltips()
+
+valiData <- rbind(valiData_G, valiData_M, valiData_R)
 ```
 
 
@@ -127,6 +328,7 @@ scens_ngfs <- c(
 )
 
 scens_smip <- c(
+  "L - SSP1",
   "H - SSP2",
   "L - SSP2",
   "VLHO - SSP2",
@@ -144,23 +346,20 @@ scen.colors <- c(
   "Below 2°C"= "#4D5CAD",
   "Low demand" = "#4D5CAD",
   
-  "H - SSP2"= "#892F71",
-  "L - SSP2"= "#892F71",
-  "VLHO - SSP2"= "#892F71",
-  "M - SSP2"= "#892F71",
-  "ML - SSP2"= "#892F71",
-  "VLLO - SSP2"= "#892F71"
+  "L - SSP1"= "darkred",
+  "H - SSP2"= "darkred",
+  "L - SSP2"= "darkred",
+  "VLHO - SSP2"= "darkred",
+  "M - SSP2"= "darkred",
+  "ML - SSP2"= "darkred",
+  "VLLO - SSP2"= "darkred"
 )
 
 plot.model.colors <- c(
   # scenario models
-  "AIM" = "#4D5CAD",
-  "COFFEE" = "#69BA7F",
   "GCAM" = "#759EA8",
-  "IMAGE" = "#868367",
   "MESSAGEix-GLOBIOM" = "#892F71",
-  "REMIND-MAgPIE" = "#facb1e",
-  "WITCH" = "#fb6a4a"
+  "REMIND-MAgPIE" = "#facb1e"
 )
 
 validationHeatmap.colors <- 
@@ -172,16 +371,39 @@ validationHeatmap.colors <-
     grey      = "#808080")
 
 model.linetype <- c(
-  "MESSAGEix-GLOBIOM" = "dashed",
+  "MESSAGE" = "solid",
   "GCAM" = "solid",
-  "REMIND-MAgPIE" = "dotted"
+  "REMIND" = "solid"
+)
+
+project.linetype <-   c(
+  "Delayed transition"= "dashed",
+  "Fragmented World"= "dashed",
+  "Current Policies"= "dashed",
+  "NDCs"= "dashed",
+  "Net Zero 2050"= "dashed",
+  "Below 2°C"= "dashed",
+  "Low demand" = "dashed",
+  
+  "L - SSP1"= "solid",
+  "H - SSP2"= "solid",
+  "L - SSP2"= "solid",
+  "VLHO - SSP2"= "solid",
+  "M - SSP2"= "solid",
+  "ML - SSP2"= "solid",
+  "VLLO - SSP2"= "solid"
 )
 
 vars.short <- c(
+  "Primary Energy|Coal" = "PE|Coal",
+  "Primary Energy|Gas" = "PE|Gas",
+  "Primary Energy|Oil" = "PE|Oil",
+  "Primary Energy|Biomass" = "PE|Biomass",
+  "Emissions|CO2|Energy and Industrial Processes" = "Emi|CO2|EIP",
   "Capacity|Electricity|Nuclear" = "Cap|Nuclear",
   "Capacity|Electricity|Hydro" = "Cap|Hydro",
   "Capacity|Electricity|Solar" = "Cap|Solar",
-  "Capacity|Electricity|Wind" = "Cap|Wind",
+  "Capacity|Electricity|Wind|Onshore" = "Cap|Wind|Onshore",
   "Carbon Capture|Geological Storage" = "CCS"
 )
 ```
@@ -201,7 +423,29 @@ vars.short <- c(
 # shorten variable names
 valiData <- quitte::revalue.levels(valiData, variable = vars.short)
 hist <- quitte::revalue.levels(hist, variable = vars.short)
+hist_G <- hist_G %>% quitte::revalue.levels(variable = vars.short)
+hist_M <- hist_M %>% quitte::revalue.levels(variable = vars.short)
+hist_R <- hist_R %>% quitte::revalue.levels(variable = vars.short)
 scen_data_all <- quitte::revalue.levels(scen_data_all, variable = vars.short)
+
+# shorten scenarioMIP scenario names
+valiData <- quitte::revalue.levels(valiData, scenario = scens_smip_shorten) %>%
+  filter(scenario %in% c(scens_ngfs, scens_smip))
+scen_data_all <- quitte::revalue.levels(scen_data_all, scenario = scens_smip_shorten) %>%
+  filter(scenario %in% c(scens_ngfs, scens_smip))
+
+
+# shorten and harmonize region names
+valiData <- valiData %>%
+  quitte::revalue.levels(region = c(regs.short_G, regs.short_M, regs.short_R))
+scen_data_all <- scen_data_all %>% 
+  quitte::revalue.levels(region = c(regs.short_G, regs.short_M, regs.short_R))
+hist_G <- hist_G %>% 
+  quitte::revalue.levels(region = regs.short_G)
+hist_M <- hist_M %>% 
+  quitte::revalue.levels(region = regs.short_M)
+hist_R <- hist_R %>% 
+  quitte::revalue.levels(region = regs.short_R)
 
 
 # reorder scenario names alphabetically
@@ -210,7 +454,7 @@ valiData$scenario <- factor(valiData$scenario,
 ```
 
 ```{r, fig.width=10, fig.height=6}
-ngfs_lineplots <- function(var, 
+lineplots_world <- function(var, 
                            reg = "World",
                            vD = valiData,
                            refData = hist,
@@ -250,84 +494,593 @@ p <- linePlotThresholds(valiData %>% filter(variable == var), scenData = NULL, r
     p
   }
 }
+```
+
+```{r}
+# plot all regions for one model as lineplot
+lineplots_model <- function(var,
+                                 region = reg,
+                                 model = "GCAM",
+                                 vD = valiData,
+                                 refData = hist_G,
+                                 scenData = scen_data_all, 
+                                 xlim = c(2015, 2035),
+                                 interactive = F) {
+t <- vD %>% filter(model == !!model, variable == var, region == !!region)
+p <- linePlotThresholds(t, 
+                        scenData = NULL, 
+                        refData = NULL,
+                        xlim = xlim,
+                        interactive = F)
+
+  # add scenario data as lines
+  if (!is.null(scenData)) {
+    d <- scenData %>%
+      filter(variable == var, region == reg, model == !!model,
+             period >= min(xlim) & period <= max(xlim))
+    p <- p +
+      geom_line(data = d,
+                aes(x = period, y = value, color = scenario, linetype = model)) +
+        scale_linetype_manual(values = model.linetype) +
+        scale_color_manual(values = scen.colors) + 
+      guides(fill=guide_legend(ncol=2))
+  }
+
+  # add reference data as points
+  if (!is.null(refData)) {
+    h <- refData %>%
+      filter(variable == var, region == reg,
+             period >= min(xlim) & period <= max(xlim))
+    p <- p +
+      geom_point(data = h, aes(x = period, y = value, shape = model),
+                 size = 1, color = "black")
+  }
+
+  if (interactive) {
+    plotly::ggplotly(p) #%>%
+      #layout(legend = list(title=list(text='Model, Scenario')))
+  } else {
+    p
+  }
+}
 
 ```
 
 ### Overview
 
+## Electricity 
+
+### Cap Hydro {.tabset}
+
+#### Heat Maps
+
 ```{r, fig.width=7, fig.height=5}
-validationHeatmap(valiData %>% filter(period <= 2035, scenario %in% scens_ngfs), 
-                  main_dim = "region",
-                  interactive = T,
-                  x_plot = "period",
-                  y_plot = "scenario",
-                  x_facet = "variable",
-                  y_facet = "model")
-validationHeatmap(valiData %>% filter(period <= 2035, scenario %in% scens_smip), 
-                  main_dim = "region",
-                  interactive = T,
-                  x_plot = "period",
-                  y_plot = "scenario",
-                  x_facet = "variable",
-                  y_facet = "model")
+var <- "Cap|Hydro"
+
+xp <- "region"
+yp <- "scenario"
+xf <- "variable"
+yf <- "period"
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2030, model == "GCAM", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2030, model == "GCAM", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2030, model == "MESSAGE", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2030, model == "MESSAGE", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2030, model == "REMIND", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2030, model == "REMIND", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
 ```
 
+#### Lineplots GCAM
 
+```{r, fig.width=7, fig.height=5}
+for (reg in unique(hist_G$region)) {
+  p <- lineplots_model(var, model = "GCAM", refData = hist_G)
+  print(p)
+}
+```
 
+#### Lineplots MESSAGE
 
+```{r, fig.width=7, fig.height=5}
+for (reg in unique(hist_M$region)) {
+  p <- lineplots_model(var, model = "MESSAGE", refData = hist_M)
+  print(p)
+}
+```
 
+#### Lineplots REMIND
+
+```{r, fig.width=7, fig.height=5}
+for (reg in unique(hist_R$region)) {
+  p <- lineplots_model(var, model = "REMIND", refData = hist_R)
+  print(p)
+}
+```
+
+### Cap|Nuclear {.tabset}
+
+#### Heat Maps
+
+```{r, fig.width=8, fig.height=6}
+var <- "Cap|Nuclear"
+
+xp <- "region"
+yp <- "scenario"
+xf <- "variable"
+yf <- "period"
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2030, model == "GCAM", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2030, model == "GCAM", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2030, model == "MESSAGE", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2030, model == "MESSAGE", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2030, model == "REMIND", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2030, model == "REMIND", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+```
+
+#### Lineplots GCAM
+
+```{r, fig.width=7, fig.height=5}
+for (reg in unique(hist_G$region)) {
+  p <- lineplots_model(var, model = "GCAM", refData = hist_G)
+  print(p)
+}
+```
+
+#### Lineplots MESSAGE
+
+```{r, fig.width=7, fig.height=5}
+for (reg in unique(hist_M$region)) {
+  p <- lineplots_model(var, model = "MESSAGE", refData = hist_M)
+  print(p)
+}
+```
+
+#### Lineplots REMIND
+
+```{r, fig.width=7, fig.height=5}
+for (reg in unique(hist_R$region)) {
+  p <- lineplots_model(var, model = "REMIND", refData = hist_R)
+  print(p)
+}
+```
 
 ### Cap|Solar
 
 ```{r, fig.width=8, fig.height=6}
 var <- "Cap|Solar"
-validationHeatmap(valiData %>% filter(variable == var), interactive = T)
-ngfs_lineplots(var, 
-               scenData = NULL, 
-               refData = hist %>% filter(model == "IRENA"),
-               xlim = c("2015", "2035")) +
-  scale_y_continuous(limits = c(0, 11000)) +
-  scale_x_continuous(limits = c(2015, 2030))
 
-ngfs_lineplots(var, 
-               scenData = scen_data_all  %>% filter(scenario %in% scens_ngfs), 
-               refData = hist %>% filter(model == "IRENA"),
-               xlim = c("2015", "2035")) +
-  scale_y_continuous(limits = c(0, 11000)) +
-  scale_x_continuous(limits = c(2015, 2030))
+xp <- "region"
+yp <- "scenario"
+xf <- "variable"
+yf <- "period"
 
-ngfs_lineplots(var, 
-               scenData = scen_data_all  %>% filter(scenario %in% scens_smip), 
-               refData = hist %>% filter(model == "IRENA"),
-               xlim = c("2015", "2035")) +
-  scale_y_continuous(limits = c(0, 11000)) +
-  scale_x_continuous(limits = c(2015, 2030))
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "GCAM", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "GCAM", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
 
-ngfs_lineplots(var, 
-               refData = hist %>% filter(model == "IRENA"),
-               xlim = c("2015", "2035")) +
-  scale_y_continuous(limits = c(0, 11000)) +
-  scale_x_continuous(limits = c(2015, 2030))
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "MESSAGE", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "MESSAGE", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "REMIND", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "REMIND", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
 ```
 
-### Cap|Wind
+### Cap|Wind|Onshore
 
 ```{r, fig.width=8, fig.height=6}
-var <- "Cap|Wind"
-validationHeatmap(valiData %>% filter(variable == var), interactive = T)
-ngfs_lineplots(var, refData = hist %>% filter(model == "IRENA"),
-               xlim = c("2015", "2035")) +
-  scale_y_continuous(limits = c(0, 4000)) +
-  scale_x_continuous(limits = c(2015, 2030))
+var <- "Cap|Wind|Onshore"
+
+xp <- "region"
+yp <- "scenario"
+xf <- "variable"
+yf <- "period"
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "GCAM", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "GCAM", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "MESSAGE", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "MESSAGE", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "REMIND", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "REMIND", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
 ```
 
 
-### CCS
+
+## Energy
+
+### PE|Coal
+
+```{r, fig.width=8, fig.height=6}
+var <- "PE|Coal"
+
+xp <- "region"
+yp <- "scenario"
+xf <- "variable"
+yf <- "period"
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "GCAM", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "GCAM", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "MESSAGE", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "MESSAGE", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "REMIND", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "REMIND", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+```
+
+### PE|Gas
+
+```{r, fig.width=8, fig.height=6}
+var <- "PE|Gas"
+
+xp <- "region"
+yp <- "scenario"
+xf <- "variable"
+yf <- "period"
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "GCAM", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "GCAM", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "MESSAGE", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "MESSAGE", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "REMIND", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "REMIND", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+```
+
+### PE|Oil
+
+```{r, fig.width=8, fig.height=6}
+var <- "PE|Oil"
+
+xp <- "region"
+yp <- "scenario"
+xf <- "variable"
+yf <- "period"
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "GCAM", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "GCAM", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "MESSAGE", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "MESSAGE", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "REMIND", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "REMIND", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+```
+
+### PE|Biomass
+
+Upper bound representing sustainability concerns above 100/300 EJ/yr.
+
+```{r, fig.width=8, fig.height=6}
+var <- "PE|Biomass"
+
+xp <- "period"
+yp <- "scenario"
+xf <- "variable"
+yf <- "region"
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2100, model == "GCAM", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2100, model == "GCAM", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2100, model == "MESSAGE", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2100, model == "MESSAGE", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2100, model == "REMIND", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2100, model == "REMIND", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+```
+
+## Carbon
+
+### Emissions 
+
+```{r, fig.width=8, fig.height=6}
+var <- "Emi|CO2|EIP"
+
+xp <- "region"
+yp <- "scenario"
+xf <- "variable"
+yf <- "period"
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "GCAM", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "GCAM", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "MESSAGE", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "MESSAGE", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "REMIND", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2020, model == "REMIND", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+```
+
+### CCS {.tabset}
+
+#### Heat Maps
 
 ```{r, fig.width=8, fig.height=6}
 var <- "CCS"
-validationHeatmap(valiData %>% filter(variable == var), interactive = T)
-ngfs_lineplots(var, xlim = c("2020", "2035")) +
-  scale_y_continuous(limits = c(0, 2400)) +
-  scale_x_continuous(limits = c(2020, 2030))
+
+xp <- "region"
+yp <- "scenario"
+xf <- "variable"
+yf <- "period"
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2030, model == "GCAM", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2030, model == "GCAM", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2030, model == "MESSAGE", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2030, model == "MESSAGE", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2030, model == "REMIND", variable == var, scenario %in% scens_ngfs),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+validationHeatmap(
+  valiData %>% 
+    filter(period <= 2030, model == "REMIND", variable == var, scenario %in% scens_smip),
+  main_dim = "model", interactive = F,
+  x_plot = xp, y_plot = yp, x_facet = xf, y_facet = yf)
+```
+
+#### Lineplots GCAM
+
+```{r, fig.width=7, fig.height=5}
+for (reg in unique(hist_G$region)) {
+  p <- lineplots_model(var, model = "GCAM", refData = hist_G)
+  print(p)
+}
+```
+
+#### Lineplots MESSAGE
+
+```{r, fig.width=7, fig.height=5}
+for (reg in unique(hist_M$region)) {
+  p <- lineplots_model(var, model = "MESSAGE", refData = hist_M)
+  print(p)
+}
+```
+
+#### Lineplots REMIND
+
+```{r, fig.width=7, fig.height=5}
+for (reg in unique(hist_R$region)) {
+  p <- lineplots_model(var, model = "REMIND", refData = hist_R)
+  print(p)
+}
 ```
