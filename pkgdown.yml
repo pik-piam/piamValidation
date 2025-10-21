@@ -4,6 +4,9 @@ pkgdown_sha: ~
 articles:
   publication: publication.html
   validateScenarios: validateScenarios.html
+  configs/validationConfig_NGFS_GCAM: configs/validationConfig_NGFS_GCAM.html
+  configs/validationConfig_NGFS_MESSAGE: configs/validationConfig_NGFS_MESSAGE.html
+  configs/validationConfig_NGFS_REMIND: configs/validationConfig_NGFS_REMIND.html
   configs/validationConfig_NGFS: configs/validationConfig_NGFS.html
   configs/validationConfig_publication_NGFS: configs/validationConfig_publication_NGFS.html
   configs/validationConfig_publication: configs/validationConfig_publication.html
@@ -15,7 +18,7 @@ articles:
   configs/validationConfig_ScenarioMIP_MESSAGE: configs/validationConfig_ScenarioMIP_MESSAGE.html
   configs/validationConfig_ScenarioMIP_REMIND: configs/validationConfig_ScenarioMIP_REMIND.html
   configs/validationConfig_ScenarioMIP_WITCH: configs/validationConfig_ScenarioMIP_WITCH.html
-last_built: 2025-10-14T13:49Z
+last_built: 2025-10-21T15:43Z
 urls:
   reference: https://pik-piam.github.io/piamValidation/reference
   article: https://pik-piam.github.io/piamValidation/articles
