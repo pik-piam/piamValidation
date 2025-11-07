@@ -2,7 +2,7 @@
 % Please edit documentation in R/linePlotThresholds.R
 \name{linePlotThresholds}
 \alias{linePlotThresholds}
-\title{takes the output of "validateScenarios()" and plots heat maps per variable}
+\title{takes the output of "validateScenarios()" creates a line plot}
 \usage{
 linePlotThresholds(
   valiData,
@@ -29,5 +29,5 @@ all available data.}
 \item{interactive}{decide if an interactive ggploty object should be returned}
 }
 \description{
-takes the output of "validateScenarios()" and plots heat maps per variable
+takes the output of "validateScenarios()" creates a line plot
 }

@@ -37,10 +37,10 @@ knitr::opts_chunk$set(
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
 # versions
-snapshot_date <- "2025-06-20"
-historical_date <- "2025-06-25"
-thresholds_date <- "2025-04-30"
-config_date <- "2025-06-06"
+snapshot_date <- "2025-11-06"
+historical_date <- "2025-10-14"
+thresholds_date <- "2025-10-14"
+config_date <- "2025-11-06"
 
 data_dir <- "user/Data/scenario_mip/ModelNative/"
 
@@ -49,7 +49,7 @@ models <- c("AIM30",
             "GCAM71",
             "IMAGE34",
             "MESSAGEix-GLOBIOM-GAINS21-R12",
-            "REMIND-MAgPIE35-410",
+            "REMIND-MAgPIE35-411",
             "WITCH60")
 ```
 
@@ -455,6 +455,25 @@ for (model in models) {
              min_yel = as.character(min_yel),
              max_yel = as.character(max_yel),
              max_red = as.character(max_red))
+  
+  # remove EV related rows for models that don't report it
+  if (model %in% c("AIM30", "COFFEE16", "IMAGE34", "MESSAGEix-GLOBIOM-GAINS21-R12")) {
+    cfg <- cfg %>% 
+      filter(!grepl("Battery-Electric", variable))
+  }
+  
+  # remove CCS related rows for models that don't report it
+  if (model %in% c("COFFEE16")) {
+    cfg <- cfg %>% 
+      filter(!grepl("Carbon Capture|Geological Storage", variable))
+  }
+  
+  # remove Capacity related rows for models that don't report it
+  if (model %in% c("COFFEE16")) {
+    cfg <- cfg %>% 
+      filter(!grepl("Capacity", variable))
+  }
+  
   write.csv2(cfg, 
              file = paste0("validationConfig_scenarioMIP_", model, "_", config_date, ".csv"),
              row.names = FALSE, quote = F)
@@ -472,7 +491,7 @@ data_files <- data_files[grepl(snapshot_date, data_files)]
 # get an example config used for filtering
 # model <- models[1]
 #cfg <- getConfig(paste0("validationConfig_", model, "_", thresholds_date, ".csv"))
-cfg <- getConfig("scenarioMIP_AIM30_2025-06-06")
+cfg <- getConfig("scenarioMIP_AIM30_2025-11-06")
 
 scen_data_all <- data.frame()
 for (file in data_files) {
@@ -517,7 +536,19 @@ for (model in models) {
   hist_data_extra <- piamInterfaces::convertHistoricalData(file, "ScenarioMIP_historical") %>%
     mutate(region = paste0(!!model, "|", region))
   
-  hist_data_all <- rbind(hist_data_all, hist_data, hist_data_extra)
+  # WORKAROUND: add EV data manually, as it currently cannot be mapped with piamInterfaces
+  hist_data_EV <- quitte::as.quitte(file) %>%
+    filter(variable %in% c("Stock|Transport|Car|Electric", 
+                           "Sales|Transport|Car|Electric"))
+  variables_EV <- c(
+    "Stock|Transport|Car|Electric" = "Stocks|Transportation|Light-Duty Vehicle|Battery-Electric",
+    "Sales|Transport|Car|Electric" = "Sales|Transportation|Light-Duty Vehicle|Battery-Electric")
+  units_EV <- c("Million vehicles" = "million")
+
+  hist_data_EV <- quitte::revalue.levels(hist_data_EV, variable = variables_EV)
+  hist_data_EV <- quitte::revalue.levels(hist_data_EV, unit = units_EV)
+  
+  hist_data_all <- rbind(hist_data_all, hist_data, hist_data_extra, hist_data_EV)
 }
 
 # all models should have the same "World" values in historical.mif

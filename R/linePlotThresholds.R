@@ -1,4 +1,4 @@
-#' takes the output of "validateScenarios()" and plots heat maps per variable
+#' takes the output of "validateScenarios()" creates a line plot
 #'
 #' @param valiData data to be plotted, as returned by ``validateScenarios()``
 #'        and after filtering for one variable and one region.

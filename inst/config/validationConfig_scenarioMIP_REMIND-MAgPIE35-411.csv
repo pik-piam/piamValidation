@@ -19,10 +19,18 @@ relative;yes;Emissions|CO2|Energy and Industrial Processes;Mt CO2/yr;NA;NA;NA;20
 relative;yes;Emissions|CO2|Energy and Industrial Processes;Mt CO2/yr;NA;NA;World;2010-2020;-0.2;-0.1;0.1;0.2;range(CEDS, CEDS_smoothed);historical;NA;NA
 relative;yes;Emissions|CH4|Waste;Mt CH4/yr;NA;NA;NA;2010-2020;-0.3;-0.2;0.2;0.3;range(CEDS, CEDS_smoothed);historical;NA;NA
 relative;yes;Emissions|CH4|Waste;Mt CH4/yr;NA;NA;World;2010-2020;-0.2;-0.1;0.1;0.2;range(CEDS, CEDS_smoothed);historical;NA;NA
+difference;yes;Stocks|Transportation|Light-Duty Vehicle|Battery-Electric;million;NA;NA;NA;2010-2020;-2.5;-1.25;1.25;2.5;range(IEA GEVO Historical, IEA GEVO Historical_smoothed);historical;NA;NA
+difference;yes;Stocks|Transportation|Light-Duty Vehicle|Battery-Electric;million;NA;NA;World;2010-2020;-5;-2.5;2.5;5;range(IEA GEVO Historical, IEA GEVO Historical_smoothed);historical;NA;NA
+difference;yes;Sales|Transportation|Light-Duty Vehicle|Battery-Electric;million;NA;NA;NA;2010-2020;-0.5;-0.25;0.25;0.5;range(IEA GEVO Historical, IEA GEVO Historical_smoothed);historical;NA;NA
+difference;yes;Sales|Transportation|Light-Duty Vehicle|Battery-Electric;million;NA;NA;World;2010-2020;-1;-0.5;0.5;1;range(IEA GEVO Historical, IEA GEVO Historical_smoothed);historical;NA;NA
 absolute;yes;Capacity|Electricity|Solar;GW;NA;NA;World;2025;1609;2083;3152;3896;NA;NA;NA;NA
 absolute;yes;Capacity|Electricity|Solar;GW;NA;NA;World;2030;2683;4350;8164;10896;NA;NA;NA;NA
 absolute;yes;Capacity|Electricity|Wind|Onshore;GW;NA;NA;World;2025;930;1066;1365;1560;NA;NA;NA;NA
 absolute;yes;Capacity|Electricity|Wind|Onshore;GW;NA;NA;World;2030;1155;1542;2417;3029;NA;NA;NA;NA
+absolute;yes;Sales|Transportation|Light-Duty Vehicle|Battery-Electric;million;NA;NA;World;2025;9;12;17;23.8;NA;NA;NA;NA
+absolute;yes;Sales|Transportation|Light-Duty Vehicle|Battery-Electric;million;NA;NA;World;2030;19.8;26.4;44.4;51.8;NA;NA;NA;NA
+absolute;yes;Stocks|Transportation|Light-Duty Vehicle|Battery-Electric;million;NA;NA;World;2025;33;44;67.2;78.4;NA;NA;NA;NA
+absolute;yes;Stocks|Transportation|Light-Duty Vehicle|Battery-Electric;million;NA;NA;World;2030;108;144;228;266;NA;NA;NA;NA
 relative;yes;Emissions|CO2|Energy and Industrial Processes;Mt CO2/yr;NA;SSP1 - Very Low with Limited Overshoot, SSP1 - Very Low after High Overshoot, SSP1 - Low Emissions, SSP1 - Medium-Low Emissions, SSP1 - Very Low with Limited Overshoot_a, SSP1 - Very Low with Limited Overshoot_c;NA;2030;-0.2;-0.1;0.1;0.2;NA;SSP1 - Medium Emissions;NA;NA
 relative;yes;Emissions|CO2|Energy and Industrial Processes;Mt CO2/yr;NA;SSP2 - Low Emissions, SSP2 - Very Low after High Overshoot, SSP2 - Medium-Low Emissions, SSP2 - Very Low with Limited Overshoot, SSP2 - High Emissions, SSP2 - Low Emissions_c, SSP2 - Low Emissions_d, SSP2 - Very Low after High Overshoot_b, SSP2 - Very Low after High Overshoot_c, SSP2 - Very Low after High Overshoot_d, SSP2 - Very Low with Limited Overshoot_a, SSP2 - Very Low with Limited Overshoot_c;NA;2030;-0.2;-0.1;0.1;0.2;NA;SSP2 - Medium Emissions;NA;NA
 relative;yes;Emissions|CO2|Energy and Industrial Processes;Mt CO2/yr;NA;SSP3 - High Emissions, SSP3 - High Emissions_a;NA;2030;-0.2;-0.1;0.1;0.2;NA;SSP3 - Medium Emissions;NA;NA
@@ -46,42 +54,42 @@ absolute;yes;Capacity|Electricity|Hydro;GW;NA;NA;Other Asia;2030;NA;32.88;189.60
 absolute;yes;Capacity|Electricity|Hydro;GW;NA;NA;Russia and Reforming Economies;2030;NA;37.74;135.9456;NA;NA;NA;NA;NA
 absolute;yes;Capacity|Electricity|Hydro;GW;NA;NA;Sub-Saharan Africa;2030;NA;12.78;85.232;NA;NA;NA;NA;NA
 absolute;yes;Capacity|Electricity|Hydro;GW;NA;NA;United States of America;2030;NA;48.84;187.67;NA;NA;NA;NA;NA
-absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;World;2030;269.7507;320.32955;463.58865;507.1;NA;NA;NA;NA
-absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Canada Australia New Zealand;2030;NA;6.576;19.18;NA;NA;NA;NA;NA
-absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;China and Taiwan;2030;NA;26.8914;115.2536;NA;NA;NA;NA;NA
-absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;EU 28;2030;NA;49.08;150.612;NA;NA;NA;NA;NA
-absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;India;2030;NA;3.3216;17.248;NA;NA;NA;NA;NA
-absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Japan;2030;NA;5.304;48.0662;NA;NA;NA;NA;NA
+absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;World;2030;270.9;321.69375;464.2617;507.1;NA;NA;NA;NA
+absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Canada Australia New Zealand;2030;NA;6.1008;17.794;NA;NA;NA;NA;NA
+absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;China and Taiwan;2030;NA;26.5536;120.638;NA;NA;NA;NA;NA
+absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;EU 28;2030;NA;49.6848;150.094;NA;NA;NA;NA;NA
+absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;India;2030;NA;3.624;17.248;NA;NA;NA;NA;NA
+absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Japan;2030;NA;6.0624;45.36;NA;NA;NA;NA;NA
 absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Latin America and the Caribbean;2030;NA;2.4336;9.009;NA;NA;NA;NA;NA
-absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Middle East and North Africa;2030;NA;2.9952;16.254;NA;NA;NA;NA;NA
+absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Middle East and North Africa;2030;NA;3.0096;16.296;NA;NA;NA;NA;NA
 absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Non-EU28 Europe;2030;NA;1.4256;10.402;NA;NA;NA;NA;NA
-absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Other Asia;2030;NA;13.9584;47.488;NA;NA;NA;NA;NA
+absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Other Asia;2030;NA;13.8576;48.762;NA;NA;NA;NA;NA
 absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Russia and Reforming Economies;2030;NA;20.424;67.858;NA;NA;NA;NA;NA
 absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Sub-Saharan Africa;2030;NA;0.888;2.59;NA;NA;NA;NA;NA
 absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;United States of America;2030;NA;46.536;135.73;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;World;2025;39.6207;49.49215;83.5611;152.4457;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Canada Australia New Zealand;2025;NA;4.968;47.124;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;China and Taiwan;2025;NA;1.809;7.35;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;EU 28;2025;NA;0.5454;3.864;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;India;2025;NA;0;0.98;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;World;2025;39.7422;50.62835;74.1363;79.4266;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Canada Australia New Zealand;2025;NA;4.9386;22.603;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;China and Taiwan;2025;NA;1.944;7;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;EU 28;2025;NA;0.5454;2.464;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;India;2025;NA;0;0;NA;NA;NA;NA;NA
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Japan;2025;NA;0;0;NA;NA;NA;NA;NA
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Latin America and the Caribbean;2025;NA;5.724;17.64;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Middle East and North Africa;2025;NA;1.998;13.5226;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Non-EU28 Europe;2025;NA;0.4614;2.2988;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Other Asia;2025;NA;0;7.602;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Middle East and North Africa;2025;NA;1.998;11.2;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Non-EU28 Europe;2025;NA;0.4644;2.296;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Other Asia;2025;NA;0;4.62;NA;NA;NA;NA;NA
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Russia and Reforming Economies;2025;NA;0;0;NA;NA;NA;NA;NA
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Sub-Saharan Africa;2025;NA;0;0.0014;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;United States of America;2025;NA;10.908;93.639;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;World;2030;44.0226;60.01815;152.4663;457.8915;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Canada Australia New Zealand;2030;NA;5.52;89.698;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;China and Taiwan;2030;NA;2.01;12.95;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;EU 28;2030;NA;0.606;88.074;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;India;2030;NA;0;0.98;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Japan;2030;NA;0;2.3884;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;United States of America;2025;NA;10.881;33.264;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;World;2030;44.1585;70.7332;182.03745;514.1994;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Canada Australia New Zealand;2030;NA;5.487;115.556;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;China and Taiwan;2030;NA;2.16;21.7;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;EU 28;2030;NA;0.606;105.28;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;India;2030;NA;0;0;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Japan;2030;NA;0;2.3716;NA;NA;NA;NA;NA
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Latin America and the Caribbean;2030;NA;6.36;28.84;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Middle East and North Africa;2030;NA;2.22;32.5626;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Non-EU28 Europe;2030;NA;0.5124;22.526;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Other Asia;2030;NA;0;20.9076;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Middle East and North Africa;2030;NA;2.22;30.1;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Non-EU28 Europe;2030;NA;0.516;18.5388;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Other Asia;2030;NA;0;20.9426;NA;NA;NA;NA;NA
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Russia and Reforming Economies;2030;NA;0;0;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Sub-Saharan Africa;2030;NA;0;0.0014;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;United States of America;2030;NA;12.12;283.843;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Sub-Saharan Africa;2030;NA;0;1.4014;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;United States of America;2030;NA;12.09;309.7066;NA;NA;NA;NA;NA

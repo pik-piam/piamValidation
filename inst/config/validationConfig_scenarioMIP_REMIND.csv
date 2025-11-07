@@ -1,0 +1,107 @@
+metric;critical;variable;unit;model;scenario;region;period;min_red;min_yel;max_yel;max_red;ref_model;ref_scenario;ref_period;source/link to discussion
+Historical Vetting;;;;;;;;;;;;;;;
+relative;yes;Final Energy;EJ/yr;;;;2010-2020;-30%;-20%;20%;30%;range(IEA, IEA_smoothed);historical;;
+relative;yes;Final Energy;EJ/yr;;;World;2010-2020;-20%;-10%;10%;20%;range(IEA, IEA_smoothed);historical;;
+relative;yes;Primary Energy|Coal;EJ/yr;;;;2010-2020;-30%;-20%;20%;30%;range(BP, BP_smoothed);historical;;
+relative;yes;Primary Energy|Coal;EJ/yr;;;World;2010-2020;-20%;-10%;10%;20%;range(BP, BP_smoothed);historical;;
+relative;yes;Primary Energy|Oil;EJ/yr;;;;2010-2020;-30%;-20%;20%;30%;range(BP, BP_smoothed);historical;;
+relative;yes;Primary Energy|Oil;EJ/yr;;;World;2010-2020;-20%;-10%;10%;20%;range(BP, BP_smoothed);historical;;
+relative;yes;Primary Energy|Gas;EJ/yr;;;;2010-2020;-30%;-20%;20%;30%;range(BP, BP_smoothed);historical;;
+relative;yes;Primary Energy|Gas;EJ/yr;;;World;2010-2020;-20%;-10%;10%;20%;range(BP, BP_smoothed);historical;;
+relative;yes;Emissions|CO2|Energy and Industrial Processes;Mt CO2/yr;;;;2010-2020;-30%;-20%;20%;30%;range(CEDS, CEDS_smoothed);historical;;
+relative;yes;Emissions|CO2|Energy and Industrial Processes;Mt CO2/yr;;;World;2010-2020;-20%;-10%;10%;20%;range(CEDS, CEDS_smoothed);historical;;
+relative;yes;Capacity|Electricity|Nuclear;GW;;;;2010-2020;-30%;-20%;20%;30%;range(Ember, Ember_smoothed);historical;;
+relative;yes;Capacity|Electricity|Nuclear;GW;;;World;2010-2020;-20%;-10%;10%;20%;range(Ember, Ember_smoothed);historical;;
+relative;yes;Capacity|Electricity|Hydro;GW;;;;2010-2020;-30%;-20%;20%;30%;range(Ember, Ember_smoothed);historical;;
+relative;yes;Capacity|Electricity|Hydro;GW;;;World;2010-2020;-20%;-10%;10%;20%;range(Ember, Ember_smoothed);historical;;
+relative;yes;Capacity|Electricity|Solar;GW;;;;2010-2020;-30%;-20%;20%;30%;range(Ember, Ember_smoothed);historical;;
+relative;yes;Capacity|Electricity|Solar;GW;;;World;2010-2020;-20%;-10%;10%;20%;range(Ember, Ember_smoothed);historical;;
+relative;yes;Capacity|Electricity|Wind|Onshore;GW;;;;2010-2020;-30%;-20%;20%;30%;range(Ember, Ember_smoothed);historical;;
+relative;yes;Capacity|Electricity|Wind|Onshore;GW;;;World;2010-2020;-20%;-10%;10%;20%;range(Ember, Ember_smoothed);historical;;
+Near-Term Trends;;;;;;;;;;;;;;;
+relative to 2030;;;;;;;;;;;;;;;
+relative;yes;Emissions|CO2|Energy and Industrial Processes;Mt CO2/yr;;SSP1 - Very Low with Limited Overshoot, SSP1 - Very Low after High Overshoot, SSP1 - Low Emissions, SSP1 - Medium-Low Emissions, SSP1 - Very Low with Limited Overshoot_a, SSP1 - Very Low with Limited Overshoot_c;;2030;-20%;-10%;10%;20%;;SSP1 - Medium Emissions;;
+relative;yes;Emissions|CO2|Energy and Industrial Processes;Mt CO2/yr;;SSP2 - Low Emissions, SSP2 - Very Low after High Overshoot, SSP2 - Medium-Low Emissions, SSP2 - Very Low with Limited Overshoot, SSP2 - High Emissions, SSP2 - Low Emissions_c, SSP2 - Low Emissions_d, SSP2 - Very Low after High Overshoot_b, SSP2 - Very Low after High Overshoot_c, SSP2 - Very Low after High Overshoot_d, SSP2 - Very Low with Limited Overshoot_a, SSP2 - Very Low with Limited Overshoot_c;;2030;-20%;-10%;10%;20%;;SSP2 - Medium Emissions;;
+relative;yes;Emissions|CO2|Energy and Industrial Processes;Mt CO2/yr;;SSP3 - High Emissions, SSP3 - High Emissions_a;;2030;-20%;-10%;10%;20%;;SSP3 - Medium Emissions;;
+relative;yes;Emissions|CO2|Energy and Industrial Processes;Mt CO2/yr;;SSP4 - Very Low after High Overshoot;;2030;-20%;-10%;10%;20%;;SSP4 - Medium Emissions;;
+relative;yes;Emissions|CO2|Energy and Industrial Processes;Mt CO2/yr;;SSP5 - High Emissions, SSP5 - High Emissions_a, SSP5 - Very Low after High Overshoot;;2030;-20%;-10%;10%;20%;;SSP5 - Medium Emissions;;
+capacities and CCS from threshold.mif;;;;;;;;;;;;;;;
+CCS;;;;;;;;;;;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;World;2025;39.6207;49.49215;83.5611;152.4457;;;;Near-term vetting: Carbon Management
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;LAM;2025;;5.724;17.64;;;;;https://github.com/pik-piam/mrremind/discussions/544
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;OAS;2025;;0;7.602;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;SSA;2025;;0;0.0014;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;EUR;2025;;0.5454;3.864;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;NEU;2025;;0.4614;2.2988;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;MEA;2025;;1.998;13.5226;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;REF;2025;;0;0;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;CAZ;2025;;4.968;47.124;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;CHA;2025;;1.809;7.35;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;IND;2025;;0;0.98;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;JPN;2025;;0;0;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;USA;2025;;10.908;93.639;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;World;2030;44.0226;60.01815;152.4663;457.8915;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;LAM;2030;;6.36;28.84;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;OAS;2030;;0;20.9076;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;SSA;2030;;0;0.0014;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;EUR;2030;;0.606;88.074;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;NEU;2030;;0.5124;22.526;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;MEA;2030;;2.22;32.5626;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;REF;2030;;0;0;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;CAZ;2030;;5.52;89.698;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;CHA;2030;;2.01;12.95;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;IND;2030;;0;0.98;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;JPN;2030;;0;2.3884;;;;;
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;USA;2030;;12.12;283.843;;;;;
+Nuclear;;;;;;;;;;;;;;;
+absolute;yes;Capacity|Electricity|Nuclear;GW;;;World;2030;269.7507;320.32955;463.58865;507.1;;;;Near-term vetting: Nuclear
+absolute;yes;Capacity|Electricity|Nuclear;GW;;;LAM;2030;;2.4336;9.009;;;;;https://github.com/pik-piam/mrremind/discussions/540
+absolute;yes;Capacity|Electricity|Nuclear;GW;;;OAS;2030;;13.9584;47.488;;;;;
+absolute;yes;Capacity|Electricity|Nuclear;GW;;;SSA;2030;;0.888;2.59;;;;;
+absolute;yes;Capacity|Electricity|Nuclear;GW;;;EUR;2030;;49.08;150.612;;;;;
+absolute;yes;Capacity|Electricity|Nuclear;GW;;;NEU;2030;;1.4256;10.402;;;;;
+absolute;yes;Capacity|Electricity|Nuclear;GW;;;MEA;2030;;2.9952;16.254;;;;;
+absolute;yes;Capacity|Electricity|Nuclear;GW;;;REF;2030;;20.424;67.858;;;;;
+absolute;yes;Capacity|Electricity|Nuclear;GW;;;CAZ;2030;;6.576;19.18;;;;;
+absolute;yes;Capacity|Electricity|Nuclear;GW;;;CHA;2030;;26.8914;115.2536;;;;;
+absolute;yes;Capacity|Electricity|Nuclear;GW;;;IND;2030;;3.3216;17.248;;;;;
+absolute;yes;Capacity|Electricity|Nuclear;GW;;;JPN;2030;;5.304;48.0662;;;;;
+absolute;yes;Capacity|Electricity|Nuclear;GW;;;USA;2030;;46.536;135.73;;;;;
+Hydro;;;;;;;;;;;;;;;
+absolute;yes;Capacity|Electricity|Hydro;GW;;;World;2030;979.4295;1175.3742;1606.66275;2117.577;;;;Near-term vetting: Hydro
+absolute;yes;Capacity|Electricity|Hydro;GW;;;LAM;2030;;110.94;376.292;;;;;https://github.com/pik-piam/mrremind/discussions/541
+absolute;yes;Capacity|Electricity|Hydro;GW;;;OAS;2030;;32.88;189.602;;;;;
+absolute;yes;Capacity|Electricity|Hydro;GW;;;SSA;2030;;12.78;85.232;;;;;
+absolute;yes;Capacity|Electricity|Hydro;GW;;;EUR;2030;;57.084;247.1728;;;;;
+absolute;yes;Capacity|Electricity|Hydro;GW;;;NEU;2030;;49.08;188.916;;;;;
+absolute;yes;Capacity|Electricity|Hydro;GW;;;MEA;2030;;9.369;42.9156;;;;;
+absolute;yes;Capacity|Electricity|Hydro;GW;;;REF;2030;;37.74;135.9456;;;;;
+absolute;yes;Capacity|Electricity|Hydro;GW;;;CAZ;2030;;52.5;178.99;;;;;
+absolute;yes;Capacity|Electricity|Hydro;GW;;;CHA;2030;;201.24;832.118;;;;;
+absolute;yes;Capacity|Electricity|Hydro;GW;;;IND;2030;;27.06;149.562;;;;;
+absolute;yes;Capacity|Electricity|Hydro;GW;;;JPN;2030;;13.44;80.682;;;;;
+absolute;yes;Capacity|Electricity|Hydro;GW;;;USA;2030;;48.84;187.67;;;;;
+Solar;;;;;;;;;;;;;;;
+absolute;yes;Capacity|Electricity|Solar;GW;;;World;2025;1609.2;2083;3152;3895.6;;;;Near-term vetting: Solar
+absolute;yes;Capacity|Electricity|Solar;GW;;;CHA;2025;;518.1;2671.7;;;;;https://github.com/pik-piam/mrremind/discussions/542
+absolute;yes;Capacity|Electricity|Solar;GW;;;EUR;2025;;194.2;764.7;;;;;EUR not a great fit
+absolute;yes;Capacity|Electricity|Solar;GW;;;IND;2025;;56.2;256.4;;;;;
+absolute;yes;Capacity|Electricity|Solar;GW;;;World;2030;2683.2;4350.2;8163.7;10896;;;;
+absolute;yes;Capacity|Electricity|Solar;GW;;;CHA;2030;;936.1;7874.1;;;;;
+absolute;yes;Capacity|Electricity|Solar;GW;;;EUR;2030;;280.6;1839.9;;;;;
+absolute;yes;Capacity|Electricity|Solar;GW;;;IND;2030;;104.4;855.6;;;;;
+Wind;;;;;;;;;;;;;;;
+absolute;yes;Capacity|Electricity|Wind|Onshore;GW;;;World;2025;945;1138;1570;1862;;;;Near-term vetting: Wind
+absolute;yes;Capacity|Electricity|Wind|Onshore;GW;;;EUR;2025;;154;505;;;;;https://github.com/pik-piam/mrremind/discussions/543
+absolute;yes;Capacity|Electricity|Wind|Onshore;GW;;;CHA;2025;;268;1101;;;;;EUR not a great fit
+absolute;yes;Capacity|Electricity|Wind|Onshore;GW;;;IND;2025;;28;91;;;;;
+absolute;yes;Capacity|Electricity|Wind|Onshore;GW;;;World;2030;1220;1719;2853;3655;;;;
+absolute;yes;Capacity|Electricity|Wind|Onshore;GW;;;EUR;2030;;191;969;;;;;
+absolute;yes;Capacity|Electricity|Wind|Onshore;GW;;;CHA;2030;;349;2117;;;;;
+absolute;yes;Capacity|Electricity|Wind|Onshore;GW;;;IND;2030;;33;154;;;;;
+post 2030;;;;;;;;;;;;;;;
+absolute;yes;Capacity|Electricity|Nuclear;GW;;;World;2050;;;;991;;;;IAEA high case
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;World;2035;;;;1300;;;;Kazlou et al. (https://www.nature.com/articles/s41558-024-02104-0)
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;World;2040;;;;4300;;;;Kazlou et al. (https://www.nature.com/articles/s41558-024-02104-0)
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;World;2050;;;;8600;;;;Grant et al.
+absolute;yes;Primary Energy|Biomass;EJ/yr;;;World;2030-2100;;;100;300;;;;Creutzig et al. 2015: https://onlinelibrary.wiley.com/doi/10.1111/gcbb.12205
