@@ -51,57 +51,57 @@ absolute;yes;Capacity|Electricity|Hydro;GW;NA;NA;Rest of Europe;2030;NA;34.5;126
 absolute;yes;Capacity|Electricity|Hydro;GW;NA;NA;Rest of Latin America;2030;NA;44.82;169.988;NA;NA;NA;NA;NA
 absolute;yes;Capacity|Electricity|Hydro;GW;NA;NA;Turkey;2030;NA;18.6;76.188;NA;NA;NA;NA;NA
 absolute;yes;Capacity|Electricity|Hydro;GW;NA;NA;USA;2030;NA;48.84;187.67;NA;NA;NA;NA;NA
-absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;World;2030;269.7507;320.32955;463.58865;507.1;NA;NA;NA;NA
+absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;World;2030;270.9;321.69375;464.2617;507.1;NA;NA;NA;NA
 absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Brazil;2030;NA;0.9024;4.508;NA;NA;NA;NA;NA
-absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Canada;2030;NA;6.576;19.18;NA;NA;NA;NA;NA
-absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;China;2030;NA;25.992;112.63;NA;NA;NA;NA;NA
-absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;EU & UK;2030;NA;47.4912;145.978;NA;NA;NA;NA;NA
+absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Canada;2030;NA;6.1008;17.794;NA;NA;NA;NA;NA
+absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;China;2030;NA;26.5536;120.638;NA;NA;NA;NA;NA
+absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;EU & UK;2030;NA;48.096;145.46;NA;NA;NA;NA;NA
 absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Former USSR;2030;NA;20.424;67.858;NA;NA;NA;NA;NA
-absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;India;2030;NA;3.3216;17.248;NA;NA;NA;NA;NA
-absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Japan;2030;NA;5.304;48.0662;NA;NA;NA;NA;NA
-absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Middle East;2030;NA;2.9952;10.094;NA;NA;NA;NA;NA
+absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;India;2030;NA;3.624;17.248;NA;NA;NA;NA;NA
+absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Japan;2030;NA;6.0624;45.36;NA;NA;NA;NA;NA
+absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Middle East;2030;NA;3.0096;10.136;NA;NA;NA;NA;NA
 absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;New Zealand and Australia;2030;NA;0;0;NA;NA;NA;NA;NA
 absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;North Africa;2030;NA;0;6.16;NA;NA;NA;NA;NA
 absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Other Africa;2030;NA;0.888;2.59;NA;NA;NA;NA;NA
-absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Rest of Asia;2030;NA;1.5648;7.588;NA;NA;NA;NA;NA
-absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Rest of East and South East Asia;2030;NA;13.293;42.5236;NA;NA;NA;NA;NA
+absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Rest of Asia;2030;NA;1.5648;9.156;NA;NA;NA;NA;NA
+absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Rest of East and South East Asia;2030;NA;12.2928;39.606;NA;NA;NA;NA;NA
 absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Rest of Europe;2030;NA;3.0144;8.792;NA;NA;NA;NA;NA
 absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Rest of Latin America;2030;NA;1.5312;4.501;NA;NA;NA;NA;NA
 absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;Turkey;2030;NA;0;6.244;NA;NA;NA;NA;NA
 absolute;yes;Capacity|Electricity|Nuclear;GW;NA;NA;USA;2030;NA;46.536;135.73;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;World;2025;39.6207;49.49215;83.5611;152.4457;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;World;2025;39.7422;50.62835;74.1363;79.4266;NA;NA;NA;NA
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Brazil;2025;NA;5.724;17.64;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Canada;2025;NA;2.808;34.776;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;China;2025;NA;1.809;7.35;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;EU & UK;2025;NA;0.5208;3.689;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Canada;2025;NA;3.1566;17.983;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;China;2025;NA;1.944;7;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;EU & UK;2025;NA;0.5208;2.352;NA;NA;NA;NA;NA
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Former USSR;2025;NA;0;0;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;India;2025;NA;0;0.98;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;India;2025;NA;0;0;NA;NA;NA;NA;NA
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Japan;2025;NA;0;0;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Middle East;2025;NA;1.998;13.5226;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;New Zealand and Australia;2025;NA;2.16;12.348;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Middle East;2025;NA;1.998;11.2;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;New Zealand and Australia;2025;NA;1.782;4.62;NA;NA;NA;NA;NA
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;North Africa;2025;NA;0;0;NA;NA;NA;NA;NA
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Other Africa;2025;NA;0;0.0014;NA;NA;NA;NA;NA
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Rest of Asia;2025;NA;0;0;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Rest of East and South East Asia;2025;NA;0;7.602;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Rest of Europe;2025;NA;0.486;2.4738;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Rest of East and South East Asia;2025;NA;0;4.62;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Rest of Europe;2025;NA;0.489;2.408;NA;NA;NA;NA;NA
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Rest of Latin America;2025;NA;0;0;NA;NA;NA;NA;NA
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Turkey;2025;NA;0;0;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;USA;2025;NA;10.908;93.639;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;World;2030;44.0226;60.01815;152.4663;457.8915;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;USA;2025;NA;10.881;33.264;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;World;2030;44.1585;70.7332;182.03745;514.1994;NA;NA;NA;NA
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Brazil;2030;NA;6.36;28.84;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Canada;2030;NA;3.12;62.776;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;China;2030;NA;2.01;12.95;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;EU & UK;2030;NA;0.5784;84.6482;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Canada;2030;NA;3.507;95.1328;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;China;2030;NA;2.16;21.7;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;EU & UK;2030;NA;0.5784;101.3908;NA;NA;NA;NA;NA
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Former USSR;2030;NA;0;0;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;India;2030;NA;0;0.98;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Japan;2030;NA;0;2.3884;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Middle East;2030;NA;2.22;30.3226;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;New Zealand and Australia;2030;NA;2.4;26.922;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;North Africa;2030;NA;0;2.24;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Other Africa;2030;NA;0;0.0014;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;India;2030;NA;0;0;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Japan;2030;NA;0;2.3716;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Middle East;2030;NA;2.22;30.1;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;New Zealand and Australia;2030;NA;1.98;20.4232;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;North Africa;2030;NA;0;0;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Other Africa;2030;NA;0;1.4014;NA;NA;NA;NA;NA
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Rest of Asia;2030;NA;0;1.4;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Rest of East and South East Asia;2030;NA;0;19.5076;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Rest of Europe;2030;NA;0.54;25.9518;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Rest of East and South East Asia;2030;NA;0;19.5426;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Rest of Europe;2030;NA;0.5436;22.428;NA;NA;NA;NA;NA
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Rest of Latin America;2030;NA;0;0;NA;NA;NA;NA;NA
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;Turkey;2030;NA;0;0;NA;NA;NA;NA;NA
-absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;USA;2030;NA;12.12;283.843;NA;NA;NA;NA;NA
+absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;NA;NA;USA;2030;NA;12.09;309.7066;NA;NA;NA;NA;NA

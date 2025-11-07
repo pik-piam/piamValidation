@@ -9,11 +9,17 @@ relative;yes;Capacity|Electricity|Solar;GW;;;World;2010-2020;-0.2;-0.1;0.1;0.2;r
 relative;yes;Capacity|Electricity|Wind|Onshore;GW;;;World;2010-2020;-0.2;-0.1;0.1;0.2;range(IRENA, Ember, IRENA_smoothed, Ember_smoothed);historical;;
 relative;yes;Emissions|CO2|Energy and Industrial Processes;Mt CO2/yr;;;World;2010-2020;-0.2;-0.1;0.1;0.2;range(CEDS, CEDS_smoothed);historical;;
 relative;yes;Emissions|CH4|Waste;Mt CH4/yr;;;World;2010-2020;-0.2;-0.1;0.1;0.2;range(CEDS, CEDS_smoothed);historical;;
+difference;yes;Stocks|Transportation|Light-Duty Vehicle|Battery-Electric;million;;;World;2010-2020;-5;-2.5;2.5;5;range(IEA GEVO Historical, IEA GEVO Historical_smoothed);historical;;
+difference;yes;Sales|Transportation|Light-Duty Vehicle|Battery-Electric;million;;;World;2010-2020;-1;-0.5;0.5;1;range(IEA GEVO Historical, IEA GEVO Historical_smoothed);historical;;
 relative;yes;Emissions|CO2|Energy and Industrial Processes;Mt CO2/yr;;SSP1 - Very Low with Limited Overshoot, SSP1 - Very Low after High Overshoot, SSP1 - Low Emissions, SSP1 - Medium-Low Emissions, SSP1 - Very Low with Limited Overshoot_a, SSP1 - Very Low with Limited Overshoot_c;World;2030;-0.2;-0.1;0.1;0.2;;SSP1 - Medium Emissions;;
 relative;yes;Emissions|CO2|Energy and Industrial Processes;Mt CO2/yr;;SSP2 - Low Emissions, SSP2 - Very Low after High Overshoot, SSP2 - Medium-Low Emissions, SSP2 - Very Low with Limited Overshoot, SSP2 - High Emissions, SSP2 - Low Emissions_c, SSP2 - Low Emissions_d, SSP2 - Very Low after High Overshoot_b, SSP2 - Very Low after High Overshoot_c, SSP2 - Very Low after High Overshoot_d, SSP2 - Very Low with Limited Overshoot_a, SSP2 - Very Low with Limited Overshoot_c;World;2030;-0.2;-0.1;0.1;0.2;;SSP2 - Medium Emissions;;
 relative;yes;Emissions|CO2|Energy and Industrial Processes;Mt CO2/yr;;SSP3 - High Emissions, SSP3 - High Emissions_a;World;2030;-0.2;-0.1;0.1;0.2;;SSP3 - Medium Emissions;;
 relative;yes;Emissions|CO2|Energy and Industrial Processes;Mt CO2/yr;;SSP4 - Very Low after High Overshoot;World;2030;-0.2;-0.1;0.1;0.2;;SSP4 - Medium Emissions;;
 relative;yes;Emissions|CO2|Energy and Industrial Processes;Mt CO2/yr;;SSP5 - High Emissions, SSP5 - High Emissions_a, SSP5 - Very Low after High Overshoot;World;2030;-0.2;-0.1;0.1;0.2;;SSP5 - Medium Emissions;;IAEA high case
+absolute;yes;Sales|Transportation|Light-Duty Vehicle|Battery-Electric;million;;;World;2025;9;12;17;23.8;;;;
+absolute;yes;Sales|Transportation|Light-Duty Vehicle|Battery-Electric;million;;;World;2030;19.8;26.4;44.4;51.8;;;;
+absolute;yes;Stocks|Transportation|Light-Duty Vehicle|Battery-Electric;million;;;World;2025;33;44;67.2;78.4;;;;
+absolute;yes;Stocks|Transportation|Light-Duty Vehicle|Battery-Electric;million;;;World;2030;108;144;228;266;;;;
 absolute;yes;Capacity|Electricity|Nuclear;GW;;;World;2050;;;;991;;;;Kazlou et al. (https://www.nature.com/articles/s41558-024-02104-0)
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;World;2035;;;;1300;;;;Kazlou et al. (https://www.nature.com/articles/s41558-024-02104-0)
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;World;2040;;;;4300;;;;Grant et al.
