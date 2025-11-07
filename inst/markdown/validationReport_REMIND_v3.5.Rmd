@@ -1,5 +1,5 @@
 ---
-title: "REMIND validation v3.5.1"
+title: "REMIND validation v3.5.2"
 date: "`r format(Sys.Date())`"
 output:
   html_document:
@@ -35,25 +35,30 @@ config <- "AMT"
 ```
 
 # Data
+Loading data from (3.5.2): `/p/projects/remind/runs/REMIND_2025_09_19/remind`
 
-Loading data from: `/p/projects/remind/runs/REMIND_2025_06_10/remind`
+comparing to (3.5.1): `/p/projects/remind/runs/REMIND_2025_06_10/remind`
 
 Using config: `r config` [Link](https://pik-piam.github.io/piamValidation/articles/configs/validationConfig_REMIND.html)
 
 ```{r, message = FALSE, warning = FALSE}
 # Data Preparation
+
+# data_dir <- ""
+
 # r351 <- quitte::as.quitte(
-#   c("user/Data/validation_3.5.1/2025-06-10/REMIND_generic_SSP2-NPi2025.mif",
-#     "user/Data/validation_3.5.1/2025-06-10/REMIND_generic_SSP2-PkBudg1000.mif",
-#     "user/Data/validation_3.5.1/2025-06-10/REMIND_generic_SSP2-PkBudg650.mif",
-#     "user/Data/validation_3.5.1/2025-06-10/REMIND_generic_SSP1-PkBudg650.mif"))
+#   c(paste0(data_dir, "/Data/validation_3.5.1/2025-06-10/REMIND_generic_SSP2-NPi2025.mif"),
+#     paste0(data_dir, "/Data/validation_3.5.1/2025-06-10/REMIND_generic_SSP2-PkBudg1000.mif"),
+#     paste0(data_dir, "/Data/validation_3.5.1/2025-06-10/REMIND_generic_SSP2-PkBudg650.mif"),
+#     paste0(data_dir, "/Data/validation_3.5.1/2025-06-10/REMIND_generic_SSP1-PkBudg650.mif")))
 # 
-# r35 <- quitte::as.quitte(
-#   c("user/Data/validation_3.5/v3/REMIND_generic_SSP2-NPi2025.mif",
-#     "user/Data/validation_3.5/v3/REMIND_generic_SSP2-PkBudg1000.mif",
-#     "user/Data/validation_3.5/v3/REMIND_generic_SSP2-PkBudg650.mif"))
+# r352 <- quitte::as.quitte(
+#   c(paste0(data_dir, "/Data/validation_3.5.2/2025-09-19/REMIND_generic_SSP2-NPi2025.mif"),
+#     paste0(data_dir, "/Data/validation_3.5.2/2025-09-19/REMIND_generic_SSP2-PkBudg1000.mif"),
+#     paste0(data_dir, "/Data/validation_3.5.2/2025-09-19/REMIND_generic_SSP2-PkBudg650.mif"),
+#     paste0(data_dir, "/Data/validation_3.5.2/2025-09-19/REMIND_generic_SSP1-PkBudg650.mif")))
 # 
-# hist <- quitte::as.quitte("user/Data/validation_3.5.1/historical.mif")
+# hist <- quitte::as.quitte(paste0(data_dir, "/Data/validation_3.5.2/2025-09-19/historical.mif"))
 # 
 # # average 2020 values over 5 year period to even out Covid shock
 # hist_m <- hist %>%
@@ -67,10 +72,10 @@ Using config: `r config` [Link](https://pik-piam.github.io/piamValidation/articl
 # hist <- rbind(hist, hist_smoothed)
 # 
 # # bunkers fix
-# #hist$variable <- factor(hist$variable, levels = c(levels(hist$variable), "Emi|CO2|w/o Bunkers|Energy|Demand|Transport"))
-# #hist[hist$variable == "Emi|CO2|Energy|Demand|Transport", "variable"] <- "Emi|CO2|w/o Bunkers|Energy|Demand|Transport"
+# hist$variable <- factor(hist$variable, levels = c(levels(hist$variable), "Emi|CO2|w/o Bunkers|Energy|Demand|Transport"))
+# hist[hist$variable == "Emi|CO2|Energy|Demand|Transport", "variable"] <- "Emi|CO2|w/o Bunkers|Energy|Demand|Transport"
 # 
-# r351$model <- "REMIND 3.5.1"
+# 
 # # harmonize scenario names
 # # mask <- data.frame(
 # #   scenario = c("SSP2-NPi", "SSP2-PkBudg1050", "SSP2-PkBudg650"),
@@ -79,11 +84,12 @@ Using config: `r config` [Link](https://pik-piam.github.io/piamValidation/articl
 # # r351 <- quitte::as.quitte(
 # #   quitte::replace_column(r34, mask, scenario = scenario, scenario_new))
 # 
-# r35$model <- "REMIND 3.5"
+# r351$model <- "REMIND 3.5.1"
+# r352$model <- "REMIND 3.5.2"
 # 
-# saveRDS(remind2::deletePlus(quitte::as.quitte(rbind(r35, r351, hist))), "data/r351.rds")
+# saveRDS(remind2::deletePlus(quitte::as.quitte(rbind(r352, r351, hist))), "data/r352.rds")
 
-data <- readRDS("data/r351.rds")
+data <- readRDS("data/r352.rds")
 
 # for use in lineplots
 hist <- data %>% filter(scenario == "historical")
@@ -121,7 +127,7 @@ REMIND_lineplot <- function(var,
         filter(scenario != "historical",
                variable == var,
                region == reg,
-               model %in% c("REMIND 3.5", "REMIND 3.5.1"))
+               model %in% c("REMIND 3.5.2", "REMIND 3.5.1"))
           
       hist_data <- df %>%
         filter(scenario == "historical",
@@ -150,7 +156,7 @@ REMIND_lineplot <- function(var,
       filter(scenario != "historical",
              variable == var,
              region == reg,
-             model %in% c("REMIND 3.5", "REMIND 3.5.1"))
+             model %in% c("REMIND 3.5.2", "REMIND 3.5.1"))
     
     hist_data <- df %>%
       filter(scenario == "historical",
@@ -169,6 +175,162 @@ REMIND_lineplot <- function(var,
     }
   }
 ```
+
+### Sankey {.tabset}
+
+Show how many data points changed color after update. Hovering shows which
+variables are responsible for how many data points of a flow.
+
+#### Changed only
+
+```{r, fig.width=7, fig.height=6}
+v1 <- valiData %>% filter(model == "REMIND 3.5.1")
+v2 <- valiData %>% filter(model == "REMIND 3.5.2")
+
+changed <- merge(v1, v2, by = c("region", "period", "variable", "scenario", "unit", "metric")) %>%
+  filter(check.x != check.y)
+
+df <- changed %>%
+  select(variable, before = check.x, after = check.y)
+
+# ---------- Define categories in fixed order ----------
+colors <- c("blue","cyan","green","yellow","red","grey")
+
+color_map <- c(green     = "#008450",
+               yellow    = "#EFBB0F",
+               red       = "#AA0014",
+               cyan      = "#7BD5F3",
+               blue      = "#4477AA",
+               grey      = "#808080")
+
+# ---------- Aggregate for Sankey links, but keep breakdown ----------
+links <- df %>%
+  count(before, after, variable, name = "sub_value") %>%   # counts per sub-flow
+  group_by(before, after) %>%
+  summarise(
+    value = sum(sub_value),
+    detail = paste0(variable, ": ", sub_value, collapse = "<br>"),
+    .groups = "drop"
+  )
+
+# ---------- Build nodes ----------
+nodes <- data.frame(
+  name  = c(paste0(colors, "_before"), paste0(colors, "_after")),
+  label = c(paste0(toupper(substr(colors,1,1)), substring(colors,2), " (before)"),
+            paste0(toupper(substr(colors,1,1)), substring(colors,2), " (after)")),
+  color = c(color_map[colors], color_map[colors])
+)
+
+# ---------- Map source/target indices ----------
+links <- links %>%
+  mutate(
+    source = match(paste0(before, "_before"), nodes$name) - 1,
+    target = match(paste0(after,  "_after"),  nodes$name) - 1,
+    link_color = nodes$color[source + 1],
+    hover = paste0(before, " → ", after,
+                   "<br>Total: ", value, "<br>", detail)
+  )
+
+# ---------- Plot Sankey ----------
+fig <- plot_ly(
+  type = "sankey",
+  arrangement = "snap",
+  node = list(
+    label = nodes$label,
+    color = nodes$color,
+    pad = 15,
+    thickness = 20,
+    line = list(color = "black", width = 0.5)
+  ),
+  link = list(
+    source = links$source,
+    target = links$target,
+    value  = links$value,
+    color  = links$link_color,
+    customdata = links$hover,
+    hovertemplate = "%{customdata}<extra></extra>"
+  )
+) %>%
+  layout(title = "REMIND 3.5.1 to 3.5.2", font = list(size = 12))
+
+fig
+```
+
+#### All
+
+```{r, fig.width=7, fig.height=6}
+v1 <- valiData %>% filter(model == "REMIND 3.5.1")
+v2 <- valiData %>% filter(model == "REMIND 3.5.2")
+
+changed <- merge(v1, v2, by = c("region", "period", "variable", "scenario", "unit", "metric"))
+
+df <- changed %>%
+  select(variable, before = check.x, after = check.y)
+
+# ---------- Define categories in fixed order ----------
+colors <- c("blue","cyan","green","yellow","red","grey")
+
+color_map <- c(green     = "#008450",
+               yellow    = "#EFBB0F",
+               red       = "#AA0014",
+               cyan      = "#7BD5F3",
+               blue      = "#4477AA",
+               grey      = "#808080")
+
+# ---------- Aggregate for Sankey links, but keep breakdown ----------
+links <- df %>%
+  count(before, after, variable, name = "sub_value") %>%   # counts per sub-flow
+  group_by(before, after) %>%
+  summarise(
+    value = sum(sub_value),
+    detail = paste0(variable, ": ", sub_value, collapse = "<br>"),
+    .groups = "drop"
+  )
+
+# ---------- Build nodes ----------
+nodes <- data.frame(
+  name  = c(paste0(colors, "_before"), paste0(colors, "_after")),
+  label = c(paste0(toupper(substr(colors,1,1)), substring(colors,2), " (before)"),
+            paste0(toupper(substr(colors,1,1)), substring(colors,2), " (after)")),
+  color = c(color_map[colors], color_map[colors])
+)
+
+# ---------- Map source/target indices ----------
+links <- links %>%
+  mutate(
+    source = match(paste0(before, "_before"), nodes$name) - 1,
+    target = match(paste0(after,  "_after"),  nodes$name) - 1,
+    link_color = nodes$color[source + 1],
+    hover = paste0(before, " → ", after,
+                   "<br>Total: ", value, "<br>", detail)
+  )
+
+# ---------- Plot Sankey ----------
+fig <- plot_ly(
+  type = "sankey",
+  arrangement = "snap",
+  node = list(
+    label = nodes$label,
+    color = nodes$color,
+    pad = 15,
+    thickness = 20,
+    line = list(color = "black", width = 0.5)
+  ),
+  link = list(
+    source = links$source,
+    target = links$target,
+    value  = links$value,
+    color  = links$link_color,
+    customdata = links$hover,
+    hovertemplate = "%{customdata}<extra></extra>"
+  )
+) %>%
+  layout(title = "REMIND 3.5.1 to 3.5.2", font = list(size = 12))
+
+fig
+```
+
+
 
 
 ## Emissions
@@ -203,7 +365,7 @@ REMIND_lineplot(var, reg = "all", hist_models = c("CEDS", "EDGARghg", "CEDS_smoo
 
 #### Heat Map
 ```{r, fig.width=7, fig.height=6}
-var <- "Emi|CO2|Energy and Industrial Processes"
+var <- "Emi|CO2|w/o Bunkers|Energy and Industrial Processes"
 validationHeatmap(valiData[valiData$variable == var, ])
 ```
 
