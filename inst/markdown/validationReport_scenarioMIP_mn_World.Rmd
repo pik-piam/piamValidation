@@ -17,7 +17,7 @@ params:
 ---
 
 ```{r include=FALSE}
-library(piamValidation)
+devtools::load_all(".")
 library(knitr)
 library(dplyr)
 library(ggplot2)
@@ -41,12 +41,13 @@ knitr::opts_chunk$set(
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
 # versions
-snapshot_date <- "2025-06-20"
-historical_date <- "2025-06-25"
-thresholds_date <- "2025-04-30"
-config_date <- "2025-06-06"
+snapshot_date <- "2025-11-06"
+historical_date <- "2025-10-14"
+thresholds_date <- "2025-10-14"
+config_date <- "2025-11-06"
 
-data_dir <- "C:/Users/pascalwe/Data/scenario_mip/ModelNative/"
+# TODO user
+data_dir <- "user/Data/scenario_mip/ModelNative/"
 
 models <- c("AIM30",
             "COFFEE16",
@@ -70,12 +71,12 @@ Validation Configs: `r config_date`
 ## Validation World
 
 ```{r}
-scen_data_all <- readRDS(paste0("scenario_all_", snapshot_date, ".rds")) %>% 
+scen_data_all <- readRDS(paste0("data/scenario_all_", snapshot_date, ".rds")) %>% 
   filter(period %in% seq(2005, 2100, 5)) %>%
   mutate(scenario = str_replace(scenario, "SSP([1-5]) - Very Low Emissions", "SSP\\1 - Very Low with Limited Overshoot")) %>%
   mutate(scenario = str_replace(scenario, "SSP([1-5]) - Low Overshoot", "SSP\\1 - Very Low after High Overshoot"))
 
-hist_data_all <- readRDS(paste0("historical_all_", historical_date, ".rds"))
+hist_data_all <- readRDS(paste0("data/historical_all_", historical_date, ".rds"))
 
 # average 2020 values over 5 year period to even out Covid shock
 hist_m <- hist_data_all %>%
@@ -131,7 +132,7 @@ models.short <- c(
   "GCAM 7.1 scenarioMIP" = "GCAM",
   "IMAGE 3.4" = "IMAGE",
   "MESSAGEix-GLOBIOM-GAINS 2.1-M-R12" = "MESSAGE",
-  "REMIND-MAgPIE 3.5-4.10" = "REMIND",
+  "REMIND-MAgPIE 3.5-4.11" = "REMIND",
   "WITCH 6.0" = "WITCH"  
 )
 
@@ -195,7 +196,9 @@ vars.short <- c(
   "Capacity|Electricity|Wind|Onshore" = "Cap|Wind|Onshore",
   "Carbon Capture|Geological Storage" = "CCS",
   "Emissions|CH4|Energy and Industrial Processes" = "Emi|CH4|EIP",
-  "Emissions|CH4|Waste" = "Emi|CH4|Waste"
+  "Emissions|CH4|Waste" = "Emi|CH4|Waste",
+  "Stocks|Transportation|Light-Duty Vehicle|Battery-Electric" = "Stock|EV",
+  "Sales|Transportation|Light-Duty Vehicle|Battery-Electric" = "Sales|EV"
 )
 ```
 
@@ -263,6 +266,42 @@ model.region.names <- c()
 valiData$scenario <- factor(valiData$scenario, 
                             levels = sort(unique(valiData$scenario)))
 ```
+
+```{r}
+# # export data
+# # transform relative to absolute thresholds
+# valiData_r <- 
+#   valiData %>% 
+#   filter(metric == "relative") %>%
+#   mutate(
+#       min_red = ((1+min_red) * ref_value_min),
+#       min_yel = ((1+min_yel) * ref_value_min),
+#       max_yel = ((1+max_yel) * ref_value_max),
+#       max_red = ((1+max_red) * ref_value_max)
+#     )
+# valiData_a <-
+#   valiData %>%
+#   filter(metric == "absolute")
+# 
+# allThresh <- rbind(valiData_r, valiData_a) %>%
+#   select(model, scenario, region, variable, unit, period, 
+#          min_red, min_yel, max_yel, max_red, ref_model, ref_scenario)
+# 
+# vD <- valiData %>% select(-text)
+# 
+# saveRDS(allThresh, "all_thresholds.rds")
+# saveRDS(valiData, "valiData.rds")
+# saveRDS(hist_data_all, "hist.rds")
+# saveRDS(scen_data_all, "scen.rds")
+# 
+# linePlotThresholds(filter(valiData, variable == "Stocks|Transportation|Light-Duty Vehicle|Battery-Electric"),
+#                    refData = hist_data_all,
+#                    scenData = scen_data_all,
+#                    interactive = FALSE)
+```
+
+
+
 ```{r, fig.width=10, fig.height=6}
 emiscen_lineplots <- function(var,
                               vD = valiData,
@@ -462,6 +501,38 @@ validationHeatmap(valiData %>% filter(variable == var))
 ```{r, fig.width=10, fig.height=6}
 emiscen_lineplots(var, hist_models = c("CEDS", "CEDS_smoothed"))
 ```
+
+### EV Stocks {.tabset}
+
+#### Heat Map
+
+```{r, fig.width=10, fig.height=8}
+var <- "Stock|EV"
+validationHeatmap(valiData %>% filter(variable == var))
+```
+
+#### Line Plots by Scenario Narrative
+
+```{r, fig.width=10, fig.height=6}
+emiscen_lineplots(var, hist_models = c("IEA GEVO Historical", "IEA GEVO Historical_smoothed"))
+```
+
+### EV Sales {.tabset}
+
+#### Heat Map
+
+```{r, fig.width=10, fig.height=8}
+var <- "Sales|EV"
+validationHeatmap(valiData %>% filter(variable == var))
+```
+
+#### Line Plots by Scenario Narrative
+
+```{r, fig.width=10, fig.height=6}
+emiscen_lineplots(var, hist_models = c("IEA GEVO Historical", "IEA GEVO Historical_smoothed"))
+```
+
+
 
 ### CCS {.tabset}
 

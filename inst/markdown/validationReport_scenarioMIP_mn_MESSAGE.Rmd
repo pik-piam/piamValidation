@@ -18,7 +18,7 @@ params:
 
 ```{r include=FALSE}
 # Setup
-library(piamValidation)
+devtools::load_all(".")
 library(knitr)
 library(dplyr)
 library(ggplot2)
@@ -40,9 +40,9 @@ knitr::opts_chunk$set(
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
 # data revision
-snapshot_date <- "2025-06-20"
-historical_date <- "2025-06-25"
-config_date <- "2025-06-06"
+snapshot_date <- "2025-11-06"
+historical_date <- "2025-10-14"
+config_date <- "2025-11-06"
 ```
 
 ```{r}
@@ -141,7 +141,9 @@ vars.short <- c(
   "Capacity|Electricity|Wind|Onshore" = "Cap|Wind|Onshore",
   "Carbon Capture|Geological Storage" = "CCS",
   "Emissions|CH4|Energy and Industrial Processes" = "Emi|CH4|EIP",
-  "Emissions|CH4|Waste" = "Emi|CH4|Waste"
+  "Emissions|CH4|Waste" = "Emi|CH4|Waste",
+  "Stocks|Transportation|Light-Duty Vehicle|Battery-Electric" = "Stock|EV",
+  "Sales|Transportation|Light-Duty Vehicle|Battery-Electric" = "Sales|EV"
 )
 ```
 
@@ -150,7 +152,7 @@ vars.short <- c(
 config <- paste0("scenarioMIP_", model, "_", config_date)
 
 # Scenario Data 
-data <- readRDS(paste0("scenario_all_", snapshot_date, ".rds")) %>%
+data <- readRDS(paste0("data/scenario_all_", snapshot_date, ".rds")) %>%
   mutate(model = gsub("\\.| ", "", model),
          region = gsub("\\.|", "", region)) %>%
   filter(
@@ -188,7 +190,7 @@ data <- data %>%
 # import from .rds 
 # - convert to ScenarioMIP variable template
 # - filter for current model and remove model name from region
-hist <- readRDS(paste0("historical_all_", historical_date, ".rds")) %>%
+hist <- readRDS(paste0("data/historical_all_", historical_date, ".rds")) %>%
   filter(grepl(!!model, region) | region == "World") 
 
 # remove model name from region and commas to be compatible with other data
@@ -301,6 +303,7 @@ defined boundaries. Hovering over data points offers additional data via tool ti
 - **Capacities**: Deviation to Ember (2024).
 - **Emissions|CO2|EIP**: Deviations to CEDS (2025) 
   -> only for World due to bunkers data availability
+- **EV Stocks/Sales**: IEA Global EV Outlook
 
 *Note*: For 2020, the tolerance range includes both the 2020 value and the 2018-2022 average
 to allow for models to include or exclude a "COVID dip". In the configuration file
@@ -318,6 +321,10 @@ Tested against thresholds based on
 - **Nuclear**: [IAEA PRIS project pipelines](https://github.com/pik-piam/mrremind/discussions/541)
 - **Solar**: [BloombergNEF projections](https://github.com/pik-piam/mrremind/discussions/542) (only World available)
 - **Wind**: [GWEC Global Wind Report](https://github.com/pik-piam/mrremind/discussions/543) (only World available)
+
+#### Near-term Electric Vehicles
+
+- **EV Stocks/Sales**: [IEA Global EV Outlook STEPS and APS](https://github.com/pik-piam/mrremind/discussions/766) (only World)
 
 #### Near-term Carbon Capture
 
