@@ -10,7 +10,7 @@ library(readr)
 library(DT)
 
 # Load the CSV from inst/config
-df <- piamValidation::getConfig("scenarioMIP_GCAM71_2025-06-06")
+df <- piamValidation::getConfig("scenarioMIP_GCAM71")
 
 font.size <- "9pt"
 
