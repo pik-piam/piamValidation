@@ -22,7 +22,7 @@ Useful links:
 Authors:
 \itemize{
   \item Oliver Richters
-  \item Fabrice Lécuyer
+  \item Fabrice LC)cuyer
 }
 
 }
