@@ -166,7 +166,6 @@ combineData <- function(scenData, cfgRow, histData = NULL) {
       df <- merge(d, ref_data)
 
     } else {
-      # TODO: have this warning here or earlier when cleaning config?
       warning("'metric' must be either 'absolute',
               'relative', 'difference' or 'growthrate'.")
     }

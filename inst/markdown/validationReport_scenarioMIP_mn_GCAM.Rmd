@@ -290,7 +290,7 @@ Interactive line plots and heat maps demonstrate how models stay within the
 defined boundaries. Hovering over data points offers additional data via tool tips 
 (e.g. what is the exact reference value). Two levels of "strictness" are used:
 
-![Thresholds](C:/Users/pascalwe/Code/scenarioMIP/piamValidation/inst/figures/thresholds_extracolors.png){#id .class width=70% height=70%}
+![Thresholds](../../vignettes/thresholds_extracolors.png){#id .class width=70% height=70%}
 
 ### Data sources
 
