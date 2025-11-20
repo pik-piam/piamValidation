@@ -1,6 +1,6 @@
 # Validation Tools for PIK-PIAM
 
-R package **piamValidation**, version **0.15.3**
+R package **piamValidation**, version **0.15.4**
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/piamValidation)](https://cran.r-project.org/package=piamValidation)
@@ -61,8 +61,8 @@ In case of questions / problems please contact Pascal Weigmann
 
 To cite package **piamValidation** in publications use:
 
-Weigmann P, Richters O, Lécuyer F (2025). “piamValidation: Validation
-Tools for PIK-PIAM.” Version: 0.15.3,
+Weigmann P, Richters O, Lécuyer F, Koch J (2025). “piamValidation:
+Validation Tools for PIK-PIAM.” Version: 0.15.4,
 <https://pik-piam.github.io/piamValidation%20https://github.com/pik-piam/piamValidation>.
 
 A BibTeX entry for LaTeX users is
@@ -70,10 +70,10 @@ A BibTeX entry for LaTeX users is
 ``` latex
 @Misc{,
  title = {piamValidation: Validation Tools for PIK-PIAM},
- author = {Pascal Weigmann and Oliver Richters and Fabrice Lécuyer},
+ author = {Pascal Weigmann and Oliver Richters and Fabrice Lécuyer and Johannes Koch},
  date = {2025-11-20},
  year = {2025},
  url = {https://pik-piam.github.io/piamValidation https://github.com/pik-piam/piamValidation},
- note = {Version: 0.15.3},
+ note = {Version: 0.15.4},
 }
 ```
