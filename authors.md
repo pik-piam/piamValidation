@@ -11,7 +11,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/pik-piam/piamValidation/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/pik-piam/piamValidation/blob/v0.15.2/DESCRIPTION)
 
 Weigmann P, Richters O, Lécuyer F (2025). *piamValidation: Validation
 Tools for PIK-PIAM*. R package version 0.15.2,
