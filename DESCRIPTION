@@ -4,9 +4,15 @@ Title: Validation Tools for PIK-PIAM
 Version: 0.15.3
 Date: 2025-11-20
 Authors@R:
-    c(person("Pascal", "Weigmann",, "pascal.weigmann@pik-potsdam.de", role = c("aut", "cre")),
-      person("Oliver", "Richters",, role = "aut"),
-      person("Fabrice", "Lécuyer",, role = "aut"))
+    c(person("Pascal", "Weigmann",, "pascal.weigmann@pik-potsdam.de", role = c("aut", "cre"),
+      comment = c(affiliation = "Potsdam Institute for Climate Impact Research", ORCID = "0000-0001-8801-173X")),
+      person("Oliver", "Richters",, role = "aut",
+      comment = c(affiliation = "Potsdam Institute for Climate Impact Research", ORCID = "0000-0001-8253-4716")),
+      person("Fabrice", "Lécuyer",, role = "aut",
+      comment = c(affiliation = "Potsdam Institute for Climate Impact Research", ORCID = "0000-0002-7364-999X")),
+      person("Johannes", "Koch",, role = "aut",
+      comment = c(affiliation = "Potsdam Institute for Climate Impact Research", ORCID = "0000-0003-2920-8086"))
+      )
 Description: The piamValidation package provides validation tools for the Potsdam Integrated Assessment Modelling environment.
 License: LGPL-3
 URL: https://github.com/pik-piam/piamValidation, https://pik-piam.github.io/piamValidation
