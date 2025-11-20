@@ -2,18 +2,28 @@ cff-version: 1.2.0
 message: If you use this software, please cite it using the metadata from this file.
 type: software
 title: 'piamValidation: Validation Tools for PIK-PIAM'
-version: 0.15.2
-date-released: '2025-11-19'
+version: 0.15.3
+date-released: '2025-11-20'
 abstract: The piamValidation package provides validation tools for the Potsdam Integrated
   Assessment Modelling environment.
 authors:
 - family-names: Weigmann
   given-names: Pascal
   email: pascal.weigmann@pik-potsdam.de
+  orcid: https://orcid.org/0000-0001-8801-173X
+  affiliation: Potsdam Institute for Climate Impact Research
 - family-names: Richters
   given-names: Oliver
+  orcid: https://orcid.org/0000-0001-8253-4716
+  affiliation: Potsdam Institute for Climate Impact Research
 - family-names: Lécuyer
   given-names: Fabrice
+  orcid: https://orcid.org/0000-0002-7364-999X
+  affiliation: Potsdam Institute for Climate Impact Research
+- family-names: Koch
+  given-names: Johannes
+  orcid: https://orcid.org/0000-0003-2920-8086
+  affiliation: Potsdam Institute for Climate Impact Research
 license: LGPL-3.0
 repository-code: https://github.com/pik-piam/piamValidation
 url: https://pik-piam.github.io/piamValidation
