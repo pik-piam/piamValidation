@@ -63,7 +63,7 @@ To cite package **piamValidation** in publications use:
 
 Weigmann P, Richters O, Lécuyer F, Koch J (2025). “piamValidation:
 Validation Tools for PIK-PIAM.” Version: 0.15.4,
-<https://pik-piam.github.io/piamValidation%20https://github.com/pik-piam/piamValidation>.
+<https://pik-piam.github.io/piamValidation>.
 
 A BibTeX entry for LaTeX users is
 
