@@ -3,7 +3,7 @@ test_that("all use cases generally work", {
   dat_path <- testthat::test_path("testdata", "data_testUseCases.rds")
 
   # full config
-  cfg <- getConfig(cfg_path)
+  cfg <- suppressMessages(getConfig(cfg_path))
 
   # test config line by line to avoid sorting problems
 

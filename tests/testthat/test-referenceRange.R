@@ -3,8 +3,8 @@ test_that("references can be used as range", {
   # TODO: find out how to solve the error when running
   # validateScenarios(data, config)
 
-  config <- getConfig(
-    testthat::test_path("testdata", "validationConfig_testReferenceRange.csv"))
+  config <- suppressMessages(getConfig(
+    testthat::test_path("testdata", "validationConfig_testReferenceRange.csv")))
 
   data <- importScenarioData(
     testthat::test_path("testdata", "data_testUseCases.rds"))

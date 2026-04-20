@@ -12,8 +12,8 @@ test_that(
         2000, 5000, 20000, 40000, NA, NA, NA
         )
     # test config
-    config_csv_semicolon <- getConfig(
-      testthat::test_path("testdata", "validationConfig_testCSVsemicolon.csv"))
+    config_csv_semicolon <- suppressMessages(getConfig(
+      testthat::test_path("testdata", "validationConfig_testCSVsemicolon.csv")))
     expect_equal(config_csv_semicolon, config)
 })
 
@@ -31,9 +31,8 @@ test_that(
       2000, 5000, 20000, 40000, NA, NA, NA
     )
     # test config
-    config_xlsx <- getConfig(
-      testthat::test_path("testdata", "validationConfig_testExcel.xlsx")
-    )
+    config_xlsx <- suppressMessages(getConfig(
+      testthat::test_path("testdata", "validationConfig_testExcel.xlsx")))
     expect_equal(config_xlsx, config)
   })
 
@@ -51,6 +50,6 @@ test_that(
       2000, 5000, 20000, 40000, NA, NA, NA
     )
     # test config
-    config_df <- getConfig(config)
+    config_df <- suppressMessages(getConfig(config))
     expect_equal(config_df, config)
   })
