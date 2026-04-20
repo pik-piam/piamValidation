@@ -1,8 +1,8 @@
 Type: Package
 Package: piamValidation
 Title: Validation Tools for PIK-PIAM
-Version: 0.15.5
-Date: 2026-04-17
+Version: 0.15.6
+Date: 2026-04-20
 Authors@R:
     c(person("Pascal", "Weigmann",, "pascal.weigmann@pik-potsdam.de", role = c("aut", "cre"),
       comment = c(affiliation = "Potsdam Institute for Climate Impact Research", ORCID = "0000-0001-8801-173X")),
@@ -47,3 +47,4 @@ Depends:
     R (>= 2.10)
 VignetteBuilder: knitr
 Config/testthat/edition: 3
+Config/Needs/website: tidyverse/tidytemplate
