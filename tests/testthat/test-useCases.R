@@ -40,6 +40,12 @@ test_that("all use cases generally work", {
   expect_equal(df$check,
                c("green", "green"))
 
+  # multiple model comparisons ####
+  selected_config <- cfg[3, ]
+  selected_config$model <- "Model1,Model2"
+  df <- validateScenarios(dat_path, selected_config)
+  expect_equal(df$check, c("green", "green", "green", "green"))
+
   # relative scenario comparison ####
   df <- validateScenarios(dat_path, cfg[4, ])
   expect_equal(df$ref_value_min,
@@ -50,6 +56,12 @@ test_that("all use cases generally work", {
                tolerance = 0.0001)
   expect_equal(df$check,
                c("green", "green"))
+
+  # multiple scenario comparisons ####
+  selected_config <- cfg[4, ]
+  selected_config$scenario <- "Scen1,Scen2"
+  df <- validateScenarios(dat_path, selected_config)
+  expect_equal(df$check, c("green", "green", "green", "green"))
 
   # relative period comparison ####
   df <- validateScenarios(dat_path, cfg[5, ])
@@ -116,4 +128,4 @@ test_that("all use cases generally work", {
   # -> growthrate doesnt work for single time step atm, see
   # https://github.com/pik-piam/piamValidation/issues/21
 
-  })
+})

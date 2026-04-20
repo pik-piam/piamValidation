@@ -26,9 +26,9 @@ combineData <- function(scenData, cfgRow, histData = NULL) {
   # create filters ####
   # check whether regions, periods, scenarios are specified, else use all
   mod <- if (is.na(c$model))    all_mod else
-    strsplit(c$model, split = ", |, ")[[1]]
+    strsplit(c$model, split = ", |,")[[1]]
   sce <- if (is.na(c$scenario)) all_sce else
-    strsplit(c$scenario, split = ", |, ")[[1]]
+    strsplit(c$scenario, split = ", |,")[[1]]
   reg <- if (is.na(c$region))   all_reg else
     strsplit(c$region, split = ", |,")[[1]]
 
