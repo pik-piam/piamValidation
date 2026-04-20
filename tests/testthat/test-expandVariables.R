@@ -9,7 +9,7 @@ test_that("expandVariables works", {
                            varentry,
                            ";m;s;r;2005;;;10;100;refmodel1;;;")
     writeLines(c(configheader, configstring), configfile)
-    cfg <- expandVariables(getConfig(configfile), data)
+    cfg <- suppressMessages(expandVariables(getConfig(configfile), data))
     missing <- setdiff(expectedvars, cfg$variable)
     if (length(missing) > 0) {
       warning("For ", varentry,

@@ -8,7 +8,7 @@ test_that("sparse thresholds are applied correctly", {
 
   # configs that should always return a certain color
   # validateScenario has extraColors = TRUE by default, including cyan and blue
-  cfg_green  <- getConfig(cfg)
+  cfg_green  <- suppressMessages(getConfig(cfg))
   cfg_yellow <- mutate(cfg_green, max_yel = 5)
   cfg_red    <- mutate(cfg_green, max_yel = 5, max_red = 6)
   cfg_cyan   <- mutate(cfg_green, min_yel = 15)
