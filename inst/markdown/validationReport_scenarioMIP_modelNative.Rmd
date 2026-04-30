@@ -17,6 +17,12 @@ params:
 ---
 
 ```{r include=FALSE}
+# this file does all the pre-processing necessary to create validation
+# reports for all ScenarioMIP models using the respective model-native regions
+
+# the regionmappings in the first code blocks only need to be regenerated if
+# regionmapping change (in common-definitions)
+
 library(piamValidation)
 library(knitr)
 library(dplyr)
@@ -26,7 +32,7 @@ library(plotly)
 library(madrat)
 library(piamInterfaces)
 library(quitte)
-
+library(stringr)
 knitr::opts_chunk$set(
   echo = FALSE,
   error = TRUE,
@@ -37,16 +43,18 @@ knitr::opts_chunk$set(
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
 # versions
-snapshot_date <- "2025-11-06"
+snapshot_date <- "2026-04-24"
 historical_date <- "2025-10-14"
 thresholds_date <- "2025-10-14"
-config_date <- "2025-11-06"
+config_date <- "2026-04-28"
 
-data_dir <- "user/Data/scenario_mip/ModelNative/"
+proj_dir <- "C:/Users/pascalwe"
+
+data_dir <- paste0(proj_dir, "/Data/scenario_mip/ModelNative/")
 
 models <- c("AIM30",
             "COFFEE16",
-            "GCAM71",
+            "GCAM8",
             "IMAGE34",
             "MESSAGEix-GLOBIOM-GAINS21-R12",
             "REMIND-MAgPIE35-411",
@@ -77,7 +85,7 @@ library(tidyr)
 
 # Regional mapping data, all models from common-definitions repo
 allReg <- readxl::read_xlsx(
-  "user/Code/scenarioMIP/validationByModel/common-definitions-template_2025-04-22.xlsx",
+  paste0(proj_dir, "/Code/scenarioMIP/validationByModel/common-definitions-template_2025-04-22.xlsx"),
   sheet = "region") %>%
   filter(!is.na(countries)) %>%
   mutate(countries = gsub('\"|\\]|\\[|', "", countries)) %>%
@@ -394,7 +402,8 @@ library(mrvalidation)
 library(edgeTransport)
 
 # model mapping
-mappings <- list.files("user/Data/scenario_mip/ModelNative/regionmappings/")
+mappings <- list.files(paste0(proj_dir,
+                              "/Data/scenario_mip/ModelNative/regionmappings/"))
 
 for (map in mappings) {
   setConfig(regionmapping = map, forcecache = "GDP")
@@ -419,13 +428,20 @@ for (map in mappings) {
 ## Validation Configs
 
 ```{r, message = FALSE, warning = TRUE}
-cfg_base <- getConfig("scenarioMIP_mn_general")
-
 # automatically append model-specific threshold.mif data to general config
+cfg_base <- piamValidation::getConfig("scenarioMIP_mn_general")
+
 # first
 # - remove "+" from variable mapping
 # - translate to scenarioMIP variables
 # - remove 2020 thresholds
+models <- c("AIM30",
+            "COFFEE16",
+            "GCAM71",
+            "IMAGE34",
+            "MESSAGEix-GLOBIOM-GAINS21-R12",
+            "REMIND-MAgPIE35-410",
+            "WITCH60")
 for (model in models) {
   var_map <- piamInterfaces::getMapping(project = "ScenarioMIP") %>%
     mutate(piam_variable = piamutils::deletePlus(.data$piam_variable))
@@ -491,7 +507,7 @@ data_files <- data_files[grepl(snapshot_date, data_files)]
 # get an example config used for filtering
 # model <- models[1]
 #cfg <- getConfig(paste0("validationConfig_", model, "_", thresholds_date, ".csv"))
-cfg <- getConfig("scenarioMIP_AIM30_2025-11-06")
+cfg <- getConfig("scenarioMIP_REMIND-MAgPIE35-411")
 
 scen_data_all <- data.frame()
 for (file in data_files) {
@@ -513,7 +529,48 @@ scen_data_all <- scen_data_all[!scen_data_all$value == 0, ]
 scen_data_all <- scen_data_all %>%
   filter(period %in% seq(2005, 2100, 5))
 
-saveRDS(scen_data_all,
+# Corrections from Gitlab Notebook, 14.01.2026
+### Switch "Very Low" and "Low Overshoot" for WITCH 6.0
+df <- scen_data_all %>%
+  mutate(scenario = case_when(
+    model == "WITCH 6.0" ~ str_replace_all(
+      scenario,
+      c(
+        "Very Low Emissions" = "TEMP_PLACEHOLDER",
+        "Low Overshoot" = "Very Low Emissions",
+        "TEMP_PLACEHOLDER" = "Low Overshoot"
+      )
+    ),
+    TRUE ~ scenario
+  ))
+### Rename "SSP5 - Medium-Low_a" to "SSP5 - High-Low Emissions"
+df <- df %>%
+  mutate(scenario = case_when(
+    model == "WITCH 6.0" & scenario == "SSP5 - Medium-Low Emissions_a" ~ "SSP5 - High-Low Emissions",
+    TRUE ~ scenario
+  ))
+## Manual renaming of scenarios for AIM submission
+### Switch "SSP2 - Low Overshoot" and "SSP2 - Low Overshoot_a" for AIM 3.0 
+### to ensure that "SSP2 - Low Overshoot" is the marker scenario
+df <- df %>%
+  mutate(scenario = case_when(
+    model == "AIM 3.0" ~ case_when(
+      scenario == "SSP2 - Low Overshoot" ~ "SSP2 - Low Overshoot_a",
+      scenario == "SSP2 - Low Overshoot_a" ~ "SSP2 - Low Overshoot",
+      TRUE ~ scenario
+    ),
+    TRUE ~ scenario
+  ))
+
+## Remove specific scenarios
+### For all models
+removeScenarios <- c(
+  "SSP2 - Medium Overshoot"
+)
+df <- df %>% filter(!(scenario %in% removeScenarios))
+
+# export
+saveRDS(df,
         file = paste0("scenario_all_", snapshot_date, ".rds"))
 ```
 
@@ -527,7 +584,13 @@ saveRDS(scen_data_all,
 # (takes a bit to run)
 data_files <- list.files(paste0(data_dir, "historical"), full.names = TRUE)
 data_files <- data_files[grepl(historical_date, data_files)]
-
+models <- c("AIM30",
+            "COFFEE16",
+            "GCAM71",
+            "IMAGE34",
+            "MESSAGEix-GLOBIOM-GAINS21-R12",
+            "REMIND-MAgPIE35-410",
+            "WITCH60")
 hist_data_all <- data.frame()
 for (model in models) {
   file <- data_files[grepl(model, data_files)]

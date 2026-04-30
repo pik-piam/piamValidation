@@ -25,10 +25,10 @@ difference;yes;Stocks|Transportation|Light-Duty Vehicle|Battery-Electric;million
 difference;yes;Sales|Transportation|Light-Duty Vehicle|Battery-Electric;million;;;;2010-2020;-0.5;-0.25;0.25;0.5;range(IEA GEVO Historical, IEA GEVO Historical_smoothed);historical;;
 difference;yes;Sales|Transportation|Light-Duty Vehicle|Battery-Electric;million;;;World;2010-2020;-1;-0.5;0.5;1;range(IEA GEVO Historical, IEA GEVO Historical_smoothed);historical;;
 Near-Term Trends;;;;;;;;;;;;;;;
-absolute;yes;Capacity|Electricity|Solar;GW;;;World;2025;1609;2083;3152;3896;;;;
-absolute;yes;Capacity|Electricity|Solar;GW;;;World;2030;2683;4350;8164;10896;;;;
-absolute;yes;Capacity|Electricity|Wind|Onshore;GW;;;World;2025;930;1066;1365;1560;;;;
-absolute;yes;Capacity|Electricity|Wind|Onshore;GW;;;World;2030;1155;1542;2417;3029;;;;
+absolute;yes;Capacity|Electricity|Solar;GW;;;World;2025;1867;2168;2832;3272;;;;BNEF NEO 2025
+absolute;yes;Capacity|Electricity|Solar;GW;;;World;2030;2941;4435;7844;10272;;;;BNEF NEO 2025
+absolute;yes;Capacity|Electricity|Wind|Onshore;GW;;;World;2025;997;1108;1346;1495;;;;GWEC 2026
+absolute;yes;Capacity|Electricity|Wind|Onshore;GW;;;World;2030;1280;1705;2667;3340;;;;GWEC 2026
 absolute;yes;Sales|Transportation|Light-Duty Vehicle|Battery-Electric;million;;;World;2025;9;12;17;23.8;;;;
 absolute;yes;Sales|Transportation|Light-Duty Vehicle|Battery-Electric;million;;;World;2030;19.8;26.4;44.4;51.8;;;;
 absolute;yes;Stocks|Transportation|Light-Duty Vehicle|Battery-Electric;million;;;World;2025;33;44;67.2;78.4;;;;
