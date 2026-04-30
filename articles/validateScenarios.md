@@ -1,6 +1,7 @@
 # validateScenarios
 
 ``` r
+
 library(piamValidation)
 #> 
 ```
@@ -19,6 +20,7 @@ data.
 The package is available via the R package repository of PIK.
 
 ``` r
+
 install.packages("piamValidation", repos = "https://rse.pik-potsdam.de/r/packages")
 ```
 
@@ -71,6 +73,7 @@ Optionally, you can save the resulting data.frame to a .csv file by
 providing an `outputFile`.
 
 ``` r
+
 df <- validateScenarios(c(scenPath, histPath), config, outputFile = NULL)
 ```
 
@@ -98,6 +101,7 @@ directory.
 with many variables as it might create very large html files.
 
 ``` r
+
 validationReport(c(scenPath, histPath), config, report = "default")
 ```
 
@@ -261,14 +265,14 @@ You want to compare your scenario data to an external reference source,
 which provides historical (or projected) data for the variable you are
 interested in. The thresholds are defined as a `relative` deviation
 above or below the reference value:
-$\text{relDeviation} = \frac{\left( \text{scenValue} - \text{refValue} \right)}{\text{refValue}}$.
+$`\textrm{relDeviation} = \frac{(\textrm{scenValue} - \textrm{refValue})}{\textrm{refValue}}`$.
 
 Example:
 
-| metric   | critical | variable         | unit      | model | scenario | region | period | min_red | min_yel | max_yel | max_red | ref_model | ref_scenario | ref_period |
-|----------|----------|------------------|-----------|-------|----------|--------|--------|---------|---------|---------|---------|-----------|--------------|------------|
-| relative | yes      | Emi\|CO2\|Energy | Mt CO2/yr |       |          |        |        | -0.25   | -0.2    | 0.2     | 0.25    | EDGAR8    | historical   |            |
-| relative | yes      | Emi\|CO2\|Energy | Mt CO2/yr |       |          | World  |        | -0.2    | -0.1    | 0.1     | 0.2     | EDGAR8    | historical   |            |
+| metric | critical | variable | unit | model | scenario | region | period | min_red | min_yel | max_yel | max_red | ref_model | ref_scenario | ref_period |
+|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+| relative | yes | Emi\|CO2\|Energy | Mt CO2/yr |  |  |  |  | -0.25 | -0.2 | 0.2 | 0.25 | EDGAR8 | historical |  |
+| relative | yes | Emi\|CO2\|Energy | Mt CO2/yr |  |  | World |  | -0.2 | -0.1 | 0.1 | 0.2 | EDGAR8 | historical |  |
 
 #### Use Case 2: difference to reference data
 
@@ -278,14 +282,14 @@ interested in.
 
 The thresholds are defined as a `difference` (above or below) to the
 reference value:
-$\text{difference} = \text{scenValue} - \text{refValue}$.
+$`\textrm{difference} = \textrm{scenValue} - \textrm{refValue}`$.
 
 Example:
 
-| metric     | critical | variable         | unit      | model | scenario | region | period | min_red | min_yel | max_yel | max_red | ref_model | ref_scenario | ref_period |
-|------------|----------|------------------|-----------|-------|----------|--------|--------|---------|---------|---------|---------|-----------|--------------|------------|
-| difference | yes      | Emi\|CO2\|Energy | Mt CO2/yr |       |          |        |        | -100    | -50     | 50      | 100     | EDGAR8    | historical   |            |
-| difference | yes      | Emi\|CO2\|Energy | Mt CO2/yr |       |          | World  |        | -500    | -200    | 200     | 500     | EDGAR8    | historical   |            |
+| metric | critical | variable | unit | model | scenario | region | period | min_red | min_yel | max_yel | max_red | ref_model | ref_scenario | ref_period |
+|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+| difference | yes | Emi\|CO2\|Energy | Mt CO2/yr |  |  |  |  | -100 | -50 | 50 | 100 | EDGAR8 | historical |  |
+| difference | yes | Emi\|CO2\|Energy | Mt CO2/yr |  |  | World |  | -500 | -200 | 200 | 500 | EDGAR8 | historical |  |
 
 #### Use Case 3: relative comparison to other model/scenario/period
 
@@ -296,16 +300,16 @@ column and *exactly* one in the “ref_period/scenario/model” column.
 
 The thresholds are defined as a `relative` deviation above or below the
 reference value:
-$\text{relDeviation} = \frac{\left( \text{scenValue} - \text{refValue} \right)}{\text{refValue}}$.
+$`\textrm{relDeviation} = \frac{(\textrm{scenValue} - \textrm{refValue})}{\textrm{refValue}}`$.
 
 Example:
 
-| metric   | critical | variable         | unit      | model  | scenario | region | period | min_red | min_yel | max_yel | max_red | ref_model | ref_scenario | ref_period |
-|----------|----------|------------------|-----------|--------|----------|--------|--------|---------|---------|---------|---------|-----------|--------------|------------|
-| relative | yes      | Emi\|CO2\|Energy | Mt CO2/yr | REMIND |          |        |        | -20%    | -10%    | 10%     | 20%     | MESSAGE   |              |            |
-| relative | yes      | Emi\|CO2\|Energy | Mt CO2/yr |        | NDC      |        |        |         |         | -25%    | -10%    |           | CurPol       |            |
-| relative | yes      | Emi\|CO2\|Energy | Mt CO2/yr |        | CurPol   |        | 2030   | 10%     | 20%     | 60%     | 80%     |           |              | 2020       |
-| relative | yes      | Emi\|CO2\|Energy | Mt CO2/yr |        | NDC      |        | 2030   | -20%    | -10%    | 20%     | 40%     |           |              | 2020       |
+| metric | critical | variable | unit | model | scenario | region | period | min_red | min_yel | max_yel | max_red | ref_model | ref_scenario | ref_period |
+|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+| relative | yes | Emi\|CO2\|Energy | Mt CO2/yr | REMIND |  |  |  | -20% | -10% | 10% | 20% | MESSAGE |  |  |
+| relative | yes | Emi\|CO2\|Energy | Mt CO2/yr |  | NDC |  |  |  |  | -25% | -10% |  | CurPol |  |
+| relative | yes | Emi\|CO2\|Energy | Mt CO2/yr |  | CurPol |  | 2030 | 10% | 20% | 60% | 80% |  |  | 2020 |
+| relative | yes | Emi\|CO2\|Energy | Mt CO2/yr |  | NDC |  | 2030 | -20% | -10% | 20% | 40% |  |  | 2020 |
 
 Currently, there is no support to compare different regions or variables
 to one another.
@@ -319,16 +323,16 @@ column and *exactly* one in the “ref_period/scenario/model” column.
 
 The thresholds are defined as a `difference` (above or below) to the
 reference value:
-$\text{difference} = \text{scenValue} - \text{refValue}$.
+$`\textrm{difference} = \textrm{scenValue} - \textrm{refValue}`$.
 
 Example:
 
-| metric     | critical | variable         | unit      | model  | scenario | region | period | min_red | min_yel | max_yel | max_red | ref_model | ref_scenario | ref_period |
-|------------|----------|------------------|-----------|--------|----------|--------|--------|---------|---------|---------|---------|-----------|--------------|------------|
-| difference | yes      | Emi\|CO2\|Energy | Mt CO2/yr | REMIND |          | World  | 2020   | -1500   | -500    | 500     | 1500    | MESSAGE   |              |            |
-| difference | yes      | Emi\|CO2\|Energy | Mt CO2/yr |        | NDC      |        |        |         |         | -25%    | -10%    |           | CurPol       |            |
-| difference | yes      | Emi\|CO2\|Energy | Mt CO2/yr |        | CurPol   |        | 2030   | 10%     | 20%     | 60%     | 80%     |           |              | 2020       |
-| difference | yes      | Emi\|CO2\|Energy | Mt CO2/yr |        | NDC      |        | 2030   | -20%    | -10%    | 20%     | 40%     |           |              | 2020       |
+| metric | critical | variable | unit | model | scenario | region | period | min_red | min_yel | max_yel | max_red | ref_model | ref_scenario | ref_period |
+|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+| difference | yes | Emi\|CO2\|Energy | Mt CO2/yr | REMIND |  | World | 2020 | -1500 | -500 | 500 | 1500 | MESSAGE |  |  |
+| difference | yes | Emi\|CO2\|Energy | Mt CO2/yr |  | NDC |  |  |  |  | -25% | -10% |  | CurPol |  |
+| difference | yes | Emi\|CO2\|Energy | Mt CO2/yr |  | CurPol |  | 2030 | 10% | 20% | 60% | 80% |  |  | 2020 |
+| difference | yes | Emi\|CO2\|Energy | Mt CO2/yr |  | NDC |  | 2030 | -20% | -10% | 20% | 40% |  |  | 2020 |
 
 #### Use Case 5: direct comparison to absolute thresholds
 
@@ -338,14 +342,14 @@ leave a certain range or you have expert guesses on `absolute` upper or
 lower thresholds.
 
 The tool checks whether
-$\text{minRed/Yel} < \text{scenValue} < \text{maxYel/Red}$.
+$`\textrm{minRed/Yel} < \textrm{scenValue} < \textrm{maxYel/Red}`$.
 
 Example:
 
-| metric   | critical | variable                   | unit      | model | scenario | region | period | min_red | min_yel | max_yel | max_red | ref_model | ref_scenario | ref_period |
-|----------|----------|----------------------------|-----------|-------|----------|--------|--------|---------|---------|---------|---------|-----------|--------------|------------|
-| absolute | yes      | Share\|\*\*                | %         |       |          |        |        | 0       |         |         | 100     |           |              |            |
-| absolute | yes      | Carbon Management\|Storage | Mt CO2/yr |       |          |        |        |         |         |         | 10 000  |           |              |            |
+| metric | critical | variable | unit | model | scenario | region | period | min_red | min_yel | max_yel | max_red | ref_model | ref_scenario | ref_period |
+|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+| absolute | yes | Share\|\*\* | % |  |  |  |  | 0 |  |  | 100 |  |  |  |
+| absolute | yes | Carbon Management\|Storage | Mt CO2/yr |  |  |  |  |  |  |  | 10 000 |  |  |  |
 
 #### Use Case 6: direct comparison to yearly growthrate
 
@@ -353,10 +357,10 @@ You want to check growth rates of variables in your scenario data. As
 5-year steps are expected, the average yearly growth rate over the last
 5 years is calculated via:
 
-$\text{growthRate} = \left( \frac{\text{value}}{\text{value5yearsAgo}} \right)^{\frac{1}{5}} - 1$.
+$`\textrm{growthRate} = \left(\frac{\textrm{value}}{\textrm{value5yearsAgo}}\right)^\frac{1}{5} - 1`$.
 
 Example:
 
-| metric   | critical | variable               | unit | model | scenario | region | period | min_red | min_yel | max_yel | max_red | ref_model | ref_scenario | ref_period |
-|----------|----------|------------------------|------|-------|----------|--------|--------|---------|---------|---------|---------|-----------|--------------|------------|
-| absolute | yes      | Cap\|Electricity\|Wind | GW   |       |          | USA    |        |         |         |         | 50      |           |              |            |
+| metric | critical | variable | unit | model | scenario | region | period | min_red | min_yel | max_yel | max_red | ref_model | ref_scenario | ref_period |
+|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+| absolute | yes | Cap\|Electricity\|Wind | GW |  |  | USA |  |  |  |  | 50 |  |  |  |

@@ -30,6 +30,7 @@ The code and data to reproduce the plots in the publication are
 available in the package. After installation, please follow these steps:
 
 ``` r
+
 library(piamValidation)
 
 # NGFS validation
