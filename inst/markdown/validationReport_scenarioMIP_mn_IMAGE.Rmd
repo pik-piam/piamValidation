@@ -40,9 +40,9 @@ knitr::opts_chunk$set(
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
 # data revision
-snapshot_date <- "2025-11-06"
+snapshot_date <- "2026-04-24"
 historical_date <- "2025-10-14"
-config_date <- "2025-11-06"
+config_date <- "2026-04-28"
 ```
 
 ```{r}
@@ -63,19 +63,25 @@ regs.short <- c(
 # copy-pasted from REMIND multi-model analysis scripts
 emi.scen.letter <- c(
   "High Emissions" = "H",
+  "High-Low Emissions" = "HL",
   "Medium Emissions" = "M",
   "Medium-Low Emissions" = "ML",
   "Low Emissions" = "L",
-  "Very Low after High Overshoot" = "VLHO",
-  "Very Low with Limited Overshoot" = "VLLO"
+  "Low Overshoot" = "LN",
+  "Very Low Emissions" = "VL",
+  "Very Low after High Overshoot" = "LN",
+  "Very Low with Limited Overshoot" = "VL"
 )
 
 plot.emi.scen.colors <- c(
     "High Emissions" = "darkred",
+    "High-Low Emissions" = "#c51b8a",
     "Medium Emissions" = "#FF6F6F",
     "Medium-Low Emissions" = "#B282AE",
     "Low Emissions" = "#6495ED",
-    "Very Low after High Overshoot" = "#FF8C00",
+    "Low Overshoot" = "#FF8C00",
+    "Very Low Emissions" = "#6B8E23",
+      "Very Low after High Overshoot" = "#FF8C00",
     "Very Low with Limited Overshoot" = "#6B8E23"
 )
 
@@ -274,7 +280,7 @@ This validation document uses the R-package [piamValidation](https://github.com/
 to perform a series of different checks on a snapshot of the Scenario MIP modeling results.
 
 These checks are based on the [vetting criteria google doc](https://docs.google.com/document/d/11oLs7xfe5aJsgchip6JwzYc3v2hcGCFvRrHHK72ApZs/edit?tab=t.0)
-and reformulated to be machine-readable bounds, with the exact values listed in a [**validationConfig**](https://docs.google.com/spreadsheets/d/1qYqdC13377HHgCcO_eMq4TJemdLZjsYCM9gzYqD-r8o/edit?gid=596205375#gid=596205375) file (R10 only, model-native thresholds coming soon). For further information on the validation tool, consult the [ documentation](https://pik-piam.r-universe.dev/articles/piamValidation/validateScenarios.html).
+and reformulated to be machine-readable bounds, with the exact values listed in a [**validationConfig**](https://pik-piam.github.io/piamValidation/articles/configs/validationConfig_ScenarioMIP_IMAGE.html) file. For further information on the validation tool, consult the [ documentation](https://pik-piam.r-universe.dev/articles/piamValidation/validateScenarios.html) or the [accompanying paper](https://gmd.copernicus.org/articles/18/9897/2025/).
 
 Scenario Snapshot: ``r snapshot_date``
 
@@ -330,10 +336,13 @@ Tested against thresholds based on [IEA CCUS project pipelines](https://github.c
 ### Scenario Categories
 
 ```{r plot.emi.scen.letter}
-emi.scen.letter
+emi.scen.letter[!names(emi.scen.letter) %in% c("Very Low with Limited Overshoot",
+                                               "Very Low after High Overshoot")]
 ```
 
 ### Regional Abbreviations
+
+Some region names have been shortened:
 
 ```{r}
 regs.short

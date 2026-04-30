@@ -29,7 +29,7 @@ absolute;yes;Capacity|Electricity|Hydro;GW;;;World;2030;1051.2;1265.78;1727.775;
 absolute;yes;Capacity|Electricity|Nuclear;GW;;;World;2030;269.7507;320.32955;463.58865;507.1;;;;
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;World;2025;39.6207;49.49215;83.5611;152.4457;;;;
 absolute;yes;Carbon Capture|Geological Storage;Mt CO2/yr;;;World;2030;44.0226;60.01815;152.4663;457.8915;;;;
-absolute;yes;Capacity|Electricity|Solar;GW;;;World;2025;1609;2083;3152;3896;;;;
-absolute;yes;Capacity|Electricity|Solar;GW;;;World;2030;2683;4350;8164;10896;;;;
-absolute;yes;Capacity|Electricity|Wind|Onshore;GW;;;World;2025;930;1066;1365;1560;;;;
-absolute;yes;Capacity|Electricity|Wind|Onshore;GW;;;World;2030;1155;1542;2417;3029;;;;
+absolute;yes;Capacity|Electricity|Solar;GW;;;World;2025;1867;2168;2832;3272;;;;BNEF NEO 2025
+absolute;yes;Capacity|Electricity|Solar;GW;;;World;2030;2941;4435;7844;10272;;;;BNEF NEO 2025
+absolute;yes;Capacity|Electricity|Wind|Onshore;GW;;;World;2025;997;1108;1346;1495;;;;GWEC 2026
+absolute;yes;Capacity|Electricity|Wind|Onshore;GW;;;World;2030;1280;1705;2667;3340;;;;GWEC 2026
