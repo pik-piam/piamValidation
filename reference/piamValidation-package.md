@@ -26,7 +26,7 @@ Authors:
 - Oliver Richters ([ORCID](https://orcid.org/0000-0001-8253-4716))
   (affiliation: Potsdam Institute for Climate Impact Research)
 
-- Fabrice LC)cuyer ([ORCID](https://orcid.org/0000-0002-7364-999X))
+- Fabrice Lécuyer ([ORCID](https://orcid.org/0000-0002-7364-999X))
   (affiliation: Potsdam Institute for Climate Impact Research)
 
 - Johannes Koch ([ORCID](https://orcid.org/0000-0003-2920-8086))
