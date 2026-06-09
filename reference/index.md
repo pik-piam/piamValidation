@@ -4,6 +4,8 @@
 
 - [`appendTooltips()`](https://pik-piam.github.io/piamValidation/reference/appendTooltips.md)
   : construct tooltips for interactive plots
+- [`average_2020()`](https://pik-piam.github.io/piamValidation/reference/average_2020.md)
+  : Average 2020 to smoothen Covid shock in historical data
 - [`checkUnits()`](https://pik-piam.github.io/piamValidation/reference/checkUnits.md)
   : Check variable consistency
 - [`combineData()`](https://pik-piam.github.io/piamValidation/reference/combineData.md)
@@ -23,6 +25,8 @@
   : evaluate the content of the "ref\_\<type\>" column and filter
   reference data accordingly. cases: - mode chosen - range - mean - no
   mode chosen - use mean if multiple references
+- [`showInputSummary()`](https://pik-piam.github.io/piamValidation/reference/showInputSummary.md)
+  : Print a summary of the input data
 - [`validateScenarios()`](https://pik-piam.github.io/piamValidation/reference/validateScenarios.md)
   : performs the validation checks from a config on a scenario data set
 - [`validationHeatmap()`](https://pik-piam.github.io/piamValidation/reference/validationHeatmap.md)

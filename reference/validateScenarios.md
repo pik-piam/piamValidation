@@ -5,7 +5,13 @@ performs the validation checks from a config on a scenario data set
 ## Usage
 
 ``` r
-validateScenarios(dataPath, config, outputFile = NULL, extraColors = TRUE)
+validateScenarios(
+  dataPath,
+  config,
+  outputFile = NULL,
+  extraColors = TRUE,
+  giveSummary = FALSE
+)
 ```
 
 ## Arguments
@@ -29,3 +35,8 @@ validateScenarios(dataPath, config, outputFile = NULL, extraColors = TRUE)
 
   if TRUE, use cyan and blue for violation of min thresholds instead of
   using the same colors as for max thresholds (yel and red)
+
+- giveSummary:
+
+  print a summary of input data via “showInputSummary()“ which allows
+  spotting data inconsistencies
