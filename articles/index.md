@@ -18,3 +18,5 @@
 - [validationConfig_ScenarioMIP_MESSAGE](https://pik-piam.github.io/piamValidation/articles/configs/validationConfig_ScenarioMIP_MESSAGE.md):
 - [validationConfig_ScenarioMIP_REMIND](https://pik-piam.github.io/piamValidation/articles/configs/validationConfig_ScenarioMIP_REMIND.md):
 - [validationConfig_ScenarioMIP_WITCH](https://pik-piam.github.io/piamValidation/articles/configs/validationConfig_ScenarioMIP_WITCH.md):
+- [validationConfig_SCI_REMIND](https://pik-piam.github.io/piamValidation/articles/configs/validationConfig_SCI_REMIND.md):
+- [validationConfig_SCI](https://pik-piam.github.io/piamValidation/articles/configs/validationConfig_SCI.md):

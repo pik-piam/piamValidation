@@ -1,6 +1,6 @@
 # Validation Tools for PIK-PIAM
 
-R package **piamValidation**, version **0.16.2**
+R package **piamValidation**, version **0.17.2**
 
 [![R build
 status](https://github.com/pik-piam/piamValidation/workflows/check/badge.svg)](https://github.com/pik-piam/piamValidation/actions)
@@ -60,8 +60,8 @@ In case of questions / problems please contact Pascal Weigmann
 To cite package **piamValidation** in publications use:
 
 Weigmann P, Richters O, Lécuyer F, Koch J (2026). “piamValidation:
-Validation Tools for PIK-PIAM.” Version: 0.16.2,
-<https://pik-piam.github.io/piamValidationhttps://github.com/pik-piam/piamValidation>.
+Validation Tools for PIK-PIAM.” Version: 0.17.2,
+<https://github.com/pik-piam/piamValidation>.
 
 A BibTeX entry for LaTeX users is
 
@@ -69,11 +69,10 @@ A BibTeX entry for LaTeX users is
 @Misc{,
  title = {piamValidation: Validation Tools for PIK-PIAM},
  author = {Pascal Weigmann and Oliver Richters and Fabrice Lécuyer and Johannes Koch},
- date = {2026-06-09},
+ date = {2026-09-02},
  year = {2026},
- url = {https://pik-piam.github.io/piamValidation},
  url = {https://github.com/pik-piam/piamValidation},
- note = {Version: 0.16.2},
+ note = {Version: 0.17.2},
 }
 ```
 
@@ -89,6 +88,8 @@ A BibTeX entry for LaTeX users is
   : Check variable consistency
 - [`combineData()`](https://pik-piam.github.io/piamValidation/reference/combineData.md)
   : Combine scenario and reference data with thresholds
+- [`convertSCIcriteria()`](https://pik-piam.github.io/piamValidation/reference/convertSCIcriteria.md)
+  : Import SCI criteria and convert to config
 - [`getConfig()`](https://pik-piam.github.io/piamValidation/reference/getConfig.md)
   : import a config shipped with the package
 - [`importScenarioData()`](https://pik-piam.github.io/piamValidation/reference/importScenarioData.md)
@@ -138,3 +139,5 @@ A BibTeX entry for LaTeX users is
 - [validationConfig_ScenarioMIP_MESSAGE](https://pik-piam.github.io/piamValidation/articles/configs/validationConfig_ScenarioMIP_MESSAGE.md):
 - [validationConfig_ScenarioMIP_REMIND](https://pik-piam.github.io/piamValidation/articles/configs/validationConfig_ScenarioMIP_REMIND.md):
 - [validationConfig_ScenarioMIP_WITCH](https://pik-piam.github.io/piamValidation/articles/configs/validationConfig_ScenarioMIP_WITCH.md):
+- [validationConfig_SCI_REMIND](https://pik-piam.github.io/piamValidation/articles/configs/validationConfig_SCI_REMIND.md):
+- [validationConfig_SCI](https://pik-piam.github.io/piamValidation/articles/configs/validationConfig_SCI.md):

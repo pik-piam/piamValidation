@@ -10,6 +10,8 @@
   : Check variable consistency
 - [`combineData()`](https://pik-piam.github.io/piamValidation/reference/combineData.md)
   : Combine scenario and reference data with thresholds
+- [`convertSCIcriteria()`](https://pik-piam.github.io/piamValidation/reference/convertSCIcriteria.md)
+  : Import SCI criteria and convert to config
 - [`getConfig()`](https://pik-piam.github.io/piamValidation/reference/getConfig.md)
   : import a config shipped with the package
 - [`importScenarioData()`](https://pik-piam.github.io/piamValidation/reference/importScenarioData.md)
