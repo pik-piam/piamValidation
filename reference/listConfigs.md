@@ -9,3 +9,7 @@ package and can be directly imported with “getConfig()“ or used in
 ``` r
 listConfigs()
 ```
+
+## Value
+
+character vector of config names

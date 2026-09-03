@@ -7,3 +7,6 @@ Validation of REMIND scenarios as used in
 > Kriegler, E., Bauer, N., Benke, F., Gong, C. C., and Luderer, G.:
 > Validation of climate mitigation pathways, EGUsphere \[preprint\],
 > <https://doi.org/10.5194/egusphere-2025-2284>, 2025.
+
+*Columns that are empty in this config and therefore not shown:*
+`model`, `scenario`, `ref_period`
