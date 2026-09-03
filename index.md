@@ -1,6 +1,6 @@
 # Validation Tools for PIK-PIAM
 
-R package **piamValidation**, version **0.17.4**
+R package **piamValidation**, version **0.17.5**
 
 [![R build
 status](https://github.com/pik-piam/piamValidation/workflows/check/badge.svg)](https://github.com/pik-piam/piamValidation/actions)
@@ -60,7 +60,7 @@ In case of questions / problems please contact Pascal Weigmann
 To cite package **piamValidation** in publications use:
 
 Weigmann P, Richters O, Lécuyer F, Koch J (2026). “piamValidation:
-Validation Tools for PIK-PIAM.” Version: 0.17.4,
+Validation Tools for PIK-PIAM.” Version: 0.17.5,
 <https://github.com/pik-piam/piamValidation>.
 
 A BibTeX entry for LaTeX users is
@@ -72,6 +72,6 @@ A BibTeX entry for LaTeX users is
  date = {2026-09-03},
  year = {2026},
  url = {https://github.com/pik-piam/piamValidation},
- note = {Version: 0.17.4},
+ note = {Version: 0.17.5},
 }
 ```
