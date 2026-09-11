@@ -50,13 +50,15 @@ https://scenario-evaluation-criteria.iamconsortium.org/2026.08.03/
 
 
 ```{r, message = FALSE, warning = TRUE, results = 'asis'}
-# import data before validation to check for missing variables
-data <- quitte::as.quitte(params$mif, na.rm = TRUE)
-
 # SCI evaluates cumulated geological carbon storage (2020-2100); if a scenario
 # does not report the variable, calculate it from annual storage
 cumVar <- "Carbon Capture|Geological Storage|Cumulated"
 annVar <- "Carbon Capture|Geological Storage"
+
+# import only the variables needed for the validation and for the cumulated
+# storage calculation
+neededVars <- unique(c(getConfig(params$cfg)$variable, annVar, cumVar))
+data <- piamValidation:::importScenarioData(params$mif, variables = neededVars)
 
 # model-scenario combinations missing the cumulated variable
 missingCum <- data %>%

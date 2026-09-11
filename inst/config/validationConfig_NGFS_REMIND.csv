@@ -128,7 +128,7 @@ absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;World;2040;;;;4300;;;;Kazlou 
 NGFS Scenario Narratives;;;;;;;;;;;;;;;
 absolute;yes;PE|Biomass;EJ/yr;;;World;2020-2100;0;40;100;120;;;;
 absolute;yes;Carbon Management|Storage;Mt CO2/yr;;;World;2020-2100;0;0;5000;6000;;;;
-absolute;yes;PE|Fossil;EJ/yr;;;World;2060-2100;0;;100;150;;;;
+absolute;yes;PE|Fossil;EJ/yr;;C_o_1p5c;World;2060-2100;0;;100;150;;;;
 ;;;;;;;;;;;;;;;
 absolute;yes;Emi|CO2;Mt CO2/yr;;C_o_1p5c;World;2045;;0;;;;;;
 absolute;yes;Emi|CO2;Mt CO2/yr;;C_o_1p5c;World;2055;;;0;;;;;
