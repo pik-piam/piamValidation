@@ -16,7 +16,7 @@ bands can lead to overlaps}
 }
 \value{
 data.frame with columns variable, unit, region, period, min_red,
-min_yel, max_yel and max_red
+        min_yel, max_yel and max_red
 }
 \description{
 converts the thresholds attached to each data point by
