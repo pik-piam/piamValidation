@@ -6,10 +6,32 @@
 #'
 #' @param scenarioPath one or multiple paths to .mif, .csv, .rds or .xlsx file(s)
 #'        or a data.frame containing scenario data in IAM format
-importScenarioData <- function(scenarioPath) {
-  data <- quitte::as.quitte(scenarioPath, na.rm = TRUE) %>%
-    filter(period >= 1990) %>%
-    mutate(variable = factor(piamutils::deletePlus(variable)))
+#' @param variables optional character vector of variable names (may contain
+#'        "*" wildcards as in the config); if given, all other variables are
+#'        dropped while reading so that only the data needed for the
+#'        validation is held in memory
+importScenarioData <- function(scenarioPath, variables = NULL) {
+  # reduction applied to every chunk while reading .mif/.csv, and to the full
+  # object for .rds/.xlsx and data frames
+  reduce <- function(d) {
+    d %>%
+      filter(period >= 1990) %>%
+      mutate(variable = deletePlusLevels(variable)) %>%
+      filterVariables(variables)
+  }
+
+  if (is.character(scenarioPath)) {
+    # read.quitte handles .mif, .csv, .rds and .xlsx (as as.quitte does) and
+    # applies filter.function per 200k-line chunk for text files
+    data <- quitte::read.quitte(scenarioPath, sep = NULL,
+                                filter.function = reduce) %>%
+      quitte::as.quitte(na.rm = TRUE)
+  } else {
+    # data object given: avoid re-converting if it already is a quitte object
+    data <- if (quitte::is.quitte(scenarioPath)) scenarioPath else
+      quitte::as.quitte(scenarioPath, na.rm = TRUE)
+    data <- reduce(data)
+  }
 
   # change ordering of factors, global elements first
   new_order <- unique(intersect(c("World", "GLO",
@@ -17,6 +39,53 @@ importScenarioData <- function(scenarioPath) {
   data$region <- factor(data$region, levels = new_order)
 
   return(data)
+}
+
+# remove the "+" notation from variable names; operate on the factor levels
+# rather than on the full column as the latter creates a character vector with
+# one entry per row of the data
+deletePlusLevels <- function(variable) {
+  if (is.factor(variable)) {
+    # `levels<-` merges levels that become identical (e.g. "FE|+|Elec" and
+    # "FE|Elec"), so no re-factoring is needed
+    levels(variable) <- piamutils::deletePlus(levels(variable))
+    variable
+  } else {
+    factor(piamutils::deletePlus(variable))
+  }
+}
+
+# keep only variables that are needed for the validation; exact names are
+# matched directly, names containing "*" are matched as in expandVariables()
+filterVariables <- function(data, variables) {
+  if (is.null(variables)) return(data)
+
+  # works for factor and character columns alike
+  allVars <- if (is.factor(data$variable)) levels(data$variable) else
+    unique(as.character(data$variable))
+  isWild <- grepl("*", variables, fixed = TRUE)
+  keep <- allVars %in% variables[!isWild]
+  for (v in variables[isWild]) {
+    keep <- keep | grepl(variableToRegex(v), allVars)
+  }
+
+  data <- filter(data, variable %in% allVars[keep])
+  if (is.factor(data$variable)) data$variable <- droplevels(data$variable)
+  return(data)
+}
+
+# convert a variable name from the config into a regular expression matching
+# the full variable name
+# * matches everything until the next |, while ** matches including |
+variableToRegex <- function(variable) {
+  # escape "|"
+  vargrep <- gsub("|", "\\|", variable, fixed = TRUE)
+  # convert * into "everything except |"
+  vargrep <- gsub("*", "[^\\|]*", vargrep, fixed = TRUE)
+  # convert what was ** back to .*
+  vargrep <- gsub("[^\\|]*[^\\|]*", ".*", vargrep, fixed = TRUE)
+  # make sure you match the full variable, not just a part
+  paste0("^", vargrep, "$")
 }
 
 #' import a config shipped with the package
@@ -150,16 +219,7 @@ expandVariables <- function(cfg, data) {
   if (length(var_expand > 0)) {
     all_vars <- unique(data$variable)
     for (i in seq(nrow(var_expand))) {
-      # prepare strings for grepping by adding escape characters and "."
-      vartoexpand <- var_expand$variable[i]
-      # escape "|"
-      vargrep <- gsub("|", "\\|", vartoexpand, fixed = TRUE)
-      # convert * into "everything except |"
-      vargrep <- gsub("*", "[^\\|]*", vargrep, fixed = TRUE)
-      # convert what was ** back to .*
-      vargrep <- gsub("[^\\|]*[^\\|]*", ".*", vargrep, fixed = TRUE)
-      # make sure you match the full variable, not just a part
-      vargrep <- paste0("^", vargrep, "$")
+      vargrep <- variableToRegex(var_expand$variable[i])
       selected_vars <- all_vars[grepl(vargrep, all_vars)]
       message(var_expand$variable[i], " was expanded into ",
               length(selected_vars), " sub-variables.")

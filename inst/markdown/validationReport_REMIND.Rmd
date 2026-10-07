@@ -1,0 +1,505 @@
+---
+title: "REMIND validation"
+date: "`r format(Sys.Date())`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+params:
+  mif: ""
+  cfg: ""
+  extraColors: true
+  warning: false
+  message: false
+---
+
+```{r include=FALSE}
+library(piamValidation)
+library(knitr)
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+library(plotly)
+library(gridExtra)
+
+knitr::opts_chunk$set(
+  echo = FALSE,
+  error = TRUE,
+  message = params$message,
+  warning = params$warning
+)
+```
+
+## Import and Prepare Data
+
+Loading data from:
+
+```{r}
+for (m in params$mif) cat(paste0(normalizePath(m), "\n"))
+```
+
+Using config:
+
+```{r}
+cat(params$cfg, "\n")
+```
+
+
+```{r, message = FALSE, warning = TRUE}
+# import scenario and reference data once, it is used for the validation and
+# for the line plots; importScenarioData() removes the "+" notation from
+# variable names so that they match the variable names in the validation results
+data <- piamValidation:::importScenarioData(params$mif)
+
+valiData <- validateScenarios(data, params$cfg, extraColors = params$extraColors)
+valiData <- appendTooltips(valiData)
+
+# add "<model>_smoothed" reference data in which the 2020 value is replaced by
+# the 2018-2022 average to dampen the Covid shock; only used in the line plots
+hist_smoothed <- filter(data, scenario == "historical") %>%
+  piamValidation:::average_2020() %>%
+  filter(grepl("_smoothed$", model), !is.na(value))
+data <- bind_rows(data, hist_smoothed)
+```
+
+# Validation
+
+```{r}
+# heatmap wrapper: report missing validation results instead of failing
+REMIND_heatmap <- function(var, vD = valiData) {
+  d <- filter(vD, variable == var)
+  if (nrow(d) == 0) {
+    cat("No validation results for", var, "\n")
+    return(invisible(NULL))
+  }
+  validationHeatmap(d)
+}
+
+# lineplot wrapper: one plot per region, reg = "all" plots every region in
+# which the variable was validated, regions without results are skipped
+REMIND_lineplot <- function(var,
+                            reg = "World",
+                            vD = valiData,
+                            df = data,
+                            hist_models = NULL,
+                            xlimits = c(2000, 2035)) {
+
+  vD <- filter(vD, variable == var)
+  if (nrow(vD) == 0) {
+    cat("No validation results for", var, "\n")
+    return(invisible(NULL))
+  }
+
+  scen_data <- filter(df, scenario != "historical", variable == var)
+  hist_data <- filter(df, scenario == "historical", variable == var)
+  if (!is.null(hist_models)) {
+    hist_data <- filter(hist_data, model %in% hist_models)
+  }
+
+  # regions with validation results for this variable, World first
+  if (identical(reg, "all")) {
+    regions <- unique(as.character(vD$region))
+    if (is.factor(vD$region)) regions <- intersect(levels(vD$region), regions)
+  } else {
+    regions <- reg
+  }
+
+  plot_list <- htmltools::tagList()
+  for (r in regions) {
+    line_data <- filter(vD, region == r)
+    if (nrow(line_data) == 0) {
+      cat("No validation results for", var, "in region", r, "\n")
+      next
+    }
+    plot_list[[length(plot_list) + 1]] <- linePlotThresholds(
+      line_data,
+      refData  = filter(hist_data, region == r),
+      scenData = filter(scen_data, region == r),
+      xlim = xlimits)
+  }
+  plot_list
+}
+```
+
+## Emissions
+
+### Transport {.tabset}
+
+#### Heat Map
+```{r, fig.width=7, fig.height=6}
+var <- "Emi|CO2|w/o Bunkers|Energy|Demand|Transport"
+REMIND_heatmap(var)
+```
+
+#### Line Plots
+```{r, fig.width=9, fig.height=5}
+REMIND_lineplot(var, reg = "all", hist_models = c("CEDS", "EDGARghg", "CEDS_smoothed", "EDGARghg_smoothed"))
+```
+
+### Buildings {.tabset}
+
+#### Heat Map
+```{r, fig.width=7, fig.height=6}
+var <- "Emi|CO2|Energy|Demand|Buildings"
+REMIND_heatmap(var)
+```
+
+#### Line Plots
+```{r, fig.width=9, fig.height=5}
+REMIND_lineplot(var, reg = "all", hist_models = c("CEDS", "EDGARghg", "CEDS_smoothed", "EDGARghg_smoothed"))
+```
+
+### Energy and IP {.tabset}
+
+#### Heat Map
+```{r, fig.width=7, fig.height=6}
+var <- "Emi|CO2|w/o Bunkers|Energy and Industrial Processes"
+REMIND_heatmap(var)
+```
+
+#### Line Plots
+```{r, fig.width=9, fig.height=5}
+REMIND_lineplot(var, reg = "all", hist_models = c("CEDS", "EDGARghg", "CEDS_smoothed", "EDGARghg_smoothed"))
+```
+
+### Energy Supply {.tabset}
+
+#### Heat Map
+```{r, fig.width=7, fig.height=6}
+var <- "Emi|CO2|Energy|Supply"
+REMIND_heatmap(var)
+```
+
+#### Line Plots
+```{r, fig.width=9, fig.height=5}
+REMIND_lineplot(var, reg = "all", hist_models = c("CEDS", "EDGARghg", "CEDS_smoothed", "EDGARghg_smoothed"))
+```
+
+
+
+## PE
+
+### Coal {.tabset}
+
+#### Heat Map
+```{r, fig.width=7, fig.height=6}
+var <- "PE|Coal"
+REMIND_heatmap(var)
+```
+
+#### Line Plots
+```{r, fig.width=9, fig.height=5}
+REMIND_lineplot(var, reg = "all", 
+                hist_models = c("IEA-EB-directSum", "BP", "IEA-EB-directSum_smoothed", "BP_smoothed"))
+```
+
+### Gas {.tabset}
+
+#### Heat Map
+```{r, fig.width=7, fig.height=6}
+var <- "PE|Gas"
+REMIND_heatmap(var)
+```
+
+#### Line Plots
+```{r, fig.width=9, fig.height=5}
+REMIND_lineplot(var, reg = "all", 
+                hist_models = c("IEA-EB-directSum", "BP", "IEA-EB-directSum_smoothed", "BP_smoothed"))
+```
+
+### Oil {.tabset}
+
+#### Heat Map
+```{r, fig.width=7, fig.height=6}
+var <- "PE|Oil"
+REMIND_heatmap(var)
+```
+
+#### Line Plots
+```{r, fig.width=9, fig.height=5}
+REMIND_lineplot(var, reg = "all", 
+                hist_models = c("IEA-EB-directSum", "BP", "IEA-EB-directSum_smoothed", "BP_smoothed"))
+```
+
+
+## SE 
+
+### Electricity {.tabset}
+
+#### Heat Map
+```{r, fig.width=7, fig.height=6}
+var <- "SE|Electricity"
+REMIND_heatmap(var)
+```
+
+#### Line Plots
+```{r, fig.width=9, fig.height=5}
+REMIND_lineplot(var, reg = "all", hist_models = c("Ember", "BP", "Ember_smoothed", "BP_smoothed"))
+```
+
+## FE 
+
+### Total {.tabset}
+
+#### Heat Map
+```{r, fig.width=7, fig.height=6}
+var <- "FE"
+REMIND_heatmap(var)
+```
+
+#### Line Plots
+```{r, fig.width=9, fig.height=5}
+REMIND_lineplot(var, reg = "all", hist_models = c("IEA-EB-directSum", "IEA-EB-directSum_smoothed"))
+```
+
+
+## Capacities
+
+### Coal {.tabset}
+
+#### Heat Map
+```{r, fig.width=7, fig.height=6}
+var <- "Cap|Electricity|Coal"
+REMIND_heatmap(var)
+```
+
+#### Line Plots
+```{r, fig.width=9, fig.height=5}
+REMIND_lineplot(var, reg = "all", hist_models = c("Ember", "Ember_smoothed"))
+```
+
+### Gas {.tabset}
+
+#### Heat Map
+```{r, fig.width=7, fig.height=6}
+var <- "Cap|Electricity|Gas"
+REMIND_heatmap(var)
+```
+
+#### Line Plots
+```{r, fig.width=9, fig.height=5}
+REMIND_lineplot(var, reg = "all", hist_models = c("Ember", "Ember_smoothed"))
+```
+
+### Solar {.tabset}
+
+#### Heat Map
+```{r, fig.width=7, fig.height=6}
+var <- "Cap|Electricity|Solar"
+REMIND_heatmap(var)
+```
+
+#### Line Plots
+```{r, fig.width=9, fig.height=5}
+REMIND_lineplot(var, reg = "all", hist_models = c("Ember", "Ember_smoothed"))
+```
+
+### Wind {.tabset}
+
+#### Heat Map
+```{r, fig.width=7, fig.height=6}
+var <- "Cap|Electricity|Wind"
+REMIND_heatmap(var)
+```
+
+#### Line Plots
+```{r, fig.width=9, fig.height=5}
+REMIND_lineplot(var, reg = "all", hist_models = c("Ember", "Ember_smoothed"))
+```
+
+### Hydro {.tabset}
+
+#### Heat Map
+```{r, fig.width=7, fig.height=6}
+var <- "Cap|Electricity|Hydro"
+REMIND_heatmap(var)
+```
+
+#### Line Plots
+```{r, fig.width=9, fig.height=5}
+REMIND_lineplot(var, reg = "all", hist_models = c("Ember", "IRENA", "Ember_smoothed", "IRENA_smoothed"))
+```
+
+### Nuclear {.tabset}
+
+#### Heat Map
+```{r, fig.width=7, fig.height=6}
+var <- "Cap|Electricity|Nuclear"
+REMIND_heatmap(var)
+```
+
+#### Line Plots
+```{r, fig.width=9, fig.height=5}
+REMIND_lineplot(var, reg = "all", hist_models = c("Ember", "Ember_smoothed"))
+```
+
+## EVs
+
+### Stocks {.tabset}
+
+#### Heat Map
+```{r, fig.width=7, fig.height=6}
+var <- "Stock|Transport|Pass|Road|LDV|Four Wheelers|BEV"
+REMIND_heatmap(var)
+```
+
+#### Line Plots
+```{r, fig.width=9, fig.height=5}
+REMIND_lineplot(var, reg = "all")
+```
+
+### Sales {.tabset}
+
+#### Heat Map
+```{r, fig.width=7, fig.height=6}
+var <- "Sales|Transport|Pass|Road|LDV|Four Wheelers|BEV"
+REMIND_heatmap(var)
+```
+
+#### Line Plots
+```{r, fig.width=9, fig.height=5}
+REMIND_lineplot(var, reg = "all")
+```
+
+## Carbon Management
+
+### Storage {.tabset}
+
+#### Heat Map
+```{r, fig.width=7, fig.height=6}
+var <- "Carbon Management|Storage"
+REMIND_heatmap(var)
+```
+
+#### Line Plots
+```{r, fig.width=9, fig.height=5}
+REMIND_lineplot(var, reg = "all")
+```
+
+
+# Sustainability Concerns
+
+```{r, fig.width=7, fig.height=6}
+var <- "PE|Biomass"
+REMIND_heatmap(var)
+```
+
+## Summary {.tabset}
+
+```{r}
+df_summary <- valiData
+
+colors <- c(green     = "#008450",
+            yellow    = "#EFB700",
+            red       = "#B81D13",
+            cyan      = "#66ccee",
+            blue      = "#4477aa",
+            grey      = "#808080")
+
+# find "critical == yes" data points of each color
+summary <- filter(df_summary, region == "World") %>%
+  dplyr::count(model, check) %>%
+  group_by(model) %>%
+  mutate(percent = n / sum(n) * 100)
+
+# change order of colors
+summary$check <- factor(
+  summary$check, 
+  levels = rev(c("green", "yellow", "cyan", "red", "blue", "grey"))
+  )
+
+# stacking order and midpoints
+summary <- summary %>%
+  arrange(model, desc(check)) %>%
+  group_by(model) %>%
+  mutate(
+    cumulative = cumsum(n),
+    midpoint = cumulative - (n / 2)
+  )
+
+
+# stacked bar plot in absolute numbers of checks
+p1 <- ggplot(summary, aes(x = model, y = n, fill = check)) +
+  geom_bar(stat = "identity") + # Absolute stacked bars
+  scale_fill_manual(values = colors) + # Custom colors
+  theme(axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) +
+  geom_text(aes(label = n, y = midpoint), color = "white", size = 3.5) +
+  labs(y = "Count", x = "Model") +
+  ggtitle("World") + 
+  theme(legend.position = "none")
+
+# normalized
+p2 <- ggplot(summary, aes(x = model, y = n, fill = check)) +
+  geom_bar(position = "fill", stat = "identity") +
+  scale_fill_manual(values = colors) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 0, hjust=0.5)) +
+  geom_text(aes(label = paste0(round(percent, 1), "%"),
+                group = check),
+            position = position_fill(vjust = 0.5),
+            color = "white",
+            size = 3.5) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(y = "Percentage", x = "Model") +
+  ggtitle("World") + 
+  theme(legend.position = "none")
+
+
+# find "critical == yes" data points of each color
+summary <- filter(df_summary, region != "World") %>%
+  dplyr::count(model, check) %>%
+  group_by(model) %>%
+  mutate(percent = n / sum(n) * 100)
+
+# change order of colors
+summary$check <- factor(
+  summary$check, 
+  levels = rev(c("green", "yellow", "cyan", "red", "blue", "grey"))
+  )
+
+# stacking order and midpoints
+summary <- summary %>%
+  arrange(model, desc(check)) %>%
+  group_by(model) %>%
+  mutate(
+    cumulative = cumsum(n),
+    midpoint = cumulative - (n / 2)
+  )
+
+# stacked bar plot in absolute numbers of checks
+p3 <- ggplot(summary, aes(x = model, y = n, fill = check)) +
+  geom_bar(stat = "identity") + # Absolute stacked bars
+  scale_fill_manual(values = colors) + # Custom colors
+  theme(axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) +
+  geom_text(aes(label = n, y = midpoint), color = "white", size = 3.5) +
+  labs(y = "Count", x = "Model") +
+  ggtitle("Regions") + 
+  theme(legend.position = "none")
+
+# normalized
+p4 <- ggplot(summary, aes(x = model, y = n, fill = check)) +
+  geom_bar(position = "fill", stat = "identity") +
+  scale_fill_manual(values = colors) +
+  theme(axis.text.x = element_text(angle = 0, vjust = 0, hjust=0.5)) +
+  geom_text(aes(label = paste0(round(percent, 1), "%"),
+                group = check),
+            position = position_fill(vjust = 0.5),
+            color = "white",
+            size = 3.5) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(y = "Percentage", x = "Model") +
+  ggtitle("Regions") + 
+  theme(legend.position = "none")
+```
+
+
+### Percentage
+
+```{r, fig.width=7, fig.height=4}
+grid.arrange(p2, p4, nrow = 1)
+```
+
+### Count
+```{r, fig.width=7, fig.height=4}
+grid.arrange(p1, p3, nrow = 1)
+```

@@ -120,12 +120,10 @@ absolute;yes;Cap|Electricity|Wind;GW;;;CHA;2030;;436.32408;2243.85952;;;;;
 absolute;yes;Cap|Electricity|Wind;GW;;;IND;2030;;38.05542;181.38848;;;;;
 absolute;yes;Cap|Electricity|Wind;GW;;;USA;2030;;106.93662;404.67378;;;;;
 ;;;;;;;;;;;;;;;
-absolute;yes;Stock|Transport|Pass|Road|BEV;million veh;;;World;2035;238;289;414;450;;;;15/30% above + below range of CPS and STEPS values of 2026
-absolute;yes;Sales|Transport|Pass|Road|BEV;million veh;;;World;2035;29.4;35.7;52.9;59.8;;;;
-absolute;yes;Stock|Transport|Pass|Road|BEV;million veh;;;CHA;2035;126;153;207;234;;;;
-absolute;yes;Sales|Transport|Pass|Road|BEV;million veh;;;CHA;2035;14;17;23;26;;;;
-;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;
+absolute;yes;Stock|Transport|Pass|Road|LDV|Four Wheelers|BEV;million veh;;;World;2035;238;289;468;576;;;;minus 30%/15% ..+30%/+60% below and above range of CPS and STEPS values of 2026
+absolute;yes;Sales|Transport|Pass|Road|LDV|Four Wheelers|BEV;million veh;;;World;2035;29.4;35.7;59.8;73.6;;;;general IEA GEVO update todo
+absolute;yes;Stock|Transport|Pass|Road|LDV|Four Wheelers|BEV;million veh;;;CHA;2035;126;153;234;288;;;;
+absolute;yes;Sales|Transport|Pass|Road|LDV|Four Wheelers|BEV;million veh;;;CHA;2035;14;17;26;32;;;;
 ;;;;;;;;;;;;;;;
 post 2030;;;;;;;;;;;;;;;
 absolute;yes;Cap|Electricity|Nuclear;GW;;;World;2050;;;;991;;;;IAEA high case

@@ -19,15 +19,18 @@ validateScenarios <- function(dataPath, config,
                               extraColors = TRUE,
                               giveSummary = FALSE) {
 
-  data <- importScenarioData(dataPath)
+  # get config first so that only the variables it needs are imported
+  cfg <- getConfig(config)
+
+  data <- importScenarioData(dataPath, variables = unique(cfg$variable))
 
   # historical/reference data has to have "historical" as scenario name
   hist <- filter(data, scenario == "historical")
   scen <- filter(data, scenario != "historical")
+  rm(data)
 
-  # get config and convert it into a format that is easy to handle
-  cfg <- config %>%
-    getConfig() %>%
+  # convert config into a format that is easy to handle
+  cfg <- cfg %>%
     fillInf() %>%
     expandPeriods(scen) %>%
     expandVariables(scen)
