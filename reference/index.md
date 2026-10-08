@@ -17,6 +17,9 @@
   : Import SCI criteria and convert to config
 - [`getConfig()`](https://pik-piam.github.io/piamValidation/reference/getConfig.md)
   : import a config shipped with the package
+- [`getThresholdBands()`](https://pik-piam.github.io/piamValidation/reference/getThresholdBands.md)
+  : takes the output of "validateScenarios()" and computes threshold
+  bands
 - [`importScenarioData()`](https://pik-piam.github.io/piamValidation/reference/importScenarioData.md)
   : import IAM data for validation
 - [`linePlotThresholds()`](https://pik-piam.github.io/piamValidation/reference/linePlotThresholds.md)
