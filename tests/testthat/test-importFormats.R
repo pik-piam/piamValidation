@@ -3,7 +3,7 @@ test_that(
   {
     # target data
     data <- quitte::as.quitte(
-      tibble::tribble(
+      dplyr::tribble(
         ~model, ~scenario, ~region, ~variable, ~unit, ~period, ~value,
         "REMIND", "Test" , "World",   "FE",   "EJ/yr",  2005,    10,
         "REMIND", "Test" , "World",   "FE",   "EJ/yr",  2010,    11
@@ -24,7 +24,7 @@ test_that(
   {
     # target data
     data <- quitte::as.quitte(
-      tibble::tribble(
+      dplyr::tribble(
         ~model, ~scenario, ~region, ~variable, ~unit, ~period, ~value,
         "REMIND", "Test" , "World",   "FE",   "EJ/yr",  2005,    10,
         "REMIND", "Test" , "World",   "FE",   "EJ/yr",  2010,    11
@@ -41,7 +41,7 @@ test_that(
   {
     # target data
     data <- quitte::as.quitte(
-      tibble::tribble(
+      dplyr::tribble(
         ~model, ~scenario, ~region, ~variable, ~unit, ~period, ~value,
         "REMIND", "Test" , "World",   "FE",   "EJ/yr",  2005,    10,
         "REMIND", "Test" , "World",   "FE",   "EJ/yr",  2010,    11
@@ -59,7 +59,7 @@ test_that(
   {
     # target data
     data <- quitte::as.quitte(
-      tibble::tribble(
+      dplyr::tribble(
         ~model, ~scenario, ~region, ~variable, ~unit, ~period, ~value,
         "REMIND", "Test" , "World",   "FE",   "EJ/yr",  2005,    10,
         "REMIND", "Test" , "World",   "FE",   "EJ/yr",  2010,    11
@@ -77,7 +77,7 @@ test_that(
   {
     # target data
     data <- quitte::as.quitte(
-      tibble::tribble(
+      dplyr::tribble(
         ~model, ~scenario, ~region, ~variable, ~unit, ~period, ~value,
         "REMIND", "Test" , "World",   "FE",   "EJ/yr",  2005,    10,
         "REMIND", "Test" , "World",   "FE",   "EJ/yr",  2010,    11
@@ -85,7 +85,7 @@ test_that(
       )
     # test data
     data_df <- importScenarioData(
-      tibble::tibble(model = c("REMIND", "REMIND"),
+      dplyr::tibble(model = c("REMIND", "REMIND"),
                      scenario = c("Test", "Test"),
                      region = c("World", "World"),
                      variable = c("FE", "FE"),

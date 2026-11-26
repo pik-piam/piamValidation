@@ -18,14 +18,12 @@ params:
 
 ```{r include=FALSE}
 # Setup
-devtools::load_all(".")
+library(piamValidation)
 library(knitr)
 library(dplyr)
 library(ggplot2)
-library(ggthemes)
 library(plotly)
 library(madrat)
-library(piamInterfaces)
 library(tidyr)
 library(stringr)
 library(ggpubr)

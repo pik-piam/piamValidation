@@ -21,10 +21,8 @@ library(piamValidation)
 library(knitr)
 library(dplyr)
 library(ggplot2)
-library(ggthemes)
 library(plotly)
 library(madrat)
-library(piamInterfaces)
 
 knitr::opts_chunk$set(
   echo = FALSE,

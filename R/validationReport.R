@@ -12,8 +12,6 @@
 #' @param giveSummary print a summary of input data via ``showInputSummary()``
 #'        which allows spotting data inconsistencies
 #'
-#' @importFrom piamutils getSystemFile
-#'
 #' @export
 
 validationReport <- function(dataPath, config,
@@ -21,6 +19,16 @@ validationReport <- function(dataPath, config,
                              outputDir = "output",
                              extraColors = TRUE,
                              giveSummary = FALSE) {
+
+  # rendering packages are only suggested, as they are not needed for
+  # validateScenarios(); further packages loaded within the individual
+  # templates are listed in Suggests as well
+  missingPkgs <- Filter(function(p) !requireNamespace(p, quietly = TRUE),
+                        c("rmarkdown", "knitr"))
+  if (length(missingPkgs) > 0) {
+    stop("validationReport() requires the following package(s): ",
+         paste(missingPkgs, collapse = ", "), ". Please install them.")
+  }
 
   # detect if dataPath is file path or R object
   if (is.character(dataPath)) {
@@ -55,7 +63,7 @@ validationReport <- function(dataPath, config,
     reportName <- "Custom"
   } else {
     # name of report file in inst/markdown given
-    reportPath <- piamutils::getSystemFile(
+    reportPath <- system.file(
       paste0("markdown/validationReport_", report, ".Rmd"),
       package = "piamValidation")
     if (file.exists(reportPath)) {

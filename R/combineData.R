@@ -8,7 +8,6 @@
 #' @param histData reference data
 #'
 #' @importFrom dplyr filter select mutate summarise group_by %>%
-#' @importFrom piamInterfaces areUnitsIdentical
 #'
 combineData <- function(scenData, cfgRow, histData = NULL) {
 

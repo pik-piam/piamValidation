@@ -6,12 +6,10 @@
 #'
 #' @returns character vector of config names
 #'
-#' @importFrom piamutils getSystemFile
-#'
 #' @export
 listConfigs <- function() {
   configs <- list.files(
-    piamutils::getSystemFile("config", package = "piamValidation"),
+    system.file("config", package = "piamValidation"),
     pattern = "^validationConfig_.*\\.csv$")
   sort(gsub("^validationConfig_|\\.csv$", "", configs))
 }
@@ -23,12 +21,10 @@ listConfigs <- function() {
 #'
 #' @returns character vector of report names
 #'
-#' @importFrom piamutils getSystemFile
-#'
 #' @export
 listReports <- function() {
   reports <- list.files(
-    piamutils::getSystemFile("markdown", package = "piamValidation"),
+    system.file("markdown", package = "piamValidation"),
     pattern = "^validationReport_.*\\.Rmd$")
   sort(gsub("^validationReport_|\\.Rmd$", "", reports))
 }

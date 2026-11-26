@@ -48,11 +48,22 @@ deletePlusLevels <- function(variable) {
   if (is.factor(variable)) {
     # `levels<-` merges levels that become identical (e.g. "FE|+|Elec" and
     # "FE|Elec"), so no re-factoring is needed
-    levels(variable) <- piamutils::deletePlus(levels(variable))
+    levels(variable) <- deletePlusString(levels(variable))
     variable
   } else {
-    factor(piamutils::deletePlus(variable))
+    factor(deletePlusString(variable))
   }
+}
+
+# replace "|+|", "|++|", ... by "|" in a character vector of variable names;
+# repeated because overlapping matches (e.g. "w|+|+|x") need several passes.
+# Same as piamutils::deletePlus() for character vectors.
+deletePlusString <- function(s) {
+  pattern <- "\\|\\++\\|"
+  while (any(grepl(pattern, s))) {
+    s <- gsub(pattern, "|", s)
+  }
+  return(s)
 }
 
 # keep only variables that are needed for the validation; exact names are
@@ -98,7 +109,7 @@ variableToRegex <- function(variable) {
 #' @export
 getConfig <- function(config) {
   # config can be a data object...
-  if (tibble::is_tibble(config)) {
+  if (inherits(config, "tbl_df")) {
     cfg <- config
   # ...or a string
   } else if (is.character(config)) {
@@ -122,7 +133,7 @@ getConfig <- function(config) {
       cfg <- filter(cfg, ! grepl("^#", cfg[[1]]))
     } else {
       # only support ";" as separator for config as "," might be used in cells
-      cfg <- tibble::as_tibble(
+      cfg <- dplyr::as_tibble(
         read.csv2(path, na.strings = c("", "NA"), comment.char = "#"))
     }
     message("loading config file: ", path, "\n")
