@@ -26,7 +26,7 @@ library(plotly)
 library(madrat)
 library(tidyr)
 library(stringr)
-library(ggpubr)
+library(gridExtra)
 
 knitr::opts_chunk$set(
   echo = FALSE,
@@ -718,7 +718,7 @@ p4 <- ggplot(summary, aes(x = model, y = n, fill = check)) +
   coord_polar("y", start = 0) +
   theme_void()+ theme(legend.position="none")
 
-ggarrange(p1, p3, p2, p4)
+grid.arrange(p1, p3, p2, p4)
 
 summary[c("check", "n", "percent")]
 ```

@@ -26,7 +26,7 @@ library(madrat)
 library(quitte)
 library(stringr)
 library(tidyr)
-library(ggpubr)
+library(gridExtra)
 
 
 knitr::opts_chunk$set(
@@ -685,7 +685,7 @@ summary_mod <- function(mod) {
     labs(y = "Percentage", x = "Scenario") +
     theme(legend.position="none")
   
-  ggarrange(p1, p2, nrow = 1)
+  grid.arrange(p1, p2, nrow = 1)
   }
 ```
 
