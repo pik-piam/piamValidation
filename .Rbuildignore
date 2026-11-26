@@ -18,3 +18,5 @@
 ^\.positai$
 ^\.claude$
 ^CODE_STYLE\.md$
+^CLAUDE.md$
+^AGENTS.md$

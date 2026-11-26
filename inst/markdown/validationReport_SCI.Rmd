@@ -20,7 +20,6 @@ library(piamValidation)
 library(knitr)
 library(dplyr)
 library(ggplot2)
-library(ggthemes)
 library(plotly)
 
 knitr::opts_chunk$set(
@@ -52,7 +51,7 @@ https://scenario-evaluation-criteria.iamconsortium.org/2026.08.03/
 ```{r, message = FALSE, warning = TRUE, results = 'asis'}
 # SCI evaluates cumulated geological carbon storage (2020-2100); if a scenario
 # does not report the variable, calculate it from annual storage
-cumVar <- "Carbon Capture|Geological Storage|Cumulated"
+cumVar <- "Carbon Capture|Geological Storage|Cumulative"  # as in validationConfig_SCI_*.csv
 annVar <- "Carbon Capture|Geological Storage"
 
 # import only the variables needed for the validation and for the cumulated

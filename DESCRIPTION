@@ -1,8 +1,8 @@
 Type: Package
 Package: piamValidation
 Title: Validation Tools for PIK-PIAM
-Version: 0.19.0
-Date: 2026-10-07
+Version: 0.20.0
+Date: 2026-11-26
 Authors@R:
     c(person("Pascal", "Weigmann",, "pascal.weigmann@pik-potsdam.de", role = c("aut", "cre"),
       comment = c(affiliation = "Potsdam Institute for Climate Impact Research", ORCID = "0000-0001-8801-173X")),
@@ -17,33 +17,27 @@ Description: The piamValidation package provides validation tools for the Potsda
 License: LGPL-3
 URL: https://github.com/pik-piam/piamValidation, https://pik-piam.github.io/piamValidation
 Imports:
-    devtools,
     dplyr (>= 1.1.1),
-    DT,
     ggplot2,
-    ggthemes,
-    htmltools,
-    knitr,
-    piamInterfaces,
-    piamutils,
     plotly,
     quitte (>= 0.3123.0),
-    readr,
-    readxl,
-    tibble,
-    tidyr
+    readxl
 Suggests:
+    DT,
     gridExtra,
-    htmlwidgets,
+    htmltools,
     kableExtra,
+    knitr,
     madrat,
     magclass,
-    testthat (>= 3.0.0),
-    remind2,
+    piamInterfaces,
     rmarkdown,
     rprojroot,
     scales,
-    scenarioevaluationcriteria
+    scenarioevaluationcriteria,
+    stringr,
+    testthat (>= 3.0.0),
+    tidyr
 Remotes:
     scenarioevaluationcriteria=github::IAMconsortium/scenario-evaluation-criteria
 Encoding: UTF-8
@@ -52,4 +46,4 @@ Depends:
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Config/Needs/website: tidyverse/tidytemplate
-Config/roxygen2/version: 8.1.0
+Config/roxygen2/version: 8.1.1

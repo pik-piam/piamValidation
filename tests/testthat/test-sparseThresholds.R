@@ -21,7 +21,7 @@ test_that("sparse thresholds are applied correctly", {
 
   # do tests for all colors
   for (color in row.names(configs)) {
-    cfg_color <- tibble::as_tibble(configs[color, ])
+    cfg_color <- dplyr::as_tibble(configs[color, ])
 
     # iterate through all possibilities of threshold usage:
     # min 1, max 4 thresholds per row.

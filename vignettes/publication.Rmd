@@ -30,18 +30,18 @@ package. After installation, please follow these steps:
 library(piamValidation)
 
 # NGFS validation
-scen_NGFS <- piamutils::getSystemFile("extdata/NGFS_scenario_data_publication.rds", 
+scen_NGFS <- system.file("extdata/NGFS_scenario_data_publication.rds", 
                                         package = "piamValidation")
-hist_NGFS <- piamutils::getSystemFile("extdata/NGFS_reference_data_publication.rds", 
+hist_NGFS <- system.file("extdata/NGFS_reference_data_publication.rds", 
                                         package = "piamValidation")
 validationReport(dataPath = c(scen_NGFS, hist_NGFS), 
                  config = "publication_NGFS",
                  report = "publication_NGFS")
 
 # REMIND near-term trends
-scen_REMIND <- piamutils::getSystemFile("extdata/REMIND_scenario_data_publication.rds", 
+scen_REMIND <- system.file("extdata/REMIND_scenario_data_publication.rds", 
                                         package = "piamValidation")
-hist_REMIND <- piamutils::getSystemFile("extdata/REMIND_reference_data_publication.rds", 
+hist_REMIND <- system.file("extdata/REMIND_reference_data_publication.rds", 
                                         package = "piamValidation")
 validationReport(dataPath = c(scen_REMIND, hist_REMIND), 
                  config = "publication",

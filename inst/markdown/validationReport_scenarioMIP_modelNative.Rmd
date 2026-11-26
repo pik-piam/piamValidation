@@ -27,7 +27,6 @@ library(piamValidation)
 library(knitr)
 library(dplyr)
 library(ggplot2)
-library(ggthemes)
 library(plotly)
 library(madrat)
 library(piamInterfaces)
@@ -408,7 +407,7 @@ models <- c("AIM30",
             "WITCH60")
 for (model in models) {
   var_map <- piamInterfaces::getMapping(project = "ScenarioMIP") %>%
-    mutate(piam_variable = piamutils::deletePlus(.data$piam_variable))
+    mutate(piam_variable = piamValidation:::deletePlusString(.data$piam_variable))
   var_map <- data.frame(sm_var = var_map$variable, 
                         variable = var_map$piam_variable,
                         sm_unit = var_map$unit,

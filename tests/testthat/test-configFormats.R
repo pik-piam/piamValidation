@@ -2,7 +2,7 @@ test_that(
   "config in CSV format is correctly imported",
   {
     # target config
-    config <- tibble::tribble(
+    config <- dplyr::tribble(
         ~metric, ~critical, ~variable, ~unit, ~model, ~scenario, ~region, ~period,
         ~min_red, ~min_yel, ~max_yel, ~max_red, ~ref_model, ~ref_scenario, ~ref_period,
         "relative", "yes", "Emi|CO2|Energy", "Mt CO2/yr", NA, NA, NA, "2010",
@@ -21,7 +21,7 @@ test_that(
   "config in XLSX format is correctly imported",
   {
     # target config
-    config <- tibble::tribble(
+    config <- dplyr::tribble(
       ~metric, ~critical, ~variable, ~unit, ~model, ~scenario, ~region, ~period,
       ~min_red, ~min_yel, ~max_yel, ~max_red, ~ref_model, ~ref_scenario, ~ref_period,
       "relative", "yes", "Emi|CO2|Energy", "Mt CO2/yr", NA, NA, NA, "2010",
@@ -40,7 +40,7 @@ test_that(
   "config can be R data.frame",
   {
     # target config
-    config <- tibble::tribble(
+    config <- dplyr::tribble(
       ~metric, ~critical, ~variable, ~unit, ~model, ~scenario, ~region, ~period,
       ~min_red, ~min_yel, ~max_yel, ~max_red, ~ref_model, ~ref_scenario, ~ref_period,
       "relative", "yes", "Emi|CO2|Energy", "Mt CO2/yr", NA, NA, NA, "2010",

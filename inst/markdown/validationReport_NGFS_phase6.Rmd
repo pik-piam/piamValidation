@@ -1,5 +1,5 @@
 ---
-title: "NGFS Validation Phase 6 c2"
+title: "NGFS Validation Phase 6 c3"
 date: "`r format(Sys.Date())`"
 output:
   html_document:
@@ -16,12 +16,10 @@ params:
 ---
 
 ```{r include=FALSE}
-#library(piamValidation)
-devtools::load_all(".")
+library(piamValidation)
 library(knitr)
 library(dplyr)
 library(ggplot2)
-library(ggthemes)
 library(plotly)
 library(gridExtra)
 
@@ -34,7 +32,7 @@ knitr::opts_chunk$set(
 ```
 
 # Data
-Loading runs from: `ngfs_phase_6_snapshot_C2_29_05_2026`.
+Loading runs from: `NGFS/phase6/c3`.
 
 Configs (not yet fully updated online):
 
@@ -49,34 +47,46 @@ Configs (not yet fully updated online):
 ```{r, message = FALSE, warning = FALSE}
 # Data Preparation
 
-data_dir <- "C:/Users/pascalwe/Data/NGFS/phase6/c2/ngfs_phase_6_snapshot_C2_29_05_2026/"
+data_dir <- "C:/Users/pascalwe/Data/NGFS/phase6/c3/"
 
-scen_gcm <- "ngfs_phase_6_snapshot_gcam_2026-05-21 19_00_22.807966.xlsx"
-scen_msg <- "ngfs_phase_6_snapshot_message_2026-05-29 10_09_23.052160.xlsx"
-scen_rmd <- "ngfs_phase_6_snapshot_remind_2026-05-29 13_57_57.070735.xlsx"
+scen_gcm <- "combined_6scen_260924_upd_corr0929.xlsx"
+scen_msg <- list.files(data_dir, pattern = "^prep_MESSAGE.*\\.xlsx$")
+scen_rmd <- "REMIND-MAgPIE_submission_all-scenarios_2026-10-05_14.48.10.xlsx"
 
-# read and save data as rds
-# data_gcm <- quitte::as.quitte(paste0(data_dir, scen_gcm))
-# data_msg <- quitte::as.quitte(paste0(data_dir, scen_msg))
-# data_rmd <- quitte::as.quitte(paste0(data_dir, scen_rmd))
-
-# saveRDS(rbind(data_gcm, data_msg, data_rmd), 
-#   file = paste0(data_dir, "scenario_all_2026-05-29.rds"))
+# read data (one file per scenario for MESSAGE)
+data_gcm <- quitte::as.quitte(paste0(data_dir, scen_gcm))
+data_msg <- do.call(rbind, lapply(paste0(data_dir, scen_msg), quitte::as.quitte))
+data_rmd <- quitte::as.quitte(paste0(data_dir, scen_rmd))
 
 # # use World data of GCAM has more periods than the others, because of finer regions?
-hist_gcm <- readRDS(paste0(data_dir, "historical_GCAM82_2026-06-04.rds"))
-hist_msg <- readRDS(paste0(data_dir, "historical_MESSAGEix-GLOBIOM-GAINS21-R12_2026-06-04.rds"))
-hist_rmd <- readRDS(paste0(data_dir, "historical_REMIND-MAgPIE36-414_2026-06-04.rds"))
+hist_gcm <- readRDS(paste0(data_dir, "historical_GCAM_2026-10-08.rds"))
+hist_msg <- readRDS(paste0(data_dir, "historical_MESSAGE_2026-10-08.rds"))
+hist_rmd <- readRDS(paste0(data_dir, "historical_REMIND_2026-10-08.rds"))
 
 hist_gcm <- hist_gcm[hist_gcm$region != "CHN", ]
 hist_msg <- hist_msg[hist_msg$region != "CHN", ]
 hist_rmd <- hist_rmd[hist_rmd$region != "CHN", ]
 
-scen <- readRDS(paste0(data_dir, "scenario_all_2026-05-29.rds"))
+scen <- rbind(data_gcm, data_msg, data_rmd)
 
-# remove all regions from scenario data except model-native and World
+# map region codes to region names used in configs
+regions_msg <- c(R12_AFR = "Sub-Saharan Africa", R12_CHN = "China",
+                 R12_EEU = "Eastern Europe", R12_FSU = "Former Soviet Union",
+                 R12_LAM = "Latin America and the Caribbean",
+                 R12_MEA = "Middle East and North Africa",
+                 R12_NAM = "North America", R12_PAO = "Pacific OECD",
+                 R12_PAS = "Other Pacific Asia",
+                 R12_RCPA = "Rest of Centrally Planned Asia",
+                 R12_SAS = "South Asia", R12_WEU = "Western Europe")
+regions_rmd <- c(CAZ = "Canada Australia New Zealand", CHA = "China and Taiwan",
+                 EUR = "EU 28", IND = "India", JPN = "Japan",
+                 LAM = "Latin America and the Caribbean",
+                 MEA = "Middle East and North Africa", NEU = "Non-EU28 Europe",
+                 OAS = "Other Asia", REF = "Russia and Reforming Economies",
+                 SSA = "Sub-Saharan Africa", USA = "United States of America")
+
+# scenario data only contains model-native regions and World
 scen <- scen %>%
-  filter(grepl("\\||World", region)) %>%
   filter(!is.na(value)) %>%
   filter(period %in% c(seq(2020, 2060, 5), seq(2070, 2100, 10))) %>%
   mutate(region = gsub(",", "", region))  # removes "," from REMIND region CAZ
@@ -87,18 +97,18 @@ scen_gcm <- scen %>%
          model = "GCAM")
 scen_msg <- scen %>%
   filter(model == "MESSAGEix-GLOBIOM-GAINS 2.1-BMT-R12") %>%
-  mutate(region = gsub("MESSAGEix-GLOBIOM-GAINS 2.1-R12\\|", "", region),
+  mutate(region = recode(as.character(region), !!!regions_msg),
          model = "MESSAGE")
 scen_rmd <- scen %>%
-  filter(model == "REMIND-MAgPIE 3.6-4.14") %>%
-  mutate(region = gsub("REMIND-MAgPIE 3.6-4.14\\|", "", region),
+  filter(model == "REMIND-MAgPIE 3.7-4.14") %>%
+  mutate(region = recode(as.character(region), !!!regions_rmd),
          model = "REMIND")
 
 # average 2020 values over 5 year period to even out Covid shock
-hist_gcm <- average_2020(hist_gcm)
-hist_msg <- average_2020(hist_msg)
-hist_rmd <- average_2020(hist_rmd) %>%
-  mutate(region = gsub(",", "", region))  # removes "," from REMIND region CAZ
+hist_gcm <- piamValidation:::average_2020(hist_gcm)
+hist_msg <- piamValidation:::average_2020(hist_msg)
+hist_rmd <- piamValidation:::average_2020(hist_rmd) %>%
+  mutate(region = recode(as.character(region), !!!regions_rmd))
 
 vd_gcm <- validateScenarios(rbind(scen_gcm, hist_gcm), "NGFS_GCAM_Phase6")
 vd_gcm <- appendTooltips(vd_gcm)

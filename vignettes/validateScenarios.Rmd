@@ -223,8 +223,9 @@ Examples are available as part of the testing routine in ``tests/testthat/test-r
 It is recommended to include the unit of each variable in the config file to
 avoid inconsistency between data sources. The tool performs checks, whether the
 units in the config match those in scenario and reference data and returns a 
-warning in case they don't. This check is performed using 
-``piamInterfaces::areUnitsIdentical()`` to avoid false positives.
+warning in case they don't. To avoid false positives, different spellings of
+the same unit (e.g. "billion" and "bn") are treated as identical, using the
+same list of equivalent units as ``piamInterfaces::areUnitsIdentical()``.
 
 In case scenario or reference data contains variables with multiple units, it
 will be filtered for the units matching those from the config file.

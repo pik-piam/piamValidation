@@ -1,0 +1,445 @@
+---
+title: "piamValidation: SCI thresholds for REMIND-MAgPIE ScenarioMIP scenarios"
+date: "`r format(Sys.Date())`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+params:
+  mif: ""
+  cfg: "SCI_2026.8.3"
+  extraColors: true
+  warning: false
+  message: false
+  figWidth: 9
+  figHeight: 5.5
+  plotDir: ""
+---
+
+```{r include=FALSE}
+library(piamValidation)
+library(knitr)
+library(dplyr)
+library(ggplot2)
+library(quitte)
+library(piamInterfaces)
+
+knitr::opts_chunk$set(
+  echo = FALSE,
+  error = TRUE,
+  message = params$message,
+  warning = params$warning
+)
+```
+
+## Import and Prepare Data
+
+Usage, with the ScenarioMIP snapshot (`.rds`, preprocessed as `df.submissions` in
+`scenario_analysis/commons/setup_data_snapshot.R`) and a REMIND historical.mif (H12 regions,
+REMIND variable names):
+
+```r
+validationReport(
+  dataPath = c("scenarios_scenariomip_2026-08-10.rds", "historical.mif"),
+  config   = "SCI_2026.8.3",
+  report   = "SCI_scenarioMIP")
+```
+
+Loading data from:
+
+```{r}
+for (m in params$mif) cat(paste0(normalizePath(m), "\n"))
+```
+
+Using config:
+
+```{r}
+cat(params$cfg, "\n")
+```
+
+Thresholds based on:
+https://scenario-evaluation-criteria.iamconsortium.org/2026.08.03/
+
+The scenario selection, the marker definition and the conversion of the historical data follow
+`scenario_analysis/10_VLMarkerPaper_ValidationPlots.Rmd` and
+`scenario_analysis/commons/setup_data_benchmarks.R` of the scenariomip repository.
+
+```{r, message = FALSE, warning = TRUE}
+# Settings ####
+
+# REMIND-MAgPIE scenarios shown, from high to very low emissions, as in
+# 10_VLMarkerPaper_ValidationPlots.Rmd; VL-SSP1 is the marker
+selected.RM.scenarios <- c("H-SSP3", "M-SSP2", "ML-SSP2", "L-SSP2", "LN-SSP2",
+                           "VL-SSP1")
+
+# SCI criteria not related to the energy system
+excludeVars <- c("Food Availability [per capita]")
+
+# SCI evaluates cumulated geological carbon storage (2020-2100), which the
+# snapshot does not report; it is calculated from annual storage below
+storVar <- "Carbon Capture|Geological Storage"
+cumVar  <- "Carbon Capture|Geological Storage|Cumulative"
+
+# Historical sources as in commons/setup_data_benchmarks.R, plus the sources
+# for electricity capacities and carbon storage that SCI evaluates
+# (GlobalEnergyMonitor is left out: its capacities are not comparable, e.g.
+# about 1000 GW solar in 2025 compared to about 2400 GW from IRENA)
+historicalSources <- c("BP", "CEDS", "CMIP7_CEDS", "EDGARghg", "IEA",
+                       "IEA-EB-directSum", "UNFCCC", "WDI",
+                       "Ember", "IRENA", "IEA CCUS")
+
+# Input files: .rds = ScenarioMIP snapshot, .mif = REMIND historical.mif
+snapPath <- params$mif[grepl("\\.rds$", params$mif)]
+histPath <- params$mif[grepl("\\.mif$", params$mif)]
+if (length(snapPath) != 1) stop("Provide exactly one ScenarioMIP snapshot (.rds) in 'mif'.")
+if (length(histPath) > 1)  stop("Provide at most one historical.mif in 'mif'.")
+
+# SCI config without the excluded criteria
+cfg <- piamValidation:::getConfig(params$cfg) %>%
+  filter(!variable %in% excludeVars)
+sciVars <- unique(cfg$variable)
+
+# SCI reference data shipped with the package (models such as
+# IEA-ESDB-20250610 and CEDS-2025), needed for the historical vetting
+sciVersion <- sub("^.*SCI_", "", sub("\\.(csv|xlsx)$", "", basename(params$cfg)))
+refPath <- system.file(
+  paste0("extdata/SCI_reference_data_", sciVersion, ".rds"),
+  package = "piamValidation")
+if (refPath == "") stop("SCI reference data not found for version ", sciVersion)
+```
+
+```{r, message = FALSE, warning = TRUE}
+# Scenario data ####
+snap <- readRDS(snapPath)
+rmData <- snap %>%
+  filter(model == "REMIND-MAgPIE",
+         scenario %in% selected.RM.scenarios,
+         region == "World",
+         variable %in% c(sciVars, storVar)) %>%
+  mutate(across(where(is.factor), as.character))
+rm(snap)
+invisible(gc())
+
+missingScen <- setdiff(selected.RM.scenarios, unique(rmData$scenario))
+if (length(missingScen) > 0) {
+  warning("Scenarios not found in snapshot: ", paste(missingScen, collapse = ", "))
+}
+
+# marker as flagged in the snapshot (`marker == TRUE`)
+markerScen <- unique(rmData$scenario[rmData$marker %in% TRUE])
+
+# cumulated geological storage 2020-2100 (trapezoidal integration, 0 in 2020)
+if (!cumVar %in% rmData$variable) {
+  cumData <- rmData %>%
+    filter(variable == storVar, period >= 2020, period <= 2100) %>%
+    group_by(model, scenario, region) %>%
+    arrange(period, .by_group = TRUE) %>%
+    mutate(
+      step = (period - lag(period)) * (value + lag(value)) / 2,
+      value = cumsum(ifelse(is.na(step), 0, step)),
+      variable = cumVar,
+      unit = "Mt CO2") %>%
+    ungroup() %>%
+    select(-step)
+  rmData <- bind_rows(rmData, cumData)
+}
+
+qCols <- c("model", "scenario", "region", "variable", "unit", "period", "value")
+scenData <- select(rmData, all_of(qCols))
+scenMeta <- distinct(rmData, scenario, marker, emi.scen)
+```
+
+```{r, message = FALSE, warning = TRUE}
+# Historical data, converted to the ScenarioMIP template ####
+# identical to commons/setup_data_benchmarks.R, but World only
+if (length(histPath) == 1) {
+  hist <- read.quitte(histPath, check.duplicates = FALSE) %>%
+    filter(model %in% historicalSources, period >= 1990, region == "World")
+
+  # default ScenarioMIP mapping, overwritten by the historical-specific mapping
+  histDefault <- convertHistoricalData(mif = hist, project = "ScenarioMIP") %>%
+    mutate(across(where(is.factor), as.character))
+  histManual <- convertHistoricalData(mif = hist, project = "ScenarioMIP_historical") %>%
+    mutate(across(where(is.factor), as.character))
+  histDefault <- filter(histDefault, !variable %in% histManual$variable)
+
+  # keep CMIP7_CEDS as used for emissions harmonization
+  histCMIP7 <- hist %>%
+    filter(model == "CMIP7_CEDS", period <= 2023, variable != "Emi|CO2|w/o AFOLU") %>%
+    mutate(across(where(is.factor), as.character)) %>%
+    mutate(variable = sub("^Emi\\|CMIP7\\|", "Emissions|", variable),
+           variable = sub("^Emi\\|", "Emissions|", variable))
+  histDefault <- filter(histDefault, !variable %in% histCMIP7$variable)
+  histManual  <- filter(histManual,  !variable %in% histCMIP7$variable)
+
+  histData <- bind_rows(histDefault, histManual, histCMIP7) %>%
+    filter(variable %in% sciVars, !is.na(value)) %>%
+    select(all_of(qCols))
+  rm(hist, histDefault, histManual, histCMIP7)
+} else {
+  histData <- tibble(model = character(), scenario = character(),
+                     region = character(), variable = character(),
+                     unit = character(), period = integer(), value = numeric())
+}
+
+refData <- readRDS(refPath) %>%
+  mutate(across(where(is.factor), as.character)) %>%
+  select(all_of(qCols))
+```
+
+```{r, message = FALSE, warning = TRUE}
+# Validation ####
+df <- validateScenarios(
+  as.quitte(bind_rows(scenData, refData)),
+  cfg,
+  extraColors = params$extraColors)
+```
+
+Scenarios: `r paste(selected.RM.scenarios, collapse = ", ")`
+(marker: `r paste(markerScen, collapse = ", ")`).
+
+Historical data: `r if (length(histPath) == 1) paste(sort(unique(histData$model)), collapse = ", ") else "none"`.
+
+## Line Plots
+
+One plot per variable, containing all SCI criteria of that variable. Historical vetting
+(2010-2025) and near-term feasibility (2030-2040) are shown on one time axis from 2005 to 2050,
+sustainability criteria up to 2100.
+
+Threshold bands as drawn by `linePlotThresholds()`: green = within thresholds, yellow = above
+threshold with medium concern, cyan = below threshold with medium concern. Outside the coloured
+bands the concern is high or the historical vetting fails. A band reaching the edge of the plot has
+no limit in that direction (e.g. total wind capacity has lower limits only). Plots with values of
+10000 or more are shown in the next bigger unit (Gt instead of Mt, TW instead of GW).
+
+The marker scenario is drawn as a solid line, all other scenarios as dashed lines. Points show the
+SCI reference data (filled circles) and the sources of the historical.mif. The vertical line marks
+2025.
+
+```{r}
+# Plot settings ####
+
+# scenario colours by emission level ("gmd" scheme in commons/setup_config.R)
+emiColors <- c(H = "#a41212", HL = "#E744F6", M = "#fc7b03", ML = "#dec820",
+               L = "#20A359", LN = "#22e5db", VL = "#16188F")
+scenOrder <- c(markerScen, setdiff(rev(selected.RM.scenarios), markerScen))
+scenOrder <- scenOrder[scenOrder %in% scenMeta$scenario]
+scenColors <- setNames(
+  emiColors[as.character(scenMeta$emi.scen)], scenMeta$scenario)[scenOrder]
+scenLinetypes <- setNames(
+  ifelse(scenOrder %in% markerScen, "solid", "dashed"), scenOrder)
+scenLinewidths <- setNames(
+  ifelse(scenOrder %in% markerScen, 1, 0.6), scenOrder)
+
+# symbols of historical sources; sources sharing a symbol never report the
+# same SCI variable
+refLabel <- "SCI reference data"
+histShapes <- c(4, 3, 2, 5, 0, 1, 6)
+histShapeMap <- c(
+  "IEA" = 4, "IEA-EB-directSum" = 3, "BP" = 2,
+  "CEDS" = 4, "CMIP7_CEDS" = 3, "EDGARghg" = 2,
+  "Ember" = 4, "IRENA" = 3,
+  "IEA CCUS" = 4, "UNFCCC" = 0, "WDI" = 1)
+
+categoryNames <- c(yes = "Historical Vetting", feasibility = "Feasibility",
+                   sustainability = "Sustainability")
+categoryText <- c(
+  yes = paste("Deviation from the SCI reference data in 2010, 2015, 2020 and",
+              "2025. Outside the green band the historical vetting fails."),
+  feasibility = "Near-term feasibility criteria.",
+  sustainability = paste("General sustainability concerns. Cumulated geological",
+                         "storage is integrated from the annual storage,",
+                         "starting at 0 in 2020."))
+
+# linePlotThresholds() draws a band only where both of its limits exist.
+# Complete the thresholds: a missing high-concern limit is open (Inf above;
+# 0 below for absolute checks of non-negative variables, else -Inf), a missing
+# medium-concern limit equals the high-concern limit (the SCI historical
+# vetting has high-concern limits only). The open lower limit 0 avoids bands
+# running below 0 where linePlotThresholds() connects the check years.
+completeThresholds <- function(v) {
+  nonNegative <- all(v$value >= 0, na.rm = TRUE)
+  v %>%
+    mutate(
+      lowOpen = ifelse(nonNegative & metric == "absolute", 0, -Inf),
+      min_red = ifelse(is.na(min_red) | is.infinite(min_red), lowOpen, min_red),
+      max_red = ifelse(is.na(max_red),  Inf, max_red),
+      min_yel = ifelse(is.na(min_yel) | is.infinite(min_yel), min_red, min_yel),
+      max_yel = ifelse(is.na(max_yel) | is.infinite(max_yel), max_red, max_yel))
+}
+
+# time axis: historical and near-term criteria up to 2050, long-term
+# sustainability criteria up to 2100
+plotRange <- function(categories) {
+  c(2005, if ("sustainability" %in% categories) 2100 else 2050)
+}
+
+# plots with values of 10000 or more use the next bigger unit
+unitUp <- c("Mt CO2/yr" = "Gt CO2/yr", "Mt CO2" = "Gt CO2", "GW" = "TW")
+largeValue <- 1e4
+
+# convert validation data (values, reference values, absolute thresholds),
+# scenario data and historical data by `factor` to unit `newUnit`
+convertUnit <- function(v, s, h, factor, newUnit) {
+  v <- v %>%
+    mutate(value = value * factor,
+           ref_value_min = ref_value_min * factor,
+           ref_value_max = ref_value_max * factor,
+           across(c(min_red, min_yel, max_yel, max_red),
+                  ~ ifelse(metric == "relative", .x, .x * factor)),
+           unit = newUnit)
+  list(v = v,
+       s = mutate(s, value = value * factor, unit = newUnit),
+       h = mutate(h, value = value * factor, unit = newUnit))
+}
+
+plotSCI <- function(var) {
+  v <- filter(df, variable == var, region == "World")
+  if (nrow(v) == 0) return(NULL)
+  xlim <- plotRange(unique(as.character(v$critical)))
+
+  s <- filter(scenData, variable == var,
+              period >= xlim[1], period <= xlim[2]) %>%
+    mutate(scenario = factor(scenario, levels = scenOrder))
+  h <- bind_rows(
+    filter(refData, variable == var) %>% mutate(source = refLabel),
+    filter(histData, variable == var) %>% mutate(source = model)) %>%
+    filter(period >= xlim[1], period <= xlim[2])
+
+  # next bigger unit if values or absolute thresholds are large
+  varUnit <- as.character(unique(v$unit))[1]
+  absThr <- unlist(v[v$metric == "absolute",
+                     c("min_red", "min_yel", "max_yel", "max_red")])
+  yValues <- c(s$value, h$value, absThr)
+  yValues <- yValues[is.finite(yValues)]
+  if (varUnit %in% names(unitUp) && length(yValues) > 0 &&
+        max(abs(yValues)) >= largeValue) {
+    conv <- convertUnit(v, s, h, 1e-3, unitUp[[varUnit]])
+    v <- conv$v
+    s <- conv$s
+    h <- conv$h
+  }
+
+  # threshold bands, axis labels and title from piamValidation
+  p <- linePlotThresholds(completeThresholds(v), xlim = xlim,
+                          interactive = FALSE)
+
+  histSources <- c(intersect(refLabel, h$source),
+                   sort(setdiff(unique(h$source), refLabel)))
+  shapes <- c(setNames(16, refLabel), histShapeMap)[histSources]
+  unknown <- is.na(shapes)
+  shapes[unknown] <- setdiff(histShapes, shapes)[seq_len(sum(unknown))]
+  names(shapes) <- histSources
+  sizes <- setNames(ifelse(histSources == refLabel, 2.2, 1.6), histSources)
+
+  p <- p +
+    geom_vline(xintercept = 2025, colour = "grey40", linewidth = 0.3) +
+    geom_line(data = s,
+              aes(x = period, y = value, colour = scenario,
+                  linetype = scenario, linewidth = scenario)) +
+    scale_colour_manual("REMIND-MAgPIE scenarios", values = scenColors,
+                        breaks = scenOrder, drop = FALSE) +
+    scale_linetype_manual("REMIND-MAgPIE scenarios", values = scenLinetypes,
+                          breaks = scenOrder, drop = FALSE) +
+    scale_linewidth_manual("REMIND-MAgPIE scenarios", values = scenLinewidths,
+                           breaks = scenOrder, drop = FALSE)
+  if (nrow(h) > 0) {
+    p <- p +
+      geom_point(data = h,
+                 aes(x = period, y = value, shape = source, size = source),
+                 colour = "grey15") +
+      scale_shape_manual("Historical data", values = shapes,
+                         breaks = histSources) +
+      scale_size_manual("Historical data", values = sizes,
+                        breaks = histSources)
+  }
+  p +
+    expand_limits(y = 0) +
+    theme(panel.grid.minor = element_blank(),
+          legend.key.width = unit(1.2, "cm")) +
+    guides(colour = guide_legend(order = 1),
+           linetype = guide_legend(order = 1),
+           linewidth = guide_legend(order = 1),
+           shape = guide_legend(order = 2),
+           size = guide_legend(order = 2))
+}
+
+# one legend for the threshold bands, with the colours and transparencies
+# used in linePlotThresholds()
+bandLegend <- tibble(
+  label = c("above threshold, medium concern", "within thresholds",
+            "below threshold, medium concern"),
+  fill  = c("#EFB700", "#008450", "#66ccee"),
+  alpha = c(0.20, 0.20, 0.30)) %>%
+  mutate(label = factor(label, levels = label))
+bandLegendPlot <- ggplot(bandLegend, aes(x = 1, y = label, fill = label)) +
+  geom_tile() +
+  scale_fill_manual("SCI threshold bands",
+                    values = setNames(scales::alpha(bandLegend$fill,
+                                                    bandLegend$alpha),
+                                      bandLegend$label)) +
+  theme_bw() +
+  theme(legend.key.width = unit(1.2, "cm"),
+        legend.key.height = unit(0.6, "cm"))
+bandLegendGrob <- ggplotGrob(bandLegendPlot)
+bandLegendGrob <- bandLegendGrob$grobs[[
+  grep("guide-box", vapply(bandLegendGrob$grobs, function(g) g$name, ""))[1]]]
+
+# folder for the PNG files: next to the HTML file, unless `plotDir` is given
+plotDir <- params$plotDir
+if (plotDir == "") {
+  outDir <- knitr::opts_knit$get("rmarkdown.output_dir")
+  if (is.null(outDir)) outDir <- getwd()
+  plotDir <- file.path(outDir, paste0("plots_SCI_scenarioMIP_",
+                                      format(Sys.time(), "%Y%m%d-%H%M%S")))
+}
+dir.create(plotDir, recursive = TRUE, showWarnings = FALSE)
+pngName <- function(i, var) {
+  sprintf("%02d_%s.png", i, gsub("[^A-Za-z0-9]+", "_", var))
+}
+```
+
+```{r, fig.width = 4, fig.height = 1.4}
+grid::grid.newpage()
+grid::grid.draw(bandLegendGrob)
+invisible(ggsave(file.path(plotDir, "00_legend_threshold_bands.png"),
+                 bandLegendGrob, width = 4, height = 1.4, dpi = 300))
+```
+
+Each plot is also saved as PNG without title, together with the legend above
+(`00_legend_threshold_bands.png`), in:
+
+```{r}
+cat(normalizePath(plotDir), "\n")
+```
+
+```{r, results = 'asis', fig.width = params$figWidth, fig.height = params$figHeight}
+# one plot per variable, in config order, grouped by the SCI categories the
+# variable is evaluated in
+plotVars <- sciVars[sciVars %in% df$variable]
+varCats <- vapply(plotVars, function(x) {
+  cats <- unique(as.character(df$critical[df$variable == x]))
+  paste(intersect(names(categoryNames), cats), collapse = "+")
+}, character(1))
+
+for (sec in unique(varCats)) {
+  cats <- strsplit(sec, "+", fixed = TRUE)[[1]]
+  cat("\n\n### ", paste(categoryNames[cats], collapse = " and "), "\n\n", sep = "")
+  cat(paste(categoryText[cats], collapse = " "), "\n\n")
+  for (var in plotVars[varCats == sec]) {
+    cat("\n\n#### ", var, "\n\n", sep = "")
+    p <- plotSCI(var)
+    print(p)
+    ggsave(file.path(plotDir, pngName(match(var, plotVars), var)),
+           p + labs(title = NULL),
+           width = params$figWidth, height = params$figHeight, dpi = 300)
+  }
+}
+
+missingVars <- setdiff(sciVars, plotVars)
+if (length(missingVars) > 0) {
+  cat("\n\nNot reported by the selected scenarios: ",
+      paste0("``", missingVars, "``", collapse = ", "), "\n\n")
+}
+```

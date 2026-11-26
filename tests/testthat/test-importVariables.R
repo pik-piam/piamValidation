@@ -1,5 +1,5 @@
 test_that("importScenarioData keeps only requested variables", {
-  df <- tibble::tibble(
+  df <- dplyr::tibble(
     model = "REMIND", scenario = "Test", region = "World", unit = "EJ/yr",
     variable = c("FE", "FE|+|Electricity", "FE|Electricity", "FE|Heat",
                  "FE|Electricity|Buildings", "PE"),

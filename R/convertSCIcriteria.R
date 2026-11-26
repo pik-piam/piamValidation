@@ -132,7 +132,7 @@ convertSCIcriteria <- function(version = "2026.8.3") {
 
   # combine into one config
   cfg <- rbind(hist, feas, sust, make.row.names = FALSE) %>%
-    tibble::as_tibble()
+    dplyr::as_tibble()
   cfg <- cfg[c("metric", "critical", "variable", "unit", "model", "scenario",
                "region", "period", "min_red", "min_yel", "max_yel", "max_red",
                "ref_model", "ref_scenario", "ref_period")]
