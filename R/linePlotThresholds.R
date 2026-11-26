@@ -50,43 +50,9 @@ linePlotThresholds <- function(valiData,
             data overlap.")
   }
 
-  # Prepare threshold background data
-  d_background_rel <- valiData %>%
-    filter(metric == "relative") %>%
-    group_by(period) %>%
-    reframe(
-      min_red = ((1 + .data$min_red) * .data$ref_value_min),
-      min_yel = ((1 + .data$min_yel) * .data$ref_value_min),
-      max_yel = ((1 + .data$max_yel) * .data$ref_value_max),
-      max_red = ((1 + .data$max_red) * .data$ref_value_max)
-    )
-
-  d_background_dif <- valiData %>%
-    filter(metric == "difference") %>%
-    group_by(period) %>%
-    reframe(
-      min_red = .data$min_red + .data$ref_value_min,
-      min_yel = .data$min_yel + .data$ref_value_min,
-      max_yel = .data$max_yel + .data$ref_value_max,
-      max_red = .data$max_red + .data$ref_value_max
-    )
-
-  d_background_abs <- valiData %>%
-    filter(metric == "absolute") %>%
-    group_by(period) %>%
-    reframe(
-      .data$min_red,
-      .data$min_yel,
-      .data$max_yel,
-      .data$max_red
-    )
-
-  d_background <- bind_rows(
-    d_background_rel,
-    d_background_dif,
-    d_background_abs
-  ) %>%
-    distinct() %>%
+  # Prepare threshold background data, warning about multiple threshold sets
+  # is already given above
+  d_background <- getThresholdBands(valiData, warnMultiple = FALSE) %>%
     arrange(period)
 
   # plot thresholds as colored background areas or whiskers if only one period

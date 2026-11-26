@@ -3,6 +3,7 @@
 export(appendTooltips)
 export(convertSCIcriteria)
 export(getConfig)
+export(getThresholdBands)
 export(linePlotThresholds)
 export(listConfigs)
 export(listReports)
@@ -16,6 +17,8 @@ importFrom(dplyr,
   "%>%",
   arrange,
   bind_rows,
+  count,
+  distinct,
   filter,
   group_by,
   lag,
